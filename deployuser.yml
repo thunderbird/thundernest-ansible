@@ -1,5 +1,5 @@
 - name: Create deploy user and enable sudo
-  hosts: webworkers
+  hosts: webheads
 
   vars_files:
   - vars/conf.yml

@@ -1,7 +1,8 @@
 - name: Configure firewall and install Apache2
-  hosts: webworkers
+  hosts: webheads
 
   vars_files:
   - vars/apache.yml
+
   roles:
     - { role: geerlingguy.apache }
