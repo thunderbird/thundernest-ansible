@@ -1,0 +1,26 @@
+- name: Create deploy user and enable sudo
+  hosts: webworkers
+
+  vars_files:
+  - vars/conf.yml
+
+  tasks:
+    - name: Make sure we have a 'wheel' group
+      group:
+        name: wheel
+        state: present
+
+    - name: Allow 'wheel' group to have passwordless sudo
+      lineinfile:
+        dest: /etc/sudoers
+        state: present
+        regexp: '^%wheel'
+        line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+        validate: 'visudo -cf %s'
+
+    - name: Add sudoers users to wheel group
+      user: name=deploy groups=wheel append=yes state=present createhome=yes
+
+
+    - name: Set up authorized keys for the deploy user
+      authorized_key: user=deploy key="{{ root_ssh_pub_key }}"
