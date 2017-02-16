@@ -1,5 +1,5 @@
 - name: Create deploy user and enable sudo
-  hosts: webheads
+  hosts: "{{ var_hosts | default('webheads') }}"
 
   vars_files:
   - vars/conf.yml

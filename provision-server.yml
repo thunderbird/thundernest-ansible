@@ -43,7 +43,14 @@
       host: "{{ linode.instance.ipv4 }}"
       port: 22
 
-
+  - cloudflare_dns:
+      zone: "{{ server_domain }}"
+      record: "{{ server_hostname }}"
+      type: A
+      value: "{{ linode.instance.ipv4 }}"
+      account_email: "{{ cloudflare_email }}"
+      account_api_token: "{{ cloudflare_api_key }}"
+    register: record
 
 - name: Common configuration on the new server
   hosts: linode
@@ -73,3 +80,11 @@
   handlers:
     - name: restart ssh
       service: name=sshd state=restarted
+
+- include: deployuser.yml
+  vars:
+    var_hosts: linode
+
+- include: epelit.yml
+  vars:
+    var_hosts: linode

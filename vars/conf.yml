@@ -1,5 +1,7 @@
 ---
 server_domain: sancus.ca
+cloudflare_email: sancus@pobox.com
+cloudflare_api_key: 2958f4b7aa4001a6b5bc026b5761534d4f762
 linode_swap: 512
 linode_plan: 1
 linode_datacenter: 3

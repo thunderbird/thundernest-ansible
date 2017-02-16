@@ -1,5 +1,5 @@
 - name: Configure firewall and install Apache2
-  hosts: webheads
+  hosts: "{{ var_hosts | default('webheads') }}"
 
   vars_files:
   - vars/apache.yml
