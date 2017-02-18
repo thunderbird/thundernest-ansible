@@ -1,0 +1,29 @@
+apache_remove_default_vhost: true
+apache_vhosts:
+  - servername: "live.thunderbird.net"
+    serveralias: "live.mozillamessaging.com live.sancus.ca"
+    documentroot: "/var/www/html/live.momo"
+    extra_parameters: |
+      RewriteEngine On
+      RewriteCond %{HTTP:X-Forwarded-Proto} ^http$
+      RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [L,R=301,NE]
+
+  - servername: "autoconfig.thunderbird.net"
+    serveralias: "autoconfig.mozillamessaging.com autoconfig.sancus.ca"
+    documentroot: "/var/www/html/autoconfig.momo"
+    options: "+Indexes +FollowSymLinks"
+    extra_parameters: |
+      RewriteEngine On
+      RewriteCond %{HTTP:X-Forwarded-Proto} ^http$
+      RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [L,R=301,NE]
+
+  - servername: "broker.thunderbird.net"
+    serveralias: "broker-live.mozillamessaging.com broker-live.sancus.ca"
+    documentroot: "/var/www/broker"
+    extra_parameters: |
+      WSGIDaemonProcess broker.thunderbird.net processes=2 threads=15 display-name=%{GROUP} python-home=/var/www/tbservices
+      WSGIProcessGroup broker.thunderbird.net
+      WSGIScriptAlias /provider /var/www/broker/broker.wsgi
+      RewriteEngine On
+      RewriteCond %{HTTP:X-Forwarded-Proto} ^http$
+      RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [L,R=301,NE]
