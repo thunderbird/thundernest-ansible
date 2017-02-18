@@ -1,0 +1,28 @@
+- name: install svn and check out websites
+  hosts: "{{ var_hosts | default('webheads') }}"
+
+  tasks:
+    - name: install SVN
+      yum:
+        name: svn
+        state: latest
+
+    - name: delete live directory
+      file:
+        path: "/var/www/html/{{ item }}/"
+        state: absent
+      with_items:
+        - "live.momo"
+        - "autoconfig.momo/v1.1/"
+
+    - name: check out live code
+      subversion:
+        repo: https://svn.mozilla.org/mozillamessaging.com/sites/live.mozillamessaging.com/trunk/htaccess/
+        dest: /var/www/html/live.momo/
+        force: yes
+
+    - name: check out autoconfig code
+      subversion:
+        repo: https://svn.mozilla.org/mozillamessaging.com/sites/autoconfig.mozillamessaging.com/trunk/
+        dest: /var/www/html/autoconfig.momo/v1.1/
+        force: yes

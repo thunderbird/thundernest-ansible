@@ -1,0 +1,35 @@
+- name: Configure python virtualenv and install services
+  hosts: "{{ var_hosts | default('webheads') }}"
+  vars_files:
+  - vars/secrets.yml
+
+  tasks:
+    - name: install git
+      yum:
+        name: git
+        state: latest
+
+    - name: install easy_install
+      yum:
+        name: python-setuptools
+        state: latest
+
+    - name: checkout broker
+      git:
+        repo: "https://{{ git_user | urlencode }}:{{ git_api_key }}@github.com/mozilla/broker.git"
+        dest: "{{ brokerdest }}"
+
+    - name: install pip
+      easy_install:
+        name: pip
+        state: latest
+
+    - name: install virtualenv
+      pip:
+        name: virtualenv
+
+    - name: install webob lib
+      pip:
+        name: webob
+        virtualenv: "{{ services_virtualenv }}"
+        virtualenv_python: python2.7
