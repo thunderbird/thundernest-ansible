@@ -21,7 +21,7 @@ apache_vhosts:
       RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [L,R=301,NE]
 
   - servername: "broker.thunderbird.net"
-    serveralias: "broker-live.mozillamessaging.com broker-live.sancus.ca"
+    serveralias: "broker-live.mozillamessaging.com broker.sancus.ca"
     documentroot: "/var/www/services/broker"
     extra_parameters: |
       WSGIDaemonProcess broker.thunderbird.net processes=2 threads=15 display-name=%{GROUP} python-home=/var/www/tbservices
