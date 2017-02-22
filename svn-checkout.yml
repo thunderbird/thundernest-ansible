@@ -9,11 +9,11 @@
 
     - name: delete live directory
       file:
-        path: "/var/www/html/{{ item }}/"
+        path: "/var/www/{{ item }}/"
         state: absent
       with_items:
-        - "live.momo"
-        - "autoconfig.momo/v1.1/"
+        - "html/live.momo"
+        - "autoconfig.momo/trunk"
 
     - name: check out live code
       subversion:
@@ -21,8 +21,39 @@
         dest: /var/www/html/live.momo/
         force: yes
 
+    - name: install packages for lxml compilation
+      yum:
+        name: "{{ item }}"
+        state: latest
+      with_items:
+        - "gcc"
+        - "python-devel"
+        - "libxml2"
+        - "libxml2-devel"
+        - "libxslt-devel"
+        - "wget"
+
+    - name: install lxml 2.2.3
+      pip: name=lxml version=2.2.3 state=present virtualenv=/var/www/tbservices
+
     - name: check out autoconfig code
       subversion:
         repo: https://svn.mozilla.org/mozillamessaging.com/sites/autoconfig.mozillamessaging.com/trunk/
-        dest: /var/www/html/autoconfig.momo/v1.1/
+        dest: /var/www/autoconfig.momo/trunk
         force: yes
+
+    - name: copy autoconfig shell file
+      copy:
+        src: files/update.sh
+        dest: /var/www/autoconfig.momo
+        mode: 0744
+
+    - name: run autoconfig shell file
+      command: "/var/www/autoconfig.momo/update.sh"
+
+    - name: set up autoconfig cron
+      cron:
+        name: "run autoconfig convert"
+        minute: "30"
+        user: "root"
+        job: "/var/www/autoconfig.momo/update.sh"

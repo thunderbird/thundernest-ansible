@@ -19,6 +19,11 @@
         repo: "https://{{ git_user | urlencode }}:{{ git_api_key }}@github.com/mozilla/broker.git"
         dest: "{{ brokerdest }}"
 
+    - name: checkout the mx service
+      git:
+        repo: "https://{{ git_user | urlencode }}:{{ git_api_key }}@github.com/Sancus/http-mx.git"
+        dest: "{{ mxdest }}"
+
     - name: install pip
       easy_install:
         name: pip
@@ -31,5 +36,11 @@
     - name: install webob lib
       pip:
         name: webob
+        virtualenv: "{{ services_virtualenv }}"
+        virtualenv_python: python2.7
+
+    - name: install mx requirements
+      pip:
+        requirements: "{{ mxdest }}/requirements.txt"
         virtualenv: "{{ services_virtualenv }}"
         virtualenv_python: python2.7
