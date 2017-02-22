@@ -13,6 +13,9 @@ apache_vhosts:
     documentroot: "/var/www/html/autoconfig.momo/"
     options: "+Indexes +FollowSymLinks"
     extra_parameters: |
+      ForceType text/xml
+      ExpiresActive On
+      ExpiresDefault "access plus 1 hour"
       RewriteEngine On
       RewriteCond %{HTTP:X-Forwarded-Proto} ^http$
       RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [L,R=301,NE]
