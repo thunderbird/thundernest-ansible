@@ -10,8 +10,8 @@ secrets_file = 'vars/secrets.yml'
 vars_file = 'vars/conf.yml'
 
 # SSL key/certs for the load balancer
-key_file = '../privkey.pem'
-fullchain_file = '../fullchain.pem'
+key_file = '../dehydrated/certs/sancus.ca/privkey.pem'
+fullchain_file = '../dehydrated/certs/sancus.ca/fullchain.pem'
 
 # payment_term should always be 1, artifact of bad linode-python code
 payment_term = 1
@@ -58,8 +58,10 @@ def main():
 	parser = argparse.ArgumentParser(
 	description="""
 	python lino.py listnodes (list linodes with their IPs)
-	python lino.py delete thunder1, thunder2, ... (deletes linodes)
-	python lino.py nodecreate thunder1, thunder2, ... (creates node balancer)""", formatter_class=argparse.RawTextHelpFormatter)
+	python lino.py delete thunder1, thunder2, ... (deletes linodes by label)
+	python lino.py nodecreate thunder1, thunder2, ... (creates node balancer for labeled nodes)
+	python lino.py reboot thunder1, thunder2, ...(reboots linodes by label)
+	""", formatter_class=argparse.RawTextHelpFormatter)
 
 	parser.add_argument('action', nargs='+')
 	args = parser.parse_args()
@@ -67,16 +69,40 @@ def main():
 	if args.action[0]=='delete':
 		# slice off the first argument since its the command itself
 		delete(args.action[1:])
-	if args.action[0]=='listnodes':
+	elif args.action[0]=='listnodes':
 		listnodes()
-	if args.action[0]=='nodecreate':
+	elif args.action[0]=='nodecreate':
 		nodebalancercreate(args.action[1:])
+	elif args.action[0]=='reboot':
+		reboot(args.action[1:])
+	else:
+		sys.exit('No known action requested. Maybe you meant delete, listnodes, or nodecreate?')
+
+def reboot(labels):
+	if not labels:
+		sys.exit('You must enter the labels to reboot')
+
+	vpsids = {}
+	toreboot = {}
+
+	for vps in api.linode_list():
+		vpsids[vps['LABEL']] = vps['LINODEID']
+	for label in labels:
+		for k, v in vpsids.iteritems():
+			if label in k:
+				toreboot[label] = v
+	for l in toreboot.values():
+		r = api.linode_reboot(LinodeID=l)
+		print r
 
 def nodehasprivateip(linodeid):
 	for ip in api.linode_ip_list():
 		if not ip['ISPUBLIC'] and ip['LINODEID']==linodeid:
 			return ip['IPADDRESS']
-	r = api.linode_ip_addprivate(LINODEID=linodeid)
+
+	r = api.linode_ip_addprivate(LinodeID=linodeid)
+	a = api.linode_reboot(LinodeID=linodeid)
+	print a
 	return r['IPADDRESS']
 
 def nodebalancercreate(labels):
@@ -120,6 +146,8 @@ def nodebalancercreate(labels):
 			a = api.nodebalancer_node_create(ConfigID=cid, Label=l, Address='{0}:80'.format(ip))
 			if not a['NodeID']:
 				sys.exit('Failed trying to add a node to the load balancer ID: {0}'.format(cid))
+
+	print "Node Balancer configs created:{0}".format(configs)
 
 def listnodes():
 	vpslist = {}
