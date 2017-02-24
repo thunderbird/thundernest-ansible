@@ -1,0 +1,4 @@
+- include: epelit.yml
+- include: python-services.yml
+- include: svn-checkout.yml
+- include: installapache.yml
