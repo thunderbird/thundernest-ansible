@@ -2,6 +2,8 @@
 The following instructions assume you are logged into the control node. Login instructions are attached as
 a **note to the private key in 1password**. All other login information for any service mentioned below is also in 1password.
 
+First, create some linodes to use as webheads. These are the servers that host the content, there are normally 2 of them.
+
 ```bash
 cd ~/thundernest-ansible
 ansible-playbook --extra-vars "server_hostname=thunderbird3 linode_plan=4" provision-server.yml
