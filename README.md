@@ -15,8 +15,8 @@ Verify DNS was added in [Cloudflare](https://www.cloudflare.com/a/login), and ad
 
 ```yml
 [webheads]
-thunderbird3.sancus.ca
-thunderbird4.sancus.ca
+thunderbird3.thunderbird.net
+thunderbird4.thunderbird.net
 ```
 Set up the webheads:
 ```bash
