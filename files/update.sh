@@ -8,6 +8,8 @@ wget https://svn.mozilla.org/mozillamessaging.com/sites/ispdb.mozillamessaging.c
 cd $DATA/trunk
 svn up
 
+# Make sure we regenerate all the files so deleted files don't stay.
+rm -rf $DEST/*
 mkdir -p $DEST/v1.1
 mkdir -p $DEST/v1.0
 

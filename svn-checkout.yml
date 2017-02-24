@@ -1,5 +1,7 @@
 - name: install svn and check out websites
   hosts: "{{ var_hosts | default('webheads') }}"
+  vars_files:
+  - vars/conf.yml
 
   tasks:
     - name: install SVN
@@ -9,16 +11,16 @@
 
     - name: delete live directory
       file:
-        path: "/var/www/{{ item }}/"
+        path: "{{ item }}"
         state: absent
       with_items:
-        - "html/live.momo"
-        - "autoconfig.momo/trunk"
+        - "{{ live_doc_root }}"
+        - "{{ autoconfig_trunk }}"
 
     - name: check out live code
       subversion:
         repo: https://svn.mozilla.org/mozillamessaging.com/sites/live.mozillamessaging.com/trunk/htaccess/
-        dest: /var/www/html/live.momo/
+        dest: "{{ live_doc_root }}"
         force: yes
 
     - name: install packages for lxml compilation
@@ -39,7 +41,7 @@
     - name: check out autoconfig code
       subversion:
         repo: https://svn.mozilla.org/mozillamessaging.com/sites/autoconfig.mozillamessaging.com/trunk/
-        dest: /var/www/autoconfig.momo/trunk
+        dest: "{{ autoconfig_trunk }}"
         force: yes
 
     - name: copy autoconfig shell file

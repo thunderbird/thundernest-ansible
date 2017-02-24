@@ -1,16 +1,19 @@
+
 import linode.api
 import yaml
 import argparse
 import sys
 from distutils.util import strtobool
 
-
+# For the API key
 secrets_file = 'vars/secrets.yml'
 vars_file = 'vars/conf.yml'
+
+# SSL key/certs for the load balancer
 key_file = '../privkey.pem'
 fullchain_file = '../fullchain.pem'
 
-#payment_term should always be 1, just artifact of bad linode api
+# payment_term should always be 1, artifact of bad linode-python code
 payment_term = 1
 
 with open(key_file, 'r') as f:
@@ -52,7 +55,12 @@ def nodebalancer_config(balancerid, **kwargs):
 	return config
 
 def main():
-	parser = argparse.ArgumentParser(description='test description')
+	parser = argparse.ArgumentParser(
+	description="""
+	python lino.py listnodes (list linodes with their IPs)
+	python lino.py delete thunder1, thunder2, ... (deletes linodes)
+	python lino.py nodecreate thunder1, thunder2, ... (creates node balancer)""", formatter_class=argparse.RawTextHelpFormatter)
+
 	parser.add_argument('action', nargs='+')
 	args = parser.parse_args()
 

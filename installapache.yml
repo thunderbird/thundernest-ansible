@@ -1,17 +1,17 @@
 - name: Configure firewall and install Apache2
   hosts: "{{ var_hosts | default('webheads') }}"
+  vars_files:
+  - vars/conf.yml
+  - vars/apache.yml
 
   pre_tasks:
     - name: Make Document Root
-      file: path=/var/www/html/live.momo state=directory
+      file: path="{{ live_doc_root }}" state=directory
 
     - name: install mod_wsgi
       yum:
         name: mod_wsgi
         state: latest
-
-  vars_files:
-  - vars/apache.yml
 
   roles:
     - { role: geerlingguy.apache }

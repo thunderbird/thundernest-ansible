@@ -2,6 +2,7 @@
   hosts: "{{ var_hosts | default('webheads') }}"
   vars_files:
   - vars/secrets.yml
+  - vars/conf.yml
 
   tasks:
     - name: install git
