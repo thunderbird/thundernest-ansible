@@ -1,5 +1,7 @@
-- name: Create deploy user and enable sudo
+- name: Create ansibler user and enable sudo
   hosts: "{{ var_hosts | default('webheads') }}"
+  vars:
+    username: "ansibler"
 
   vars_files:
   - vars/conf.yml
@@ -15,13 +17,24 @@
       lineinfile:
         dest: /etc/sudoers
         state: present
-        regexp: '^%wheel'
-        line: '%wheel ALL=(ALL) NOPASSWD: ALL'
-        validate: 'visudo -cf %s'
+        regexp: "^%wheel"
+        line: "%wheel ALL=(ALL) NOPASSWD: ALL"
+        validate: "visudo -cf %s"
 
     - name: Add sudoers users to wheel group
-      user: name=deploy groups=wheel append=yes state=present createhome=yes
+      user: name="{{ username }}" groups=wheel append=yes state=present createhome=yes
 
 
     - name: Set up authorized keys for the deploy user
-      authorized_key: user=deploy key="{{ root_ssh_pub_key }}"
+      authorized_key: user="{{ username }}" key="{{ root_ssh_pub_key }}"
+
+    - name: Disallow root SSH access
+      lineinfile: dest=/etc/ssh/sshd_config
+                  regexp="^PermitRootLogin"
+                  line="PermitRootLogin no"
+                  state=present
+      notify: restart ssh
+
+  handlers:
+    - name: restart ssh
+      service: name=sshd state=restarted

@@ -1,7 +1,7 @@
 # Usage:
-#   export LINODE_API_KEY=4kfjh59shlhdkjhksdj00sdsTTsskklkjoiRPrbDtgHY
-#   ansible-playbook --extra-vars server_hostname=hades provision-server.yml
-#
+# ansible-playbook --extra-vars "linode_plan=1 server_hostname=thunder3" provision-server.yml
+# linode plans, 1 = 1 core $5/mo, 4 = 4 cores $40/mo, etc.
+
 - name: Provision new linode
   hosts: localhost
   connection: local
@@ -82,11 +82,3 @@
   handlers:
     - name: restart ssh
       service: name=sshd state=restarted
-
-- include: deployuser.yml
-  vars:
-    var_hosts: linode
-
-- include: epelit.yml
-  vars:
-    var_hosts: linode

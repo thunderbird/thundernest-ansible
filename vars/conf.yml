@@ -1,7 +1,6 @@
 ---
 server_domain: sancus.ca
 linode_swap: 512
-linode_plan: 1
 linode_datacenter: 3
 linode_distribution: 129
 root_ssh_pub_key: 'ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAxQZR3s9QZICXlnzsDKj/+6RMZVL2FcFLUwXFmqrzL71st0xgfgMTL+vRy+voLDWm53csC4FDainRLK8Zb4+sxEFTADDvFueBh+CWFY9CpTwO3t9fVDHVTbeBaDGfJVhCmLAI/NTMeML2WqnP6dWqcyuKPnBnElIK/es+uzWOsAk9TJnqgStaalrm2g5aiTiCEQ99VCwhGMoFm8VulJ4/8j4eHnJh6VtB9j96rw0ttWQB72Eh6W50a2kG7J2v5e0ahsl4ZOP97PUfDL+y1cS9kbS3HrozSfK6F2zyesv8weWdEtKWdw68/ewDfdflguCs+MxBLHu2jmZUuDO/UaFqQw== thundernest-infra'
