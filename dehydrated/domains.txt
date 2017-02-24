@@ -1,0 +1,1 @@
+thunderbird.net www.thunderbird.net live.thunderbird.net test.thunderbird.net mx.thunderbird.net broker-live.thunderbird.net autoconfig.thunderbird.net
