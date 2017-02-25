@@ -1,7 +1,7 @@
 - name: Create ansibler user and enable sudo
-  hosts: "{{ var_hosts | default('webheads') }}"
+  hosts: "{{ var_hosts | default('control') }}"
   vars:
-    username: "ansibler"
+    username: ansibler
 
   vars_files:
   - vars/conf.yml
@@ -22,7 +22,7 @@
         validate: "visudo -cf %s"
 
     - name: Add sudoers users to wheel group
-      user: name="{{ username }}" groups=wheel append=yes state=present createhome=yes
+      user: name="{{ username }}" shell='/bin/bash' groups=wheel append=yes state=present createhome=yes
 
 
     - name: Set up authorized keys for the deploy user

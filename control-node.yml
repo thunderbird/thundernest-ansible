@@ -1,0 +1,10 @@
+- name: Configure control node
+  hosts: "{{ var_hosts | default('control') }}"
+
+- include: ansibleruser.yml
+  vars:
+    var_hosts: control
+
+- include: control-install.yml
+  vars:
+    var_hosts: control
