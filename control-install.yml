@@ -86,3 +86,6 @@
       make:
         chdir: "{{ homedir }}/git-crypt"
         target: install
+
+    - name: copy domains file to dehydrated
+      command: "cp {{ homedir }}/thundernest-ansible/dehydrated/domains.txt {{ homedir }}/dehydrated"
