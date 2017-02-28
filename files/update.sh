@@ -6,7 +6,8 @@ cd $DATA
 rm -rf convert.py
 wget https://svn.mozilla.org/mozillamessaging.com/sites/ispdb.mozillamessaging.com/trunk/tools/convert.py
 cd $DATA/trunk
-svn up
+git fetch --all
+git checkout --force origin/master
 
 # Make sure we regenerate all the files so deleted files don't stay.
 rm -rf $DEST/*
