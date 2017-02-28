@@ -1,2 +1,3 @@
 thundernest-ansible.key
 *.retry
+*.pyc
