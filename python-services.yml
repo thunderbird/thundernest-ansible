@@ -22,7 +22,7 @@
 
     - name: checkout the mx service
       git:
-        repo: "https://{{ git_user | urlencode }}:{{ git_api_key }}@github.com/Sancus/http-mx.git"
+        repo: "https://{{ git_user | urlencode }}:{{ git_api_key }}@github.com/thundernest/http-mx.git"
         dest: "{{ mxdest }}"
 
     - name: delete live directory
