@@ -59,7 +59,7 @@ Example:
 `apt-get install ansible git-crypt`
 
 clone the ansible repo locally:
-`git clone https://github.com/Sancus/thundernest-ansible.git`
+`git clone https://github.com/thundernest/thundernest-ansible.git`
 
 **Copy the thundernest-ansible.key into the folder from 1password.**
 
