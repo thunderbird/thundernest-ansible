@@ -2,7 +2,7 @@ apache_remove_default_vhost: true
 apache_vhosts:
   - servername: "live.thunderbird.net"
     serveralias: "live.mozillamessaging.com live.sancus.ca"
-    documentroot: "/var/www/html/live.momo"
+    documentroot: "/var/www/html/live.momo/htaccess/"
     extra_parameters: |
       RewriteEngine On
       RewriteCond %{HTTP:X-Forwarded-Proto} ^http$
