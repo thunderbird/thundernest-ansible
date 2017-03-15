@@ -2,6 +2,7 @@
 import argparse
 import linode.api
 import json
+import os
 import requests
 import sys
 import yaml
@@ -16,26 +17,35 @@ vars_file = 'vars/conf.yml'
 cloudflare_zone_identifier = '10eb4a11ab885340bd57de0c72a4ee55'
 cloudflare_url = 'https://api.cloudflare.com/client/v4'
 
-# SSL key/certs for the load balancer
-key_file = '../dehydrated/certs/sancus.ca/privkey.pem'
-fullchain_file = '../dehydrated/certs/sancus.ca/fullchain.pem'
-
 # payment_term should always be 1, artifact of bad linode-python code
 payment_term = 1
 
-with open(key_file, 'r') as f:
-    sslkey = f.read()
-with open(fullchain_file, 'r') as f:
-    sslcert = f.read()
 with open(secrets_file, 'r') as f:
     doc = yaml.load(f)
     api_key = doc['linode_api_key']
     cloudflare_api_key = doc['cloudflare_api_key']
     cloudflare_email = doc['cloudflare_email']
+
 with open(vars_file, 'r') as f:
     doc = yaml.load(f)
     server_domain = doc['server_domain']
     datacenter = doc['linode_datacenter']
+
+# SSL key/certs for the load balancer
+key_file = '../dehydrated/certs/{0}/privkey.pem'.format(server_domain)
+fullchain_file = '../dehydrated/certs/{0}/fullchain.pem'.format(server_domain)
+
+if os.path.exists(key_file):
+    with open(key_file, 'r') as f:
+        sslkey = f.read()
+else:
+    sslkey = False
+
+if os.path.exists(fullchain_file):
+    with open(fullchain_file, 'r') as f:
+        sslcert = f.read()
+else:
+    sslcert = False
 
 api = linode.api.Api(api_key)
 cloudflare_headers = {'X-Auth-Email': cloudflare_email,
@@ -63,10 +73,13 @@ def nodebalancer_config(balancerid, **kwargs):
     }
 
     if protocol == 'https':
-        config['Port'] = 443
-        config['ssl_cert'] = sslcert
-        config['ssl_key'] = sslkey
-        config['cipher_suite'] = 'recommended'
+        if sslcert and sslkey:
+            config['Port'] = 443
+            config['ssl_cert'] = sslcert
+            config['ssl_key'] = sslkey
+            config['cipher_suite'] = 'recommended'
+        else:
+            sys.exit('SSL Cert or SSL Key not loaded, check that {0}\n and {1} exist.'.format(key_file, fullchain_file))
     return config
 
 
