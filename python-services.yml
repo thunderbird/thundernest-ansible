@@ -17,12 +17,12 @@
 
     - name: checkout broker
       git:
-        repo: "https://{{ git_user | urlencode }}:{{ git_api_key }}@github.com/mozilla/broker.git"
+        repo: "https://{{ lookup('env', 'GIT_USER') | urlencode }}:{{ lookup('env', 'GIT_API_KEY') }}@github.com/mozilla/broker.git"
         dest: "{{ brokerdest }}"
 
     - name: checkout the mx service
       git:
-        repo: "https://{{ git_user | urlencode }}:{{ git_api_key }}@github.com/thundernest/http-mx.git"
+        repo: "https://github.com/thundernest/http-mx.git"
         dest: "{{ mxdest }}"
 
     - name: delete live directory
@@ -35,12 +35,12 @@
 
     - name: checkout the live redirects
       git:
-        repo: "https://{{ git_user | urlencode }}:{{ git_api_key }}@github.com/thundernest/live-redirects.git"
+        repo: "https://github.com/thundernest/live-redirects.git"
         dest: "{{ live_doc_root }}"
 
     - name: checkout autoconfig
       git:
-        repo: "https://{{ git_user | urlencode }}:{{ git_api_key }}@github.com/thundernest/autoconfig.git"
+        repo: "https://github.com/thundernest/autoconfig.git"
         dest: "{{ autoconfig_trunk }}"
 
     - name: install pip

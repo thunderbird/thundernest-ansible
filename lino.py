@@ -9,8 +9,7 @@ import yaml
 
 from distutils.util import strtobool
 
-# For the API key
-secrets_file = 'vars/secrets.yml'
+# for the server domain and linode datacenter settings
 vars_file = 'vars/conf.yml'
 
 # cloudflare settings
@@ -20,11 +19,10 @@ cloudflare_url = 'https://api.cloudflare.com/client/v4'
 # payment_term should always be 1, artifact of bad linode-python code
 payment_term = 1
 
-with open(secrets_file, 'r') as f:
-    doc = yaml.load(f)
-    api_key = doc['linode_api_key']
-    cloudflare_api_key = doc['cloudflare_api_key']
-    cloudflare_email = doc['cloudflare_email']
+# these need to be in the environment
+api_key = os.environ['LINODE_API_KEY']
+cloudflare_api_key = os.environ['CF_KEY']
+cloudflare_email = os.environ['CF_EMAIL']
 
 with open(vars_file, 'r') as f:
     doc = yaml.load(f)

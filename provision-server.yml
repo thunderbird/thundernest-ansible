@@ -9,7 +9,6 @@
 
   vars_files:
   - vars/conf.yml
-  - vars/secrets.yml
 
   tasks:
   - name: Fail if server_hostname is not defined
@@ -20,7 +19,8 @@
     # http://docs.ansible.com/ansible/linode_module.html
     linode:
       name: "{{ server_hostname }}"
-      api_key: "{{ linode_api_key }}"
+      # Not strictly necessary, but best to be explicit about where the api key is coming from.
+      api_key: "{{ lookup('env', 'LINODE_API_KEY') }}"
       plan: "{{ linode_plan }}"
       datacenter: "{{ linode_datacenter }}"
       distribution: "{{ linode_distribution }}"
@@ -50,8 +50,8 @@
       record: "{{ server_hostname }}"
       type: A
       value: "{{ linode.instance.ipv4 }}"
-      account_email: "{{ cloudflare_email }}"
-      account_api_token: "{{ cloudflare_api_key }}"
+      account_email: "{{ lookup('env', 'CF_EMAIL') }}"
+      account_api_token: "{{ lookup('env', 'CF_KEY') }}"
     register: record
 
 - name: Common configuration on the new server

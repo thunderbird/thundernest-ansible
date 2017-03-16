@@ -5,7 +5,6 @@
 
   vars_files:
   - vars/conf.yml
-  - vars/secrets.yml
 
   tasks:
     - name: Make sure we have a 'wheel' group
