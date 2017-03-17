@@ -13,7 +13,6 @@ from distutils.util import strtobool
 vars_file = 'vars/conf.yml'
 
 # cloudflare settings
-cloudflare_zone_identifier = '10eb4a11ab885340bd57de0c72a4ee55'
 cloudflare_url = 'https://api.cloudflare.com/client/v4'
 
 # payment_term should always be 1, artifact of bad linode-python code
@@ -23,6 +22,7 @@ payment_term = 1
 api_key = os.environ['LINODE_API_KEY']
 cloudflare_api_key = os.environ['CF_KEY']
 cloudflare_email = os.environ['CF_EMAIL']
+cloudflare_zone_identifier = os.environ['CF_ZONE_IDENTIFIER']
 
 with open(vars_file, 'r') as f:
     doc = yaml.load(f)
@@ -96,7 +96,7 @@ def main():
     if args.action[0] == 'delete':
         # slice off the first argument since its the command itself
         delete(args.action[1:])
-    if args.action[0] == 'forcedelete':
+    elif args.action[0] == 'forcedelete':
         # slice off the first argument since its the command itself
         delete(args.action[1:], force=True)
     elif args.action[0] == 'listnodes':

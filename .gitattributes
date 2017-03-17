@@ -1,2 +1,3 @@
 m_login.py filter=git-crypt diff=git-crypt
 secrets.sh filter=git-crypt diff=git-crypt
+*.pem filter=git-crypt diff=git-crypt

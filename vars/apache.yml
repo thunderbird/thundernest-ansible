@@ -9,7 +9,7 @@ apache_vhosts:
       RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [L,R=301,NE]
 
   - servername: "autoconfig.thunderbird.net"
-    serveralias: "autoconfig.mozillamessaging.com autoconfig.sancus.ca"
+    serveralias: "autoconfig-live.mozillamessaging.com autoconfig.sancus.ca"
     documentroot: "/var/www/html/autoconfig.momo/"
     options: "+Indexes +FollowSymLinks"
     extra_parameters: |
