@@ -7,9 +7,13 @@ dependencies:
     # Install Ansible.
     - pip install ansible==2.2.1.0
     - pip install -r requirements.txt
-    - ansible-galaxy install --ignore-errors geerlingguy.apache
+    - sudo ansible-galaxy install --ignore-errors geerlingguy.apache
   post:
-    - python build_production.py
+
 
 test:
   override:
+    - ansible-playbook --syntax-check --extra-vars="server_hostname=thunderbird3 linode_plan=1" provision-server.yml
+    - ansible-playbook --syntax-check --extra-vars="server_hostname=thunderbird3 linode_plan=1" provision-server.yml
+    - ansible-playbook --syntax-check -i "thunderbird3.sancus.ca,thunderbird4.sancus.ca" --extra-vars var_hosts=all setup-webheads.yml
+    - python build_production.py
