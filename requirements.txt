@@ -1,3 +1,4 @@
 requests
+pycurl
 pyyaml
 linode-python

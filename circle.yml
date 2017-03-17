@@ -3,9 +3,10 @@ machine:
     version: 2.7.5
 dependencies:
   pre:
-    - sudo apt-get install python-pip python-dev git
+    - sudo apt-get install python-pip python-dev git curl
     # Install Ansible.
     - pip install ansible==2.2.1.0
+    - pip install -r requirements.txt
   post:
     - python build_production.py
 
