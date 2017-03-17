@@ -1,6 +1,6 @@
 machine:
   python:
-    version: 2.7.5
+    version: 2.7.9
 dependencies:
   pre:
     - sudo apt-get install python-pip python-dev git curl
