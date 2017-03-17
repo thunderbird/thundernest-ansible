@@ -5,7 +5,7 @@ dependencies:
   pre:
     - sudo apt-get install python-pip python-dev git
     # Install Ansible.
-    - pip install ansible==1.9.0.1
+    - pip install ansible==2.2.1.0
   post:
     - python build_production.py
 
