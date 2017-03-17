@@ -7,6 +7,7 @@ dependencies:
     # Install Ansible.
     - pip install ansible==2.2.1.0
     - pip install -r requirements.txt
+    - ansible-galaxy install --ignore-errors geerlingguy.apache
   post:
     - python build_production.py
 
