@@ -13,7 +13,7 @@ dependencies:
 test:
   override:
     - ansible-playbook --syntax-check --extra-vars="server_hostname=thunderbird3 linode_plan=1" provision-server.yml
-    - ansible-playbook --syntax-check -i "thunderbird3.sancus.ca,thunderbird4.sancus.ca" --extra-vars var_hosts=all setup-webheads.yml
+    - ansible-playbook --syntax-check -i "web3.thunderbird.net,web4.thunderbird.net" --extra-vars var_hosts=all setup-webheads.yml
     - python build_production.py
     - python lino.py listnodes
     - python lino.py forcedelete thunderbird3 thunderbird4

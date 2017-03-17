@@ -5,9 +5,9 @@ import os
 webhead_plan = 1
 
 runcommands = [
-        ['ansible-playbook','--extra-vars', 'server_hostname=thunderbird3 linode_plan={0}'.format(webhead_plan), 'provision-server.yml'],
-        ['ansible-playbook','--extra-vars', 'server_hostname=thunderbird4 linode_plan={0}'.format(webhead_plan), 'provision-server.yml'],
-        ['ansible-playbook','-i', 'thunderbird3.sancus.ca,thunderbird4.sancus.ca',
+        ['ansible-playbook','--extra-vars', 'server_hostname=web3 linode_plan={0}'.format(webhead_plan), 'provision-server.yml'],
+        ['ansible-playbook','--extra-vars', 'server_hostname=web4 linode_plan={0}'.format(webhead_plan), 'provision-server.yml'],
+        ['ansible-playbook','-i', 'web3.thunderbird.net,web4.thunderbird.net',
          '--extra-vars', 'var_hosts=all', 'setup-webheads.yml'],
 
 ]

@@ -3,7 +3,7 @@ mxdest: /var/www/services/mx
 services_virtualenv: /var/www/tbservices
 live_doc_root: /var/www/html/live.momo/
 autoconfig_trunk: /var/www/autoconfig.momo/trunk/
-server_domain: sancus.ca
+server_domain: thunderbird.net
 linode_swap: 512
 linode_plan: 1
 linode_datacenter: 3
