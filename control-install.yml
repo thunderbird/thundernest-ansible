@@ -72,9 +72,6 @@
     - name: install apache module from ansible-galaxy
       command: ansible-galaxy install --ignore-errors geerlingguy.apache
 
-    - name: install epel module from ansible-galaxy
-      command: ansible-galaxy install --ignore-errors geerlingguy.repo-epel
-
     - name: checkout git-crypt
       git:
         repo: "https://github.com/AGWA/git-crypt.git"

@@ -1,3 +1,2 @@
-- include: epelit.yml
 - include: python-services.yml
 - include: installapache.yml

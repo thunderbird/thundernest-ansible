@@ -4,15 +4,24 @@
   - vars/conf.yml
 
   tasks:
-    - name: install git
+    - name: install epel
       yum:
-        name: git
+        name: epel-release
         state: latest
 
-    - name: install easy_install
+    - name: install packages for git/pip and lxml compilation
       yum:
-        name: python-pip
+        name: "{{ item }}"
         state: latest
+      with_items:
+        - "git"
+        - "python-pip"
+        - "gcc"
+        - "python-devel"
+        - "libxml2"
+        - "libxml2-devel"
+        - "libxslt-devel"
+        - "wget"
 
     - name: checkout broker
       git:
@@ -57,18 +66,6 @@
         requirements: "{{ mxdest }}/requirements.txt"
         virtualenv: "{{ services_virtualenv }}"
         virtualenv_python: python2.7
-
-    - name: install packages for lxml compilation
-      yum:
-        name: "{{ item }}"
-        state: latest
-      with_items:
-        - "gcc"
-        - "python-devel"
-        - "libxml2"
-        - "libxml2-devel"
-        - "libxslt-devel"
-        - "wget"
 
     - name: install lxml 2.2.3
       pip: name=lxml version=2.2.3 state=present virtualenv=/var/www/tbservices

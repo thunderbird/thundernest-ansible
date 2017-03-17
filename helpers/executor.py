@@ -18,9 +18,5 @@ def execute(command, shell=False, env={}):
         proc.stdout.close()
     return_code = proc.wait()
     if return_code:
-        if failures < 2:
-            failures = failures + 1
-            execute(command, shell, env)
-        else:
             raise subprocess.CalledProcessError(return_code, command)
     print '\n'
