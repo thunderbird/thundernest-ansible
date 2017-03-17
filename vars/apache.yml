@@ -41,3 +41,38 @@ apache_vhosts:
       RewriteEngine On
       RewriteCond %{HTTP:X-Forwarded-Proto} ^http$
       RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [L,R=301,NE]
+
+  - servername: "support.thunderbird.net"
+    serveralias: "support.mozillamessaging.com support.sancus.ca"
+    extra_parameters: |
+      RewriteEngine On
+      RewriteCond %{HTTP:X-Forwarded-Proto} ^http$
+      RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [L,R=301,NE]
+      RewriteCond %{REQUEST_URI} ^/kb/ask$
+      RewriteRule (.*) https://support.mozilla.org/en-US/questions/new/thunderbird [L]
+      RewriteCond %{REQUEST_URI} ^/([^/]+)/kb/ask$
+      RewriteRule (.*) https://support.mozilla.org/%1/questions/new/thunderbird [L]
+      RewriteCond %{REQUEST_URI} ^/([^/]+)/kb/category/20$
+      RewriteRule (.*) https://support.mozilla.org/%1/products/thunderbird/how [L]
+      RewriteCond %{REQUEST_URI} ^/kb/category/20$
+      RewriteRule (.*) https://support.mozilla.org/products/thunderbird/how [L]
+      RewriteCond %{REQUEST_URI} ^/kb/filelink-large-attachments$
+      RewriteRule (.*) https://support.mozilla.org/kb/filelink-large-attachments [L]
+      RewriteCond %{REQUEST_URI} ^/[^/]+/kb/.*
+      RewriteRule (.*) https://support.mozilla.org$1 [L]
+      RewriteCond %{REQUEST_URI} ^/kb/(.*)
+      RewriteRule (.*) https://support.mozilla.org/kb/%1 [L]
+      RewriteCond %{REQUEST_URI} ^/([^/]+)/home
+      RewriteRule (.*) https://support.mozilla.org/%1/products/thunderbird [L]
+      RewriteCond %{REQUEST_URI} ^/$
+      RewriteRule (.*) https://support.mozilla.org/products/thunderbird [L]
+
+  - servername: "support.live.mozillamessaging.com"
+    serveralias: "support.live.sancus.ca"
+    extra_parameters: |
+      ExpiresActive On
+      ExpiresDefault "now plus 6 hours"
+      <Location />
+        RewriteEngine On
+        RewriteRule .* http://support.mozillamessaging.com/ [R=302]
+      </Location>
