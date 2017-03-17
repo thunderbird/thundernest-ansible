@@ -5,8 +5,8 @@ dependencies:
   pre:
     - sudo apt-get install python-pip python-dev git curl
     # Install Ansible.
-    - pip install ansible==2.2.1.0
-    - pip install -r requirements.txt
+    - sudo pip install ansible==2.2.1.0
+    - sudo pip install -r requirements.txt
     - sudo ansible-galaxy install --ignore-errors geerlingguy.apache
   post:
 
