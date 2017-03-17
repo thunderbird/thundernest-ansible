@@ -1,4 +1,0 @@
-- name: install epel repo
-  hosts: "{{ var_hosts | default('webheads') }}"
-  roles:
-    - geerlingguy.repo-epel
