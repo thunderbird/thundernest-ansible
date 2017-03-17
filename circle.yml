@@ -1,0 +1,13 @@
+machine:
+  python:
+    version: 2.7.5
+dependencies:
+  pre:
+    - sudo apt-get install python-pip python-dev git
+    # Install Ansible.
+    - pip install ansible==1.9.0.1
+  post:
+    - python build_production.py
+
+test:
+  override:
