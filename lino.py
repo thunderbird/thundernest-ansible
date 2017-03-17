@@ -96,6 +96,9 @@ def main():
     if args.action[0] == 'delete':
         # slice off the first argument since its the command itself
         delete(args.action[1:])
+    if args.action[0] == 'forcedelete':
+        # slice off the first argument since its the command itself
+        delete(args.action[1:], force=True)
     elif args.action[0] == 'listnodes':
         listnodes()
     elif args.action[0] == 'nodecreate':
@@ -228,7 +231,7 @@ def listnodes():
         print '{0}: {1}'.format(key, value)
 
 
-def delete(labels):
+def delete(labels, force=False):
     vpsids = {}
     todelete = {}  # dict label:linodeid of the nodes to be deleted
 
@@ -240,7 +243,7 @@ def delete(labels):
                 todelete[label] = value
     if todelete:
         print todelete
-        if prompt('Are you sure you want to delete the above instances?'):
+        if force or prompt('Are you sure you want to delete the above instances?'):
             for key, value in todelete.iteritems():
                 r = api.linode_delete(LINODEID=value, skipChecks=1)
                 if r:
