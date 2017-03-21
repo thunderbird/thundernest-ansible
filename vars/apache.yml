@@ -15,7 +15,7 @@ apache_global_vhost_settings: |
 apache_remove_default_vhost: true
 apache_vhosts:
   - servername: "live.thunderbird.net"
-    serveralias: "live.mozillamessaging.com live.sancus.ca"
+    serveralias: "live.mozillamessaging.com live-stage.thunderbird.net"
     documentroot: "/var/www/html/live.momo/htaccess/"
     extra_parameters: |
       RewriteEngine On
@@ -23,7 +23,7 @@ apache_vhosts:
       RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [L,R=301,NE]
 
   - servername: "autoconfig.thunderbird.net"
-    serveralias: "autoconfig-live.mozillamessaging.com autoconfig.sancus.ca"
+    serveralias: "autoconfig-live.mozillamessaging.com autoconfig-stage.thunderbird.net"
     documentroot: "/var/www/html/autoconfig.momo/"
     options: "+Indexes +FollowSymLinks"
     extra_parameters: |
@@ -35,7 +35,7 @@ apache_vhosts:
       RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [L,R=301,NE]
 
   - servername: "broker.thunderbird.net"
-    serveralias: "broker-live.mozillamessaging.com broker.sancus.ca"
+    serveralias: "broker-live.mozillamessaging.com broker-stage.thunderbird.net"
     documentroot: "/var/www/services/broker"
     extra_parameters: |
       WSGIDaemonProcess broker.thunderbird.net processes=2 threads=15 display-name=%{GROUP} python-home=/var/www/tbservices
@@ -46,7 +46,7 @@ apache_vhosts:
       RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [L,R=301,NE]
 
   - servername: "mx.thunderbird.net"
-    serveralias: "mx-live.mozillamessaging.com mx.sancus.ca"
+    serveralias: "mx-live.mozillamessaging.com mx-stage.thunderbird.net"
     documentroot: "/var/www/services/mx"
     extra_parameters: |
       WSGIDaemonProcess mx.thunderbird.net processes=2 threads=15 display-name=%{GROUP} python-home=/var/www/tbservices
@@ -57,7 +57,7 @@ apache_vhosts:
       RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [L,R=301,NE]
 
   - servername: "support.thunderbird.net"
-    serveralias: "support.mozillamessaging.com support.sancus.ca"
+    serveralias: "support.mozillamessaging.com support-stage.thunderbird.net"
     extra_parameters: |
       RewriteEngine On
       RewriteCond %{HTTP:X-Forwarded-Proto} ^http$
@@ -82,7 +82,7 @@ apache_vhosts:
       RewriteRule (.*) https://support.mozilla.org/products/thunderbird [L]
 
   - servername: "support.live.mozillamessaging.com"
-    serveralias: "support.live.sancus.ca"
+    serveralias: "support-stage.live.thunderbird.net"
     extra_parameters: |
       ExpiresActive On
       ExpiresDefault "now plus 6 hours"

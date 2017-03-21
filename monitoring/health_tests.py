@@ -1,5 +1,5 @@
 
-domain = 'sancus.ca'
+domain = 'thunderbird.net'
 tests = [
     {
         'display_name': 'http-mx service',
