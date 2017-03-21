@@ -1,1 +1,1 @@
-thunderbird.net www.thunderbird.net live.thunderbird.net test.thunderbird.net mx.thunderbird.net broker-live.thunderbird.net autoconfig.thunderbird.net
+thunderbird.net www.thunderbird.net live.thunderbird.net live.mozillamessaging.com autoconfig.thunderbird.net autoconfig-live.mozillamessaging.com broker.thunderbird.net broker-live.mozillamessaging.com mx.thunderbird.net mx-live.mozillamessaging.com support.thunderbird.net support.mozillamessaging.com support.live.mozillamessaging.com
