@@ -27,11 +27,13 @@
       git:
         repo: "https://{{ lookup('env', 'GIT_USER') | urlencode }}:{{ lookup('env', 'GIT_API_KEY') }}@github.com/mozilla/broker.git"
         dest: "{{ brokerdest }}"
+        version: "{{ branch | default('master') }}"
 
     - name: checkout the mx service
       git:
         repo: "https://github.com/thundernest/http-mx.git"
         dest: "{{ mxdest }}"
+        version: "{{ branch | default('master') }}"
 
     - name: delete live directory
       file:
@@ -45,11 +47,13 @@
       git:
         repo: "https://github.com/thundernest/live-redirects.git"
         dest: "{{ live_doc_root }}"
+        version: "{{ branch | default('master') }}"
 
     - name: checkout autoconfig
       git:
         repo: "https://github.com/thundernest/autoconfig.git"
         dest: "{{ autoconfig_trunk }}"
+        version: "{{ branch | default('master') }}"
 
     - name: install virtualenv
       pip:

@@ -39,7 +39,9 @@ if action == 'stage':
 	        ['ansible-playbook','--extra-vars', 'server_hostname={0} linode_plan={1}'.format(webhead_names[0], webhead_plan), 'provision-server.yml'],
 	        ['ansible-playbook','--extra-vars', 'server_hostname={0} linode_plan={1}'.format(webhead_names[1], webhead_plan), 'provision-server.yml'],
 	        ['ansible-playbook','-i', '{0}.thunderbird.net,{1}.thunderbird.net'.format(webhead_names[0], webhead_names[1]),
-	         '--extra-vars', 'var_hosts=all', 'setup-webheads.yml'],
+	         '--extra-vars', 'var_hosts=all branch=stage', 'python-services.yml'],
+	        ['ansible-playbook','-i', '{0}.thunderbird.net,{1}.thunderbird.net'.format(webhead_names[0], webhead_names[1]),
+	         '--extra-vars', 'var_hosts=all', 'installapache.yml'],
 		]
 
 
