@@ -1,3 +1,17 @@
+apache_global_vhost_settings: |
+  DirectoryIndex index.php index.html
+  Alias /.well-known/acme-challenge /var/www/dehydrated
+
+  <Directory /var/www/dehydrated>
+          Options None
+          AllowOverride None
+
+          # Apache 2.4
+          <IfModule mod_authz_core.c>
+                  Require all granted
+          </IfModule>
+  </Directory>
+
 apache_remove_default_vhost: true
 apache_vhosts:
   - servername: "live.thunderbird.net"
