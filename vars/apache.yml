@@ -18,6 +18,8 @@ apache_vhosts:
     serveralias: "live.mozillamessaging.com live-stage.thunderbird.net"
     documentroot: "/var/www/html/live.momo/htaccess/"
     extra_parameters: |
+      ExpiresActive On
+      ExpiresDefault "access plus 6 hours"    
       RewriteEngine On
       RewriteCond %{HTTP:X-Forwarded-Proto} ^http$
       RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [L,R=301,NE]
@@ -89,4 +91,14 @@ apache_vhosts:
       <Location />
         RewriteEngine On
         RewriteRule .* http://support.mozillamessaging.com/ [R=302]
+      </Location>
+
+  - servername: "www.thunderbird.net"
+    serveralias: "thunderbird.net"
+    extra_parameters: |
+      ExpiresActive On
+      ExpiresDefault "now plus 6 hours"
+      <Location />
+        RewriteEngine On
+        RewriteRule .* https://www.mozilla.org/thunderbird [R=302]
       </Location>

@@ -2,19 +2,19 @@ import requests
 ignore_headers = set(['x-cache-info', 'connection', 'server', 'x-powered-by', 'x-backend-server'])
 
 live = {'moz': 'live.mozillamessaging.com',
-		'tb': 'live.sancus.ca'
+		'tb': 'live.thunderbird.net'
 }
 
 broker = {'moz': 'broker.thunderbird.net',
-		'tb': 'broker-live.sancus.ca'
+		'tb': 'broker-live.mozillamessaging.com'
 }
 
 mx = {'moz': 'mx.thunderbird.net',
-		'tb': 'mx.sancus.ca'
+		'tb': 'mx-live.mozillamessaging.com'
 }
 
 autoconfig = {'moz': 'autoconfig.thunderbird.net',
-		'tb': 'autoconfig.sancus.ca'
+		'tb': 'autoconfig-live.mozillamessaging.com'
 }
 
 
