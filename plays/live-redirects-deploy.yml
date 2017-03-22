@@ -1,0 +1,16 @@
+- name: Configure python virtualenv and install services
+  hosts: "{{ var_hosts | default('webheads') }}"
+  vars_files:
+  - ../vars/conf.yml
+
+  tasks:
+    - name: delete live directory
+      file:
+        path: "{{ live_doc_root }}"
+        state: absent
+
+    - name: checkout the live redirects
+      git:
+        repo: "https://github.com/thundernest/live-redirects.git"
+        dest: "{{ live_doc_root }}"
+        version: "{{ branch | default('prod') }}"

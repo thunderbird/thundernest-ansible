@@ -1,0 +1,37 @@
+- name: Configure python virtualenv and install services
+  hosts: "{{ var_hosts | default('webheads') }}"
+  vars_files:
+  - ../vars/conf.yml
+
+  tasks:
+    - name: install epel
+      yum:
+        name: epel-release
+        state: latest
+
+    - name: install packages for git/pip and lxml compilation
+      yum:
+        name: "{{ item }}"
+        state: latest
+      with_items:
+        - "git"
+        - "python-pip"
+        - "gcc"
+        - "python-devel"
+        - "libxml2"
+        - "libxml2-devel"
+        - "libxslt-devel"
+        - "wget"
+    
+    - name: install virtualenv
+      pip:
+        name: virtualenv
+
+    - name: install webob lib
+      pip:
+        name: webob
+        virtualenv: "{{ services_virtualenv }}"
+        virtualenv_python: python2.7
+
+    - name: install lxml 2.2.3
+      pip: name=lxml version=2.2.3 state=present virtualenv="{{ services_virtualenv }}"

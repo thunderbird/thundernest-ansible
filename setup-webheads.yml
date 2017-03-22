@@ -1,2 +1,6 @@
-- include: python-services.yml
-- include: installapache.yml
+- include: plays/python-install.yml
+- include: plays/live-redirects-deploy.yml
+- include: plays/broker-deploy.yml
+- include: plays/autoconfig-deploy.yml
+- include: plays/http-mx-deploy.yml
+- include: setup-apache.yml

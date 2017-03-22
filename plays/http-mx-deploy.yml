@@ -1,0 +1,17 @@
+- name: Configure python virtualenv and install services
+  hosts: "{{ var_hosts | default('webheads') }}"
+  vars_files:
+  - ../vars/conf.yml
+
+  tasks:
+    - name: checkout the mx service
+      git:
+        repo: "https://github.com/thundernest/http-mx.git"
+        dest: "{{ mxdest }}"
+        version: "{{ branch | default('prod') }}"
+
+    - name: install mx requirements
+      pip:
+        requirements: "{{ mxdest }}/requirements.txt"
+        virtualenv: "{{ services_virtualenv }}"
+        virtualenv_python: python2.7

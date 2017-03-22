@@ -1,0 +1,32 @@
+- name: Configure python virtualenv and install services
+  hosts: "{{ var_hosts | default('webheads') }}"
+  vars_files:
+  - ../vars/conf.yml
+
+  tasks:
+    - name: delete live directory
+      file:
+        path: "{{ autoconfig_trunk }}"
+        state: absent
+
+    - name: checkout autoconfig
+      git:
+        repo: "https://github.com/thundernest/autoconfig.git"
+        dest: "{{ autoconfig_trunk }}"
+        version: "{{ branch | default('prod') }}"
+
+    - name: copy autoconfig shell file
+      copy:
+        src: ../files/update.sh
+        dest: /var/www/autoconfig.momo
+        mode: 0744
+
+    - name: run autoconfig shell file
+      command: "/var/www/autoconfig.momo/update.sh"
+
+    - name: set up autoconfig cron
+      cron:
+        name: "run autoconfig convert"
+        minute: "30"
+        user: "root"
+        job: "/var/www/autoconfig.momo/update.sh"

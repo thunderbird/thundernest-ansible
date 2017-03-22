@@ -1,0 +1,11 @@
+- name: Install broker
+  hosts: "{{ var_hosts | default('webheads') }}"
+  vars_files:
+  - ../vars/conf.yml
+
+  tasks:
+  - name: checkout broker
+    git:
+      repo: "https://{{ lookup('env', 'GIT_USER') | urlencode }}:{{ lookup('env', 'GIT_API_KEY') }}@github.com/mozilla/broker.git"
+      dest: "{{ brokerdest }}"
+      version: "{{ branch | default('prod') }}"
