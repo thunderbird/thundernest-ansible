@@ -1,0 +1,13 @@
+apache_remove_default_vhost: true
+apache_vhosts:
+  - servername: "control.thunderbird.net"
+    documentroot: /var/www/html/
+    extra_parameters: |
+      <Directory "/var/www/deployhook/">
+          Order deny,allow
+          Allow from all
+      </Directory>
+      WSGIDaemonProcess webhook user=ansibler group=ansibler processes=1 display-name=%{GROUP}
+      WSGIProcessGroup webhook
+      WSGIApplicationGroup %{GLOBAL}
+      WSGIScriptAlias /webhooks /var/www/deployhook/webhooks.py

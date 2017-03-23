@@ -94,7 +94,7 @@ apache_vhosts:
       </Location>
 
   - servername: "www.thunderbird.net"
-    serveralias: "thunderbird.net"
+    serveralias: "thunderbird.net www-stage.thunderbird.net stage.thunderbird.net"
     extra_parameters: |
       ExpiresActive On
       ExpiresDefault "now plus 6 hours"

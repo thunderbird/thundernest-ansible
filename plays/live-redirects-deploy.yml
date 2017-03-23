@@ -6,7 +6,7 @@
   tasks:
     - name: delete live directory
       file:
-        path: "{{ live_doc_root }}"
+        path: "{{ live_doc_root }}htaccess"
         state: absent
 
     - name: checkout the live redirects
@@ -14,3 +14,7 @@
         repo: "https://github.com/thundernest/live-redirects.git"
         dest: "{{ live_doc_root }}"
         version: "{{ branch | default('prod') }}"
+        force: True
+
+    - name: write commit hash to version.txt
+      shell: 'cd "{{ live_doc_root }}htaccess" && git rev-parse HEAD > version.txt'

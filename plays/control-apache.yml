@@ -1,0 +1,30 @@
+- name: Configure firewall and install Apache2
+  hosts: "{{ var_hosts | default('control') }}"
+  vars_files:
+  - ../vars/control-vhosts.yml
+
+  pre_tasks:
+    - name: Make Document Root
+      become: yes
+      file: path="/var/www/deployhook" state=directory
+
+    - name: install mod_wsgi
+      become: yes
+      yum:
+        name: mod_wsgi
+        state: latest
+
+    - name: checkout webhook
+      become: yes
+      git:
+        repo: "https://github.com/thundernest/python-github-webhooks"
+        dest: "/var/www/deployhook"
+        force: True
+
+    - name: install deployhook requirements
+      become: yes
+      pip:
+        requirements: /var/www/deployhook/requirements.txt
+
+  roles:
+    - { role: geerlingguy.apache, become: yes }

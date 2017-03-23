@@ -1,0 +1,88 @@
+- name: control node installation
+  hosts: "{{ var_hosts | default('control') }}"
+  remote_user: ansibler
+  vars:
+    homedir: /home/ansibler
+
+  tasks:
+    - name: install epel
+      become: yes
+      yum:
+        name: epel-release
+        state: latest
+
+    - name: install all packages
+      become: yes
+      yum:
+        name: "{{ item }}"
+        state: latest
+      with_items:
+        - "gcc"
+        - "python-devel"
+        - "python-setuptools"
+        - "wget"
+        - "openssl-devel"
+        - "gcc-c++"
+        - "ansible"
+        - "python-devel"
+        - "python34"
+        - "git"
+        - "curl"
+
+    - name: install pip
+      become: yes
+      easy_install:
+        name: pip
+        state: latest
+
+    - name: install virtualenv
+      become: yes
+      pip:
+        name: virtualenv
+
+    - name: checkout ansible files
+      git:
+        repo: "https://github.com/Sancus/thundernest-ansible.git"
+        dest: "{{ homedir }}/thundernest-ansible"
+
+    - name: install thundernest-ansible requirements
+      become: yes
+      pip:
+        requirements: "{{ homedir }}/thundernest-ansible/requirements.txt"
+
+    - name: checkout dehydrated
+      git:
+        repo: "https://github.com/lukas2511/dehydrated.git"
+        dest: "{{ homedir }}/dehydrated"
+
+    - name: Make hooks dir
+      file: path="{{ homedir }}/dehydrated/hooks" state=directory
+
+    - name: checkout the cloudflare dehydrated hook
+      git:
+        repo: "https://github.com/kappataumu/letsencrypt-cloudflare-hook"
+        dest: "{{ homedir }}/dehydrated/hooks/cloudflare"
+
+    - name: install python3.4 virtualenv for cloudflare hook
+      pip:
+        requirements: "{{ homedir }}/dehydrated/hooks/cloudflare/requirements.txt"
+        virtualenv: "{{ homedir }}/letsencrypt"
+        virtualenv_python: python3.4
+
+    - name: install apache module from ansible-galaxy
+      command: ansible-galaxy install --ignore-errors geerlingguy.apache
+
+    - name: checkout git-crypt
+      git:
+        repo: "https://github.com/AGWA/git-crypt.git"
+        dest: "{{ homedir }}/git-crypt"
+        version: 0.5.0
+
+    - name: build git-crypt
+      become: yes
+      make:
+        chdir: "{{ homedir }}/git-crypt"
+        target: install
+
+    - name: copy domains file to dehydrated
+      command: "cp {{ homedir }}/thundernest-ansible/dehydrated/domains.txt {{ homedir }}/dehydrated"
