@@ -23,10 +23,3 @@
 
     - name: run autoconfig shell file
       command: "/var/www/autoconfig.momo/update.sh"
-
-    - name: set up autoconfig cron
-      cron:
-        name: "run autoconfig convert"
-        minute: "30"
-        user: "root"
-        job: "/var/www/autoconfig.momo/update.sh"
