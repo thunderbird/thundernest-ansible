@@ -1,17 +1,3 @@
-apache_global_vhost_settings: |
-  DirectoryIndex index.php index.html
-  Alias /.well-known/acme-challenge /var/www/dehydrated
-
-  <Directory /var/www/dehydrated>
-          Options None
-          AllowOverride None
-
-          # Apache 2.4
-          <IfModule mod_authz_core.c>
-                  Require all granted
-          </IfModule>
-  </Directory>
-
 apache_remove_default_vhost: true
 apache_vhosts:
   - servername: "live.thunderbird.net"
@@ -94,7 +80,7 @@ apache_vhosts:
       </Location>
 
   - servername: "www.thunderbird.net"
-    serveralias: "thunderbird.net www-stage.thunderbird.net stage.thunderbird.net"
+    serveralias: "mozillamessaging.com www.mozillamessaging.com thunderbird.net www-stage.thunderbird.net stage.thunderbird.net getthunderbird.com www.getthunderbird.com"
     extra_parameters: |
       ExpiresActive On
       ExpiresDefault "now plus 6 hours"

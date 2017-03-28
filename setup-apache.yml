@@ -8,9 +8,6 @@
     - name: Make Document Root
       file: path="{{ live_doc_root }}" state=directory
 
-    - name: Doc root for lets encrypt
-      file: path="{{ lets_encrypt_docroot }}" state=directory
-
     - name: install mod_wsgi
       yum:
         name: mod_wsgi
