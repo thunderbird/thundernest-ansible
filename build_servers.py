@@ -34,7 +34,7 @@ if action == 'production':
 
 if action == 'stage':
 	webhead_plan = 1
-	webhead_names = ['webstage1, webstage2']
+	webhead_names = ['webstage1', 'webstage2']
 	runcommands = [
 	        ['ansible-playbook','--extra-vars', 'server_hostname={0} linode_plan={1}'.format(webhead_names[0], webhead_plan), 'provision-server.yml'],
 	        ['ansible-playbook','--extra-vars', 'server_hostname={0} linode_plan={1}'.format(webhead_names[1], webhead_plan), 'provision-server.yml'],
