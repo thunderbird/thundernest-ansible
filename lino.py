@@ -56,7 +56,7 @@ def nodebalancer_config(balancerid, **kwargs):
     port = kwargs.get('port', 80)
     protocol = kwargs.get('protocol', 'http')
     algorithm = kwargs.get('algorithm', 'roundrobin')
-    check = kwargs.get('check', 'http')
+    check = kwargs.get('check', 'connection')
     check_path = kwargs.get('check_path', '/version.txt')
     stickiness = kwargs.get('stickiness', 'table')
 
@@ -173,7 +173,7 @@ def nodebalancercreate(labels):
     vpsids = {}
     toadd = {}
     webheads = {}
-    configs = []
+    configs = {}
 
     for vps in api.linode_list():
         vpsids[vps['LABEL']] = vps['LINODEID']
@@ -187,25 +187,27 @@ def nodebalancercreate(labels):
     r = api.nodebalancer_create(DatacenterID=datacenter, PaymentTerm=payment_term)
 
     if r['NodeBalancerID']:
-        a = api.nodebalancer_config_create(**nodebalancer_config(r['NodeBalancerID']))
+        port = 80
+        a = api.nodebalancer_config_create(**nodebalancer_config(r['NodeBalancerID'], protocol='tcp'))
     else:
         sys.exit('No node balancer id after creation attempt, something failed majorly.')
 
     if a['ConfigID']:
-        configs.append(a['ConfigID'])
+        configs[a['ConfigID']] = port
     else:
         sys.exit('Failed trying to create HTTP config for node balancer.')
 
-    a = api.nodebalancer_config_create(**nodebalancer_config(r['NodeBalancerID'], protocol='https'))
+    port = 443
+    a = api.nodebalancer_config_create(**nodebalancer_config(r['NodeBalancerID'], protocol='tcp', port=port))
     if a['ConfigID']:
-        configs.append(a['ConfigID'])
+        configs[a['ConfigID']] = port
     else:
         sys.exit('Failed trying to create HTTPS (SSL) config for node balancer.')
 
     # Add the nodes to the load balancer
     for l, ip in webheads.iteritems():
-        for cid in configs:
-            a = api.nodebalancer_node_create(ConfigID=cid, Label=l, Address='{0}:80'.format(ip))
+        for cid, port in configs.iteritems():
+            a = api.nodebalancer_node_create(ConfigID=cid, Label=l, Address='{0}:{1}'.format(ip, port))
             if not a['NodeID']:
                 sys.exit('Failed trying to add a node to the load balancer ID: {0}'.format(cid))
 

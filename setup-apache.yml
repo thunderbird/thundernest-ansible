@@ -8,6 +8,19 @@
     - name: Make Document Root
       file: path="{{ live_doc_root }}" state=directory
 
+    - name: Make httpd dir
+      file: path="/etc/httpd/conf/" state=directory
+
+    - name: copy ssl certs
+      copy:
+        src: "{{ item }}"
+        dest: /etc/httpd/conf
+        mode: 0600
+      with_items:
+        - "files/privkey.pem"
+        - "files/chain.pem"
+        - "files/cert.pem"
+
     - name: install mod_wsgi
       yum:
         name: mod_wsgi

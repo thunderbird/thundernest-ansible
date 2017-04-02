@@ -1,4 +1,26 @@
 apache_remove_default_vhost: true
+apache_vhosts_filename: "ssl.conf"
+apache_global_vhost_settings: |
+      LoadModule ssl_module modules/mod_ssl.so
+      Listen 443
+      SSLPassPhraseDialog  builtin
+      SSLSessionCache         shmcb:/var/cache/mod_ssl/scache(512000)
+      SSLSessionCacheTimeout  300
+      Mutex default
+      SSLRandomSeed startup file:/dev/urandom  256
+      SSLRandomSeed connect builtin
+      SSLCryptoDevice builtin
+apache_vhosts_template: "vars/vhost_template.j2"
+apache_certificate_key_file: "/etc/httpd/conf/privkey.pem"
+apache_certificate_file: "/etc/httpd/conf/cert.pem"
+apache_certificate_chain_file: "/etc/httpd/conf/chain.pem"
+non_ssl_parameters: |
+      ExpiresActive On
+      ExpiresDefault "access plus 6 hours"    
+      RewriteEngine On
+      RewriteCond %{HTTPS} off
+      RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [L,R=301,NE]
+
 apache_vhosts:
   - servername: "live.thunderbird.net"
     serveralias: "live.mozillamessaging.com live-stage.thunderbird.net"
@@ -6,9 +28,6 @@ apache_vhosts:
     extra_parameters: |
       ExpiresActive On
       ExpiresDefault "access plus 6 hours"    
-      RewriteEngine On
-      RewriteCond %{HTTP:X-Forwarded-Proto} ^http$
-      RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [L,R=301,NE]
 
   - servername: "autoconfig.thunderbird.net"
     serveralias: "autoconfig-live.mozillamessaging.com autoconfig-stage.thunderbird.net"
@@ -18,9 +37,6 @@ apache_vhosts:
       ForceType text/xml
       ExpiresActive On
       ExpiresDefault "access plus 1 hour"
-      RewriteEngine On
-      RewriteCond %{HTTP:X-Forwarded-Proto} ^http$
-      RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [L,R=301,NE]
 
   - servername: "broker.thunderbird.net"
     serveralias: "broker-live.mozillamessaging.com broker-stage.thunderbird.net"
@@ -29,9 +45,6 @@ apache_vhosts:
       WSGIDaemonProcess broker.thunderbird.net processes=2 threads=15 display-name=%{GROUP} python-home=/var/www/tbservices
       WSGIProcessGroup broker.thunderbird.net
       WSGIScriptAlias /provider /var/www/services/broker/broker.wsgi
-      RewriteEngine On
-      RewriteCond %{HTTP:X-Forwarded-Proto} ^http$
-      RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [L,R=301,NE]
 
   - servername: "mx.thunderbird.net"
     serveralias: "mx-live.mozillamessaging.com mx-stage.thunderbird.net"
@@ -40,9 +53,6 @@ apache_vhosts:
       WSGIDaemonProcess mx.thunderbird.net processes=2 threads=15 display-name=%{GROUP} python-home=/var/www/tbservices
       WSGIProcessGroup mx.thunderbird.net
       WSGIScriptAlias /dns/mx /var/www/services/mx/wsgi.py
-      RewriteEngine On
-      RewriteCond %{HTTP:X-Forwarded-Proto} ^http$
-      RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [L,R=301,NE]
 
   - servername: "support.thunderbird.net"
     serveralias: "support.mozillamessaging.com support-stage.thunderbird.net"
