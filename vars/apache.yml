@@ -37,6 +37,8 @@ apache_vhosts:
       ForceType text/xml
       ExpiresActive On
       ExpiresDefault "access plus 1 hour"
+      ErrorLog "|/usr/sbin/rotatelogs /var/log/httpd/autoconfig/error_log_%Y-%m-%d 604800 -480"
+      CustomLog "|/usr/sbin/rotatelogs /var/log/httpd/autoconfig/access_%Y-%m-%d 604800 -480" combined
 
   - servername: "broker.thunderbird.net"
     serveralias: "broker-live.mozillamessaging.com broker-stage.thunderbird.net"

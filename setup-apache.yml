@@ -11,6 +11,9 @@
     - name: Make httpd dir
       file: path="/etc/httpd/conf/" state=directory
 
+    - name: Make autoconfig log dir
+      file: path="/var/log/httpd/autoconfig" state=directory
+
     - name: copy ssl certs
       copy:
         src: "{{ item }}"
