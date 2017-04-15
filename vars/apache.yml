@@ -37,6 +37,8 @@ apache_vhosts:
       ForceType text/xml
       ExpiresActive On
       ExpiresDefault "access plus 1 hour"
+      RewriteEngine On
+      RewriteRule ^/autoconfig/(.*)$ /$1 [L,R=301,NE]
       ErrorLog "|/usr/sbin/rotatelogs /var/log/httpd/autoconfig/error_log_%Y-%m-%d 604800 -480"
       CustomLog "|/usr/sbin/rotatelogs /var/log/httpd/autoconfig/access_%Y-%m-%d 604800 -480" combined
 
