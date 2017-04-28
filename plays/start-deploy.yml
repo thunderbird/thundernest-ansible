@@ -1,0 +1,20 @@
+- name: Configure python virtualenv and install services
+  hosts: "{{ var_hosts | default('webheads') }}"
+  vars_files:
+  - ../vars/conf.yml
+
+  tasks:
+    - name: delete start page files
+      file:
+        path: "{{ start_page_files }}"
+        state: absent
+
+    - name: checkout thunderbird-website to get the start page files
+      git:
+        repo: "https://github.com/thundernest/thunderbird-website.git"
+        dest: "{{ start_page_files }}"
+        version: "{{ branch | default('prod') }}"
+        force: True
+
+    - name: write the commit hash to version.txt
+      shell: 'cd "{{ start_page_files }}" && git rev-parse HEAD > site/version.txt'
