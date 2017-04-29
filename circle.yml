@@ -12,7 +12,6 @@ dependencies:
     - cd git-crypt; sudo make install; cd ..
     - base64 -d <<< $GIT_CRYPT_KEY > thundernest-ansible.key
     - git-crypt unlock thundernest-ansible.key\
-    - source files/secrets.sh
   post:
 
 test:
