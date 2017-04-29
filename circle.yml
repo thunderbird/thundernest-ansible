@@ -10,7 +10,7 @@ dependencies:
     - ansible-galaxy install --ignore-errors geerlingguy.apache
     - git clone https://github.com/AGWA/git-crypt.git
     - cd git-crypt; sudo make install; cd ..
-    - base64 -d $GIT_CRYPT_KEY > thundernest-ansible.key
+    - base64 -d <<< $GIT_CRYPT_KEY > thundernest-ansible.key
     - git-crypt unlock thundernest-ansible.key
   post:
 
