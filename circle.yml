@@ -3,11 +3,15 @@ machine:
     version: 2.7.9
 dependencies:
   pre:
-    - sudo apt-get install python-pip python-dev git curl
+    - sudo apt-get install git-crypt python-pip python-dev git curl
     # Install Ansible.
     - pip install ansible==2.2.1.0
     - pip install -r requirements.txt
     - ansible-galaxy install --ignore-errors geerlingguy.apache
+    - git clone https://github.com/AGWA/git-crypt.git
+    - cd git-crypt; sudo make install; cd ..
+    - base64 -d $GIT_CRYPT_KEY > thundernest-ansible.key
+    - git-crypt unlock thundernest-ansible.key
   post:
 
 test:
