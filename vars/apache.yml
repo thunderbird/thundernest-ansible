@@ -109,6 +109,8 @@ apache_vhosts:
     extra_parameters: |
       ExpiresActive On
       ExpiresDefault "access plus 8 hours"
+      RewriteEngine On
+      RewriteRule ^/$ /en-US/release/ [R=302]
 
   - servername: "mail.thunderbird.net"
     extra_parameters: |

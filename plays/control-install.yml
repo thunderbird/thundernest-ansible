@@ -42,7 +42,7 @@
 
     - name: checkout ansible files
       git:
-        repo: "https://github.com/Sancus/thundernest-ansible.git"
+        repo: "https://github.com/thundernest/thundernest-ansible.git"
         dest: "{{ homedir }}/thundernest-ansible"
 
     - name: install thundernest-ansible requirements
@@ -86,3 +86,13 @@
 
     - name: copy domains file to dehydrated
       command: "cp {{ homedir }}/thundernest-ansible/dehydrated/domains.txt {{ homedir }}/dehydrated"
+
+    - name: checkout tb website
+      git:
+        repo: "https://github.com/thundernest/thunderbird-website.git"
+        dest: "{{ homedir }}/thunderbird-website"
+
+    - name: install website requirements
+      become: yes
+      pip:
+        requirements: "{{ homedir }}/thunderbird-website/requirements.txt"
