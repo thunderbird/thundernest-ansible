@@ -1,3 +1,0 @@
-#!/bin/bash
-
-su - ansibler -c "cd ~/thundernest-ansible && ansible-playbook plays/live-redirects-deploy.yml"
