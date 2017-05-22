@@ -94,7 +94,7 @@ apache_vhosts:
       </Location>
 
   - servername: "www.thunderbird.net"
-    serveralias: "mozillamessaging.com www.mozillamessaging.com thunderbird.net www-stage.thunderbird.net stage.thunderbird.net getthunderbird.com www.getthunderbird.com"
+    serveralias: "mozillamessaging.com www.mozillamessaging.com thunderbird.net getthunderbird.com www.getthunderbird.com"
     extra_parameters: |
       ExpiresActive On
       ExpiresDefault "now plus 6 hours"
@@ -102,6 +102,13 @@ apache_vhosts:
         RewriteEngine On
         RewriteRule .* https://www.mozilla.org/thunderbird [R=302]
       </Location>
+
+  - servername: "www-stage.thunderbird.net"
+    serveralias: "stage.thunderbird.net"
+    documentroot: "/var/www/html/start/thunderbird.net"
+    extra_parameters: |
+      RewriteEngine On
+      RewriteRule ^/$ /en-US/ [R=302]
 
   - servername: "start.thunderbird.net"
     serveralias: "start-stage.thunderbird.net"
