@@ -28,6 +28,14 @@
         - "python34"
         - "git"
         - "curl"
+        - "yum-cron"
+        - "npm"
+
+    - name: Install less globally.
+      npm:
+        name: less
+        global: yes
+        version: 2.7.1
 
     - name: install pip
       become: yes

@@ -107,8 +107,13 @@ apache_vhosts:
     serveralias: "stage.thunderbird.net"
     documentroot: "/var/www/html/start/thunderbird.net"
     extra_parameters: |
-      RewriteEngine On
-      RewriteRule ^/$ /en-US/ [R=302]
+      WSGIDaemonProcess stage.thunderbird.net processes=2 threads=15 display-name=%{GROUP} python-home=/var/www/tbservices python-path=/var/www/html/start
+      WSGIProcessGroup stage.thunderbird.net
+      WSGIScriptAliasMatch ^/$ /var/www/html/start/wsgi.py
+      WSGIScriptAliasMatch ^/features[/]?$ /var/www/html/start/wsgi.py
+      WSGIScriptAliasMatch ^/channel[/]?$ /var/www/html/start/wsgi.py
+      WSGIScriptAliasMatch ^/organizations[/]?$ /var/www/html/start/wsgi.py
+      WSGIScriptAliasMatch ^/thunderbird /var/www/html/start/wsgi.py
 
   - servername: "start.thunderbird.net"
     serveralias: "start-stage.thunderbird.net"
