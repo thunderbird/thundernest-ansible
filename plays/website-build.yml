@@ -1,0 +1,64 @@
+- name: Build and deploy website
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars: 
+    tbsite: "/tmp/tbsite"
+    notes: "/thunderbird_notes"
+    locale: "/locale"
+    productdetails: "/product-details-json"
+
+  tasks:
+    - name: checkout thunderbird-website
+      git:
+        repo: "https://github.com/thundernest/thunderbird-website.git"
+        dest: "{{ tbsite }}"
+        version: "{{ branch | default('master') }}"
+
+    - name: checkout Mozilla localization files
+      git:
+        repo: "https://github.com/mozilla-l10n/bedrock-l10n.git"
+        dest: "{{ tbsite }}{{ locale }}"
+        version: "master"
+
+    - name: checkout release notes
+      git:
+        repo: "https://github.com/thundernest/thunderbird-notes.git"
+        dest: "{{ tbsite }}{{ notes }}"
+        version: "{{ branch | default('master') }}"
+
+    - name: checkout product-details
+      git:
+        repo: "https://github.com/mozilla/product-details-json.git"
+        dest: "{{ tbsite }}{{ productdetails }}"
+        version: "master"
+
+    - name: run website build
+      command: python build-site.py
+      args:
+        chdir: "{{ tbsite }}"
+      become: yes
+      become_user: ansibler
+
+    - name: commit website changes
+      command: "{{ item }}"
+      args:
+        chdir: "{{ tbsite }}"
+      become: yes
+      become_user: ansibler
+      with_items:
+        - "git add -A"
+        - "git -c 'user.name=Thundernest Bot' -c 'user.email={{ lookup('env', 'GIT_EMAIL') }}' commit -m 'Automatic website rebuild triggered by release notes update.'"
+
+    - name: push website update
+      command: "git push https://{{ lookup('env', 'GIT_USER') | urlencode }}:{{ lookup('env', 'GIT_API_KEY') }}@github.com/thundernest/thunderbird-website.git --all"
+      args:
+        chdir: "{{ tbsite }}"
+      become: yes
+      become_user: ansibler
+
+    - name: delete temporary site files
+      file:
+        path: "{{ tbsite }}"
+        state: absent

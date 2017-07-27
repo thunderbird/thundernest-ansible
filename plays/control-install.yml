@@ -30,6 +30,7 @@
         - "curl"
         - "yum-cron"
         - "npm"
+        - "oathtool"
 
     - name: Install less globally.
       npm:
