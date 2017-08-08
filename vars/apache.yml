@@ -87,24 +87,24 @@ apache_vhosts:
     serveralias: "support-stage.live.thunderbird.net"
     extra_parameters: |
       ExpiresActive On
-      ExpiresDefault "now plus 6 hours"
+      ExpiresDefault "access plus 6 hours"
       <Location />
         RewriteEngine On
         RewriteRule .* http://support.mozillamessaging.com/ [R=302]
       </Location>
 
-  - servername: "www.thunderbird.net"
-    serveralias: "mozillamessaging.com www.mozillamessaging.com thunderbird.net getthunderbird.com www.getthunderbird.com"
+  - servername: "thunderbird.net"
+    serveralias: "mozillamessaging.com www.mozillamessaging.com getthunderbird.com www.getthunderbird.com"
     extra_parameters: |
       ExpiresActive On
-      ExpiresDefault "now plus 6 hours"
+      ExpiresDefault "access plus 6 hours"
       <Location />
         RewriteEngine On
-        RewriteRule .* https://www.mozilla.org/thunderbird [R=302]
+        RewriteRule .* https://www.thunderbird.net [R=302]
       </Location>
 
-  - servername: "www-stage.thunderbird.net"
-    serveralias: "stage.thunderbird.net"
+  - servername: "www.thunderbird.net"
+    serveralias: "www-stage.thunderbird.net stage.thunderbird.net"
     documentroot: "/var/www/html/start/thunderbird.net"
     extra_parameters: |
       WSGIDaemonProcess stage.thunderbird.net processes=2 threads=15 display-name=%{GROUP} python-home=/var/www/tbservices python-path=/var/www/html/start
@@ -114,6 +114,8 @@ apache_vhosts:
       WSGIScriptAliasMatch ^/channel[/]?$ /var/www/html/start/wsgi.py
       WSGIScriptAliasMatch ^/organizations[/]?$ /var/www/html/start/wsgi.py
       WSGIScriptAliasMatch ^/thunderbird /var/www/html/start/wsgi.py
+      ExpiresActive On
+      ExpiresDefault "access plus 8 hours"
 
   - servername: "start.thunderbird.net"
     serveralias: "start-stage.thunderbird.net"
@@ -127,7 +129,7 @@ apache_vhosts:
   - servername: "mail.thunderbird.net"
     extra_parameters: |
       ExpiresActive On
-      ExpiresDefault "now plus 24 hours"
+      ExpiresDefault "access plus 24 hours"
       <Location />
         RewriteEngine On
         RewriteRule .* https://www.fastmail.com/login/?domain=thunderbird.net [R=302]
