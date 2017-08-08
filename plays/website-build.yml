@@ -10,6 +10,11 @@
     productdetails: "/product-details-json"
 
   tasks:
+    - name: make sure temp dir is empty in case of previous failed build
+      file:
+        path: "{{ tbsite }}"
+        state: absent
+
     - name: checkout thunderbird-website
       git:
         repo: "https://github.com/thundernest/thunderbird-website.git"
