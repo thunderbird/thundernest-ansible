@@ -100,7 +100,7 @@ apache_vhosts:
       ExpiresDefault "access plus 6 hours"
       <Location />
         RewriteEngine On
-        RewriteRule .* https://www.thunderbird.net [R=302]
+        RewriteRule .* https://www.thunderbird.net%{REQUEST_URI} [R=302]
       </Location>
 
   - servername: "www.thunderbird.net"
