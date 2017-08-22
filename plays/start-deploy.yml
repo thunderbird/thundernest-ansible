@@ -4,11 +4,6 @@
   - ../vars/conf.yml
 
   tasks:
-    - name: delete start page files
-      file:
-        path: "{{ start_page_files }}"
-        state: absent
-
     - name: checkout tb-website-builds to get the start page files
       git:
         repo: "https://github.com/thundernest/tb-website-builds.git"
