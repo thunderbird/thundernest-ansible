@@ -33,6 +33,7 @@
         - "oathtool"
 
     - name: Install less globally.
+      become: yes
       npm:
         name: less
         global: yes
@@ -79,6 +80,7 @@
         virtualenv_python: python3.4
 
     - name: install apache module from ansible-galaxy
+      become: yes
       command: ansible-galaxy install --ignore-errors geerlingguy.apache
 
     - name: checkout git-crypt

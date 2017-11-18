@@ -1,5 +1,6 @@
 - name: Configure firewall and install Apache2
   hosts: "{{ var_hosts | default('control') }}"
+  remote_user: ansibler
   vars_files:
   - ../vars/control-vhosts.yml
 
