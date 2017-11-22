@@ -3,6 +3,7 @@ machine:
     version: 2.7.9
 dependencies:
   pre:
+    - sudo apt-get update
     - sudo apt-get install python-pip python-dev git curl
     # Install Ansible.
     - pip install ansible==2.2.1.0
