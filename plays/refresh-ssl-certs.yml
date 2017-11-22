@@ -1,0 +1,27 @@
+- name: Copy SSL certs and restart apache
+  hosts: "{{ var_hosts | default('webheads') }}"
+
+  tasks:
+    - name: Copy SSL certs.
+      copy:
+        src: "{{ item }}"
+        dest: /etc/httpd/conf
+        mode: 0600
+      with_items:
+        - "../files/privkey.pem"
+        - "../files/chain.pem"
+        - "../files/cert.pem"
+
+- name: Rolling restart httpd.
+  hosts: "{{ var_hosts | default('webheads') }}"
+  serial: 1
+
+  tasks:
+    - name: Reload service httpd, in all cases.
+      systemd:
+        name: httpd
+        state: reloaded
+
+    - name: Wait before rebooting next node.
+      pause:
+        seconds: 20
