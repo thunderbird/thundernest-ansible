@@ -116,6 +116,9 @@ apache_vhosts:
       WSGIScriptAliasMatch ^/thunderbird /var/www/html/start/wsgi.py
       ExpiresActive On
       ExpiresDefault "access plus 8 hours"
+      RewriteEngine On
+      RewriteRule ^/calendar/? /en-US/calendar/ [R=302]
+      RewriteRule ^/email-providers/? /en-US/email-providers/ [R=302]
 
   - servername: "start.thunderbird.net"
     serveralias: "start-stage.thunderbird.net"
