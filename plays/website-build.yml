@@ -33,7 +33,7 @@
 
     - name: checkout Mozilla localization files
       git:
-        repo: "https://github.com/mozilla-l10n/bedrock-l10n.git"
+        repo: "https://github.com/thundernest/thunderbird.net-l10n.git"
         dest: "{{ tbsite }}{{ locale }}"
         version: "master"
 
@@ -48,6 +48,13 @@
         repo: "https://github.com/mozilla/product-details-json.git"
         dest: "{{ tbsite }}{{ productdetails }}"
         version: "master"
+
+    - name: compile gettext files
+      command: bash l10n_tools/compile.sh
+      args:
+        chdir: "{{ tbsite }}"
+      become: yes
+      become_user: ansibler
 
     - name: run website build
       command: python build-site.py
@@ -89,7 +96,7 @@
       become_user: ansibler
       with_items:
         - "git add -A"
-        - "git -c 'user.name=Thundernest Bot' -c 'user.email={{ lookup('env', 'GIT_EMAIL') }}' commit -m 'Automatic website rebuild triggered by release notes update.'"
+        - "git -c 'user.name=Thundernest Bot' -c 'user.email={{ lookup('env', 'GIT_EMAIL') }}' commit -m 'Website rebuild triggered by {{ message | default('manual execution of the script.') }}'"
 
     - name: push website update
       command: "git push https://{{ lookup('env', 'GIT_USER') | urlencode }}:{{ lookup('env', 'GIT_API_KEY') }}@github.com/thundernest/tb-website-builds.git --all"
