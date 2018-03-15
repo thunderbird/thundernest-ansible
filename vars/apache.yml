@@ -109,6 +109,7 @@ apache_vhosts:
     extra_parameters: |
       WSGIDaemonProcess stage.thunderbird.net processes=2 threads=15 display-name=%{GROUP} python-home=/var/www/tbservices python-path=/var/www/html/start
       WSGIProcessGroup stage.thunderbird.net
+      RewriteRule ^/thunderbird/system-requirements/? /en-US/thunderbird/52.6.0/system-requirements/ [R=302]
       WSGIScriptAliasMatch ^/$ /var/www/html/start/wsgi.py
       WSGIScriptAliasMatch ^/features[/]?$ /var/www/html/start/wsgi.py
       WSGIScriptAliasMatch ^/channel[/]?$ /var/www/html/start/wsgi.py
