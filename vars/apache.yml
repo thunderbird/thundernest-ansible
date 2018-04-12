@@ -46,6 +46,7 @@ apache_vhosts:
     serveralias: "broker-live.mozillamessaging.com broker-stage.thunderbird.net"
     documentroot: "/var/www/services/broker"
     extra_parameters: |
+      RedirectMatch 404 /\.git
       WSGIDaemonProcess broker.thunderbird.net processes=2 threads=15 display-name=%{GROUP} python-home=/var/www/tbservices
       WSGIProcessGroup broker.thunderbird.net
       WSGIScriptAlias /provider /var/www/services/broker/broker.wsgi

@@ -6,6 +6,6 @@
   tasks:
   - name: checkout broker
     git:
-      repo: "https://{{ lookup('env', 'GIT_USER') | urlencode }}:{{ lookup('env', 'GIT_API_KEY') }}@github.com/mozilla/broker.git"
+      repo: "https://github.com/thundernest/broker.git"
       dest: "{{ brokerdest }}"
       version: "{{ branch | default('prod') }}"
