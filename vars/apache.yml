@@ -108,9 +108,11 @@ apache_vhosts:
     serveralias: "www-stage.thunderbird.net stage.thunderbird.net"
     documentroot: "/var/www/html/start/thunderbird.net"
     extra_parameters: |
+      RewriteEngine On
       WSGIDaemonProcess stage.thunderbird.net processes=2 threads=15 display-name=%{GROUP} python-home=/var/www/tbservices python-path=/var/www/html/start
       WSGIProcessGroup stage.thunderbird.net
       RewriteRule ^/thunderbird/system-requirements/? /en-US/thunderbird/52.6.0/system-requirements/ [R=302]
+      RewriteRule ^/releases/? /thunderbird/releases/ [R=302]
       WSGIScriptAliasMatch ^/$ /var/www/html/start/wsgi.py
       WSGIScriptAliasMatch ^/features[/]?$ /var/www/html/start/wsgi.py
       WSGIScriptAliasMatch ^/channel[/]?$ /var/www/html/start/wsgi.py
@@ -118,9 +120,9 @@ apache_vhosts:
       WSGIScriptAliasMatch ^/thunderbird /var/www/html/start/wsgi.py
       ExpiresActive On
       ExpiresDefault "access plus 8 hours"
-      RewriteEngine On
       RewriteRule ^/calendar/? /en-US/calendar/ [R=302]
       RewriteRule ^/email-providers/? /en-US/email-providers/ [R=302]
+      RewriteRule ^/en-US/thunderbird/([5-6][013-9]\.0)/releasenotes/$ /en-US/thunderbird/$1beta/releasenotes/ [R=302]
 
   - servername: "start.thunderbird.net"
     serveralias: "start-stage.thunderbird.net"
