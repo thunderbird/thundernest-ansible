@@ -1,5 +1,5 @@
 - name: Copy SSL certs and restart apache
-  hosts: "{{ var_hosts | default('webheads') }}"
+  hosts: "{{ var_hosts | default('stage') }}"
 
   tasks:
     - name: Copy SSL certs.
@@ -13,7 +13,7 @@
         - "../files/cert.pem"
 
 - name: Rolling restart httpd.
-  hosts: "{{ var_hosts | default('webheads') }}"
+  hosts: "{{ var_hosts | default('stage') }}"
   serial: 1
 
   tasks:
@@ -24,4 +24,4 @@
 
     - name: Wait before rebooting next node.
       pause:
-        seconds: 20
+        seconds: 60
