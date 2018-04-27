@@ -81,7 +81,7 @@ apache_vhosts:
       RewriteRule (.*) https://support.mozilla.org/kb/%1 [L]
       RewriteCond %{REQUEST_URI} ^/([^/]+)/home
       RewriteRule (.*) https://support.mozilla.org/%1/products/thunderbird [L]
-      RewriteCond %{REQUEST_URI} ^/$
+      RewriteCond %{REQUEST_URI} ^/(.*)$
       RewriteRule (.*) https://support.mozilla.org/products/thunderbird [L]
 
   - servername: "support.live.mozillamessaging.com"
@@ -122,6 +122,7 @@ apache_vhosts:
       ExpiresDefault "access plus 8 hours"
       RewriteRule ^/calendar/? /en-US/calendar/ [R=302]
       RewriteRule ^/email-providers/? /en-US/email-providers/ [R=302]
+      RewriteRule ^/get-involved/? /en-US/get-involved/ [R=302]
       RewriteRule ^/en-US/thunderbird/([5-6][013-9]\.0)/releasenotes/$ /en-US/thunderbird/$1beta/releasenotes/ [R=302]
 
   - servername: "start.thunderbird.net"
