@@ -4,8 +4,8 @@
   gather_facts: false
 
   vars: 
-    tbsite: "/tmp/tbsite"
-    tbsitebuild: "/tmp/tbsitebuild"
+    tbsite: "/tmp/tbsite-{{ branch | default('master') }}"
+    tbsitebuild: "/tmp/tbsitebuild-{{ branch | default('master') }}"
     notes: "/thunderbird_notes"
     locale: "/locale"
     productdetails: "/product-details-json"
