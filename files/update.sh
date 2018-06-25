@@ -9,7 +9,7 @@ DATA=/var/www/autoconfig.momo
 
 cd $DATA
 rm -rf convert.py
-wget https://svn.mozilla.org/mozillamessaging.com/sites/ispdb.mozillamessaging.com/trunk/tools/convert.py
+wget https://raw.githubusercontent.com/mozilla/ispdb/master/tools/convert.py
 cd $DATA/trunk
 git fetch --all
 git checkout --force origin/prod
