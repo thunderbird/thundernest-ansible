@@ -142,3 +142,8 @@ apache_vhosts:
         RewriteEngine On
         RewriteRule .* https://www.fastmail.com/login/?domain=thunderbird.net [R=302]
       </Location>
+
+  - servername: "addons.thunderbird.net"
+    serveralias: "addons-stage.thunderbird.net"
+    documentroot: "/var/www/html/start/site/en-US/maintenance"
+    extra_parameters: |
