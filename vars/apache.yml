@@ -1,6 +1,16 @@
 apache_remove_default_vhost: true
 apache_vhosts_filename: "ssl.conf"
 apache_global_vhost_settings: |
+      AddOutputFilterByType DEFLATE text/plain
+      AddOutputFilterByType DEFLATE text/html
+      AddOutputFilterByType DEFLATE text/xml
+      AddOutputFilterByType DEFLATE text/css
+      AddOutputFilterByType DEFLATE application/xml
+      AddOutputFilterByType DEFLATE application/xhtml+xml
+      AddOutputFilterByType DEFLATE application/rss+xml
+      AddOutputFilterByType DEFLATE application/javascript
+      AddOutputFilterByType DEFLATE application/x-javascript
+
       LoadModule ssl_module modules/mod_ssl.so
       Listen 443
       SSLPassPhraseDialog  builtin
@@ -123,7 +133,6 @@ apache_vhosts:
       RewriteRule ^/calendar/? /en-US/calendar/ [R=302]
       RewriteRule ^/email-providers/? /en-US/email-providers/ [R=302]
       RewriteRule ^/get-involved/? /en-US/get-involved/ [R=302]
-      RewriteRule ^/en-US/thunderbird/([5-6][013-9]\.0)/releasenotes/$ /en-US/thunderbird/$1beta/releasenotes/ [R=302]
 
   - servername: "start.thunderbird.net"
     serveralias: "start-stage.thunderbird.net"
