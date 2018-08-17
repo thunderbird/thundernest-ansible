@@ -1,6 +1,19 @@
 apache_remove_default_vhost: true
 apache_vhosts_filename: "ssl.conf"
+
 apache_global_vhost_settings: |
+      LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
+      LogFormat "%h %l %u %t \"%r\" %>s %b" common
+      LogFormat "%v: %h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" vcombined
+      CustomLog "logs/access_log" vcombined
+      
+      ServerLimit 32
+      StartServers 8
+      MaxRequestWorkers 1024
+      MinSpareThreads 25
+      MaxSpareThreads 75
+      ThreadsPerChild 32
+
       AddOutputFilterByType DEFLATE text/plain
       AddOutputFilterByType DEFLATE text/html
       AddOutputFilterByType DEFLATE text/xml
@@ -121,7 +134,8 @@ apache_vhosts:
       RewriteEngine On
       WSGIDaemonProcess stage.thunderbird.net processes=2 threads=15 display-name=%{GROUP} python-home=/var/www/tbservices python-path=/var/www/html/start
       WSGIProcessGroup stage.thunderbird.net
-      RewriteRule ^/thunderbird/system-requirements/? /en-US/thunderbird/52.6.0/system-requirements/ [R=302]
+      RewriteRule ^/thunderbird/system-requirements/? /system-requirements/ [R=302]
+      RewriteRule ^/thunderbird/notes/? /notes/ [R=302]
       RewriteRule ^/releases/? /thunderbird/releases/ [R=302]
       WSGIScriptAliasMatch ^/$ /var/www/html/start/wsgi.py
       WSGIScriptAliasMatch ^/features[/]?$ /var/www/html/start/wsgi.py

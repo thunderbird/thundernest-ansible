@@ -14,7 +14,7 @@
     - name: Make autoconfig log dir
       file: path="/var/log/httpd/autoconfig" state=directory
 
-    - name: copy ssl certs
+    - name: Copy SSL certs.
       copy:
         src: "{{ item }}"
         dest: /etc/httpd/conf
@@ -23,6 +23,29 @@
         - "files/privkey.pem"
         - "files/chain.pem"
         - "files/cert.pem"
+
+    - name: Set MPM to event by copying config file,
+      copy:
+        src: "{{ item }}"
+        dest: /etc/httpd/conf.modules.d
+        mode: 0644
+      with_items:
+        - "files/00-mpm.conf"
+
+    
+    - name: Comment out CustomLog.
+      replace:
+        path: /etc/httpd/conf/httpd.conf
+        regexp: '^[ ]+CustomLog \"logs\/access_log\" combined'
+        replace: ''
+        backup: no
+
+    - name: Comment out LogFormat.
+      replace:
+        path: /etc/httpd/conf/httpd.conf
+        regexp: '^[ ]+LogFormat.*$'
+        replace: ''
+        backup: no
 
     - name: install mod_wsgi
       yum:
