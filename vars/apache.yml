@@ -138,6 +138,7 @@ apache_vhosts:
       RewriteRule ^/thunderbird/notes/? /notes/ [R=302]
       RewriteRule ^/releases/? /thunderbird/releases/ [R=302]
       WSGIScriptAliasMatch ^/$ /var/www/html/start/wsgi.py
+      WSGIScriptAliasMatch ^/download[/]?$ /var/www/html/start/wsgi.py
       WSGIScriptAliasMatch ^/features[/]?$ /var/www/html/start/wsgi.py
       WSGIScriptAliasMatch ^/channel[/]?$ /var/www/html/start/wsgi.py
       WSGIScriptAliasMatch ^/organizations[/]?$ /var/www/html/start/wsgi.py
