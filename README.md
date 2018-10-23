@@ -25,6 +25,7 @@ control2.thunderbird.net
 17. `scp ~/.ssh/id_rsa ansibler@control2.thunderbird.net:~/.ssh`
 18. `ssh ansibler@control2.thunderbird.net`
 19. `cd thundernest-ansible && git-crypt unlock thundernest-ansible.key`
+20. Once you've verified things are working, **delete the thundernest-ansible dir and key from your local machine, don't leave the git-crypt key hanging around anywhere unnecessarily.**
 
 # Web Server Setup
 The following instructions assume you are logged into the control node via ssh to `control.thunderbird.net`. You will need the key labeled **'Linode ssh private key'** from 1password. If the control node is down or broken, follow the "Control Node Setup" to replace it.
