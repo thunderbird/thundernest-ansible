@@ -103,6 +103,13 @@
         repo: "https://github.com/thundernest/thunderbird-website.git"
         dest: "{{ homedir }}/thunderbird-website"
 
+    - name: Force install old version because pip is insane.
+      become: yes
+      pip:
+        name: pip
+        version: 9.0.3
+        state: forcereinstall
+
     - name: install website requirements
       become: yes
       pip:
