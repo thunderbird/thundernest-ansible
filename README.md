@@ -69,7 +69,7 @@ The web servers are set up as two(2) *webheads* behind a single(1) Linode load b
 Production hostnames are the following:
 
 Control Node: `control.thunderbird.net`  
-Webheads: `thunderbird1.thunderbird.net and thunderbird2.thunderbird.net`  
+Webheads: `web1.thunderbird.net and web2.thunderbird.net`  
 Load Balancer: `thunderbird.net` itself as well as additional domains using CNAMEs for any service running such as `live.thunderbird.net, mx.thunderbird.net, broker.thunderbird.net, www.thunderbird.net` etc.
 
 A set of web servers and a load balancer are entirely independent, and which set of servers is being used as 'production' depends solely on the IP assigned to the `thunderbird.net` A record in [Cloudflare](https://www.cloudflare.com/a/login) DNS.
