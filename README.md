@@ -59,7 +59,6 @@ source ~/letsencrypt/bin/activate
 source ~/thundernest-ansible/files/secrets.sh
 cd ~/letsencrypt
 ./dehydrated --register --accept-terms
-./dehydrated -c -t dns-01 -k 'hooks/cloudflare/hook.py'
 deactivate
 ~/thundernest-ansible/files/updatecerts.sh
 ```
