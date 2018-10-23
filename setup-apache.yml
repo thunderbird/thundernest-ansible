@@ -24,6 +24,15 @@
         - "files/chain.pem"
         - "files/cert.pem"
 
+    - name: install mod_wsgi
+      yum:
+        name: mod_wsgi
+        state: latest
+
+  roles:
+    - { role: geerlingguy.apache }
+
+  post_tasks:
     - name: Set MPM to event by copying config file,
       copy:
         src: "{{ item }}"
@@ -32,7 +41,6 @@
       with_items:
         - "files/00-mpm.conf"
 
-    
     - name: Comment out CustomLog.
       replace:
         path: /etc/httpd/conf/httpd.conf
@@ -47,10 +55,7 @@
         replace: ''
         backup: no
 
-    - name: install mod_wsgi
-      yum:
-        name: mod_wsgi
-        state: latest
-
-  roles:
-    - { role: geerlingguy.apache }
+    - name: Reload service httpd, in all cases.
+      systemd:
+        name: httpd
+        state: reloaded
