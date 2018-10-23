@@ -80,7 +80,6 @@
         virtualenv_python: python3.4
 
     - name: install apache module from ansible-galaxy
-      become: yes
       command: ansible-galaxy install --ignore-errors geerlingguy.apache
 
     - name: checkout git-crypt
