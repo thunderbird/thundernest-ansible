@@ -11,8 +11,6 @@ cd $DATA
 rm -rf convert.py
 wget https://raw.githubusercontent.com/mozilla/ispdb/master/tools/convert.py
 cd $DATA/trunk
-git fetch --all
-git checkout --force origin/prod
 
 # Make sure we regenerate all the files so deleted files don't stay.
 
