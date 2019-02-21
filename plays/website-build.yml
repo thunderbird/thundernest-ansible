@@ -24,6 +24,7 @@
         repo: "https://github.com/thundernest/tb-website-builds.git"
         dest: "{{ tbsitebuild }}"
         version: "{{ branch | default('master') }}"
+        depth: 1
 
     - name: checkout thunderbird-website
       git:
@@ -36,6 +37,7 @@
         repo: "https://github.com/thundernest/thunderbird.net-l10n.git"
         dest: "{{ tbsite }}{{ locale }}"
         version: "master"
+        depth: 1
 
     - name: checkout release notes
       git:
