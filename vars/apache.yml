@@ -134,6 +134,8 @@ apache_vhosts:
       RewriteEngine On
       WSGIDaemonProcess stage.thunderbird.net processes=2 threads=15 display-name=%{GROUP} python-home=/var/www/tbservices python-path=/var/www/html/start
       WSGIProcessGroup stage.thunderbird.net
+
+      RewriteRule ^/privacy/? https://www.mozilla.org/privacy/thunderbird/ [R=302]
       RewriteRule ^/thunderbird/system-requirements/? /system-requirements/ [R=302]
       RewriteRule ^/thunderbird/notes/? /notes/ [R=302]
       RewriteRule ^/releases/? /thunderbird/releases/ [R=302]
