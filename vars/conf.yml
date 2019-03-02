@@ -5,6 +5,7 @@ live_doc_root: /var/www/html/live.momo/
 autoconfig_trunk: /var/www/autoconfig.momo/trunk/
 lets_encrypt_docroot: /var/www/dehydrated/
 start_page_files: /var/www/html/start/
+stats_files: /var/www/html/tbstats/
 server_domain: thunderbird.net
 linode_swap: 512
 linode_plan: 1

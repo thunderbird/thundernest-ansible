@@ -169,7 +169,14 @@ apache_vhosts:
         RewriteRule .* https://www.fastmail.com/login/?domain=thunderbird.net [R=302]
       </Location>
 
+  - servername: "stats.thunderbird.net"
+    serveralias: "stats-stage.thunderbird.net"
+    documentroot: "/var/www/html/tbstats/docs"
+    extra_parameters: |
+      RedirectMatch 404 /\.git
+
   - servername: "addons.thunderbird.net"
     serveralias: "addons-stage.thunderbird.net"
     documentroot: "/var/www/html/start/site/en-US/maintenance"
     extra_parameters: |
+

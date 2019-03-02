@@ -1,0 +1,11 @@
+- name: Install stats.thunderbird.net files
+  hosts: "{{ var_hosts | default('webheads') }}"
+  vars_files:
+  - ../vars/conf.yml
+
+  tasks:
+  - name: checkout stats
+    git:
+      repo: "https://github.com/thundernest/stats.git"
+      dest: "{{ stats_files }}"
+      version: "{{ branch | default('prod') }}"
