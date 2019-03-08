@@ -147,7 +147,7 @@ apache_vhosts:
       WSGIScriptAliasMatch ^/thunderbird /var/www/html/start/wsgi.py
       ExpiresActive On
       ExpiresDefault "access plus 8 hours"
-      RewriteRule ^/calendar/? /en-US/calendar/ [R=302]
+      RewriteRule ^/calendar/?(.*)$ /en-US/calendar/$1 [R=302]
       RewriteRule ^/email-providers/? /en-US/email-providers/ [R=302]
       RewriteRule ^/get-involved/? /en-US/get-involved/ [R=302]
 
