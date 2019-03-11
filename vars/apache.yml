@@ -57,7 +57,9 @@ apache_vhosts:
     documentroot: "/var/www/html/autoconfig.momo/"
     options: "+Indexes +FollowSymLinks"
     extra_parameters: |
-      ForceType text/xml
+      <Location ~ "/v1(\.0|\.1)/">
+        ForceType text/xml
+      </Location>
       ExpiresActive On
       ExpiresDefault "access plus 1 hour"
       RewriteEngine On

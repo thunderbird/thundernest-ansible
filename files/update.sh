@@ -13,6 +13,7 @@ mkdir -p $TEMP/v1.1
 mkdir -p $TEMP/v1.0
 
 cd $DATA
+cp -R ../webroot/* $TEMP
 source /var/www/tbservices/bin/activate
 python ../tools/convert.py -a -d $TEMP/v1.1 *
 rm -rf $DATA/cloudnine-net.jp
