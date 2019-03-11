@@ -2,7 +2,7 @@ brokerdest: /var/www/services/broker
 mxdest: /var/www/services/mx
 services_virtualenv: /var/www/tbservices
 live_doc_root: /var/www/html/live.momo/
-autoconfig_trunk: /var/www/autoconfig.momo/trunk/
+autoconfig_trunk: /var/www/autoconfig.momo/
 lets_encrypt_docroot: /var/www/dehydrated/
 start_page_files: /var/www/html/start/
 stats_files: /var/www/html/tbstats/
