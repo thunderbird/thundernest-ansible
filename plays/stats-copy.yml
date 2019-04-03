@@ -1,0 +1,14 @@
+- name: Copy thunderbird_adi.json to web servers.
+  hosts: webheads
+  vars:
+    stats_file: "~/stats/docs/thunderbird_adi.json"
+    stats_dest: "/var/www/html/tbstats/docs"
+
+  tasks:
+    - name: Copy thunderbird_adi.json.
+      copy:
+        src: "{{ stats_file }}"
+        dest: "{{ stats_dest }}"
+        owner: root
+        group: root
+        mode: 0755
