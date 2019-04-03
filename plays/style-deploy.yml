@@ -1,0 +1,11 @@
+- name: Install style.thunderbird.net files
+  hosts: "{{ var_hosts | default('webheads') }}"
+  vars_files:
+  - ../vars/conf.yml
+
+  tasks:
+  - name: checkout thunderbird-photon repo
+    git:
+      repo: "https://github.com/thundernest/thunderbird-photon.git"
+      dest: "{{ style_files }}"
+      version: "{{ branch | default('prod') }}"

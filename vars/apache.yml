@@ -177,6 +177,12 @@ apache_vhosts:
     extra_parameters: |
       RedirectMatch 404 /\.git
 
+  - servername: "style.thunderbird.net"
+    serveralias: "style-stage.thunderbird.net"
+    documentroot: "/var/www/html/style_guide/_site"
+    extra_parameters: |
+      RedirectMatch 404 /\.git
+
   - servername: "addons.thunderbird.net"
     serveralias: "addons-stage.thunderbird.net"
     documentroot: "/var/www/html/start/site/en-US/maintenance"
