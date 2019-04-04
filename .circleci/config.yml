@@ -16,8 +16,8 @@ jobs:
         - v1-dep-master-
     - run: sudo apt-get update
     - run: sudo apt-get install python-pip python-dev git curl
-    - run: pip install ansible==2.4.2.0
-    - run: pip install -r requirements.txt
+    - run: pip install --user ansible==2.4.2.0
+    - run: pip install --user -r requirements.txt
     - run: ansible-galaxy install --ignore-errors geerlingguy.apache
     - run: git clone https://github.com/AGWA/git-crypt.git
     - run: cd git-crypt; sudo make install; cd ..
