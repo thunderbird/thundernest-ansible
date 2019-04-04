@@ -4,8 +4,8 @@
   - ../vars/conf.yml
 
   tasks:
-  - name: checkout thunderbird-photon repo
+  - name: checkout style-guide repo
     git:
-      repo: "https://github.com/thundernest/thunderbird-photon.git"
+      repo: "https://github.com/thundernest/style-guide.git"
       dest: "{{ style_files }}"
       version: "{{ branch | default('prod') }}"
