@@ -5,7 +5,7 @@ jobs:
     parallelism: 1
     shell: /bin/bash --login
     docker:
-    - image: circleci/python:2.7.13
+    - image: circleci/python:2.7.13-stretch
     steps:
     - checkout
     - restore_cache:
