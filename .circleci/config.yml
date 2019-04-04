@@ -18,7 +18,7 @@ jobs:
     - run: sudo apt-get install python-pip python-dev git curl
     - run: pip install --user ansible==2.4.2.0
     - run: pip install --user -r requirements.txt
-    - run: export PATH="${PATH}:/home/circleci/.local/bin"
+    - run: echo 'export PATH="${PATH}:/home/circleci/.local/bin"' >> $BASH_ENV
     - run: ansible-galaxy install --ignore-errors geerlingguy.apache
     - run: git clone https://github.com/AGWA/git-crypt.git
     - run: cd git-crypt; sudo make install; cd ..
