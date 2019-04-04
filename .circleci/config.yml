@@ -18,6 +18,7 @@ jobs:
     - run: sudo apt-get install python-pip python-dev git curl
     - run: pip install --user ansible==2.4.2.0
     - run: pip install --user -r requirements.txt
+    - run: export PATH="${PATH}:/home/circleci/.local/bin"
     - run: ansible-galaxy install --ignore-errors geerlingguy.apache
     - run: git clone https://github.com/AGWA/git-crypt.git
     - run: cd git-crypt; sudo make install; cd ..
@@ -29,8 +30,7 @@ jobs:
         paths:
         # This is a broad list of cache paths to include many possible development environments
         # You can probably delete some of these entries
-        - vendor/bundle
-        - ~/virtualenvs
+        - ~/.local/bin
     # Test
     - run: ansible-playbook --syntax-check --extra-vars="server_hostname=web3 linode_plan=1" provision-server.yml
     - run: ansible-playbook --syntax-check -i "web3.thunderbird.net,web4.thunderbird.net" --extra-vars var_hosts=all setup-webheads.yml
