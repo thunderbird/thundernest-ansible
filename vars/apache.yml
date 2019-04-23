@@ -177,6 +177,8 @@ apache_vhosts:
     documentroot: "/var/www/html/tbstats/docs"
     extra_parameters: |
       RedirectMatch 404 /\.git
+      ExpiresActive On
+      ExpiresDefault "access plus 1 hour"
 
   - servername: "style.thunderbird.net"
     serveralias: "style-stage.thunderbird.net"
