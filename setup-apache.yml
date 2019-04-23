@@ -41,6 +41,17 @@
     - { role: geerlingguy.apache }
 
   post_tasks:
+    - name: Make sure http and https ports are open.
+      firewalld:
+        service: "{{ item }}"
+        zone:      public
+        permanent: yes
+        immediate: yes
+        state:     enabled
+      with_items:
+        - http
+        - https
+
     - name: Comment out CustomLog.
       replace:
         path: /etc/httpd/conf/httpd.conf
