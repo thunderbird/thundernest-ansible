@@ -59,14 +59,14 @@
       become_user: ansibler
 
     - name: run website build
-      command: python build-site.py
+      command: python build-site.py --debug
       args:
         chdir: "{{ tbsite }}"
       become: yes
       become_user: ansibler
 
     - name: run start page build
-      command: python build-start.py
+      command: python build-site.py --startpage --debug
       args:
         chdir: "{{ tbsite }}"
       become: yes
