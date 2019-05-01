@@ -58,6 +58,7 @@ apache_vhosts:
     options: "+Indexes +FollowSymLinks"
     extra_parameters: |
       <Location ~ "/v1(\.0|\.1)/">
+        Header set Access-Control-Allow-Origin "*"
         ForceType text/xml
       </Location>
       ExpiresActive On
