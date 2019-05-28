@@ -67,6 +67,7 @@ apache_vhosts:
       RewriteRule ^/autoconfig/(.*)$ /$1 [L,R=301,NE]
       ErrorLog "|/usr/sbin/rotatelogs /var/log/httpd/autoconfig/error_log_%Y-%m-%d 604800 -480"
       CustomLog "|/usr/sbin/rotatelogs /var/log/httpd/autoconfig/access_%Y-%m-%d 604800 -480" combined
+      Header always set Strict-Transport-Security "max-age=31536000"
 
   - servername: "broker.thunderbird.net"
     serveralias: "broker-live.mozillamessaging.com broker-stage.thunderbird.net"
@@ -129,6 +130,7 @@ apache_vhosts:
         RewriteEngine On
         RewriteRule .* https://www.thunderbird.net%{REQUEST_URI} [R=302]
       </Location>
+      Header always set Strict-Transport-Security "max-age=31536000"
 
   - servername: "www.thunderbird.net"
     serveralias: "www-stage.thunderbird.net stage.thunderbird.net"
@@ -154,6 +156,7 @@ apache_vhosts:
       RewriteRule ^/calendar/?(.*)$ /en-US/calendar/$1 [R=302]
       RewriteRule ^/email-providers/? /en-US/email-providers/ [R=302]
       RewriteRule ^/get-involved/? /en-US/get-involved/ [R=302]
+      Header always set Strict-Transport-Security "max-age=31536000"
 
   - servername: "start.thunderbird.net"
     serveralias: "start-stage.thunderbird.net"
@@ -163,6 +166,7 @@ apache_vhosts:
       ExpiresDefault "access plus 8 hours"
       RewriteEngine On
       RewriteRule ^/$ /en-US/release/ [R=302]
+      Header always set Strict-Transport-Security "max-age=31536000"
 
   - servername: "mail.thunderbird.net"
     extra_parameters: |
