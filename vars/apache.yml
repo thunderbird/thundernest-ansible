@@ -150,6 +150,8 @@ apache_vhosts:
       WSGIDaemonProcess stage.thunderbird.net processes=2 threads=15 display-name=%{GROUP} python-home=/var/www/tbservices python-path=/var/www/html/start
       WSGIProcessGroup stage.thunderbird.net
 
+      # https://github.com/thundernest/thunderbird.net-l10n/issues/1
+      RewriteRule ^/bn-(?:BD|IN)/?(.*)$ /bn/$1 [R=302]
       RewriteRule ^/privacy/? https://www.mozilla.org/privacy/thunderbird/ [R=302]
       RewriteRule ^/thunderbird/system-requirements/? /system-requirements/ [R=302]
       RewriteRule ^/thunderbird/notes/? /notes/ [R=302]

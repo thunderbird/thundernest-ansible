@@ -11,9 +11,11 @@
         name: epel-release
         state: latest
 
-    - name: install mod_security
+    - name: install mod_security and firewalld
       yum:
-        name: mod_security
+        name: 
+          - mod_security
+          - firewalld
         state: latest
 
     - name: Make Document Root
