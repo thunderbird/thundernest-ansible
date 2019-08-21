@@ -9,7 +9,8 @@
     notes: "/thunderbird_notes"
     locale: "/locale"
     productdetails: "/product-details-json"
-
+    branch: "master"
+    
   tasks:
     - name: make sure temp dir is empty in case of previous failed build
       file:
@@ -58,6 +59,13 @@
       become: yes
       become_user: ansibler
 
+    - name: change LESS version to 3
+      command: npm install -g less
+      args:
+        chdir: "{{ tbsite }}"
+      become: yes
+      when: branch == "redesign"
+
     - name: run website build
       command: python build-site.py --debug
       args:
@@ -71,6 +79,13 @@
         chdir: "{{ tbsite }}"
       become: yes
       become_user: ansibler
+
+    - name: change LESS back to 2.7.2
+      command: npm install -g less@2.7.2
+      args:
+        chdir: "{{ tbsite }}"
+      become: yes
+      when: branch == "redesign"
 
     - name: make sure temp dir is empty in case of previous failed build
       file:
