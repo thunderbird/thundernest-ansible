@@ -2,6 +2,8 @@
   hosts: "{{ var_hosts | default('webheads') }}"
   vars_files:
   - ../vars/conf.yml
+  vars:  
+    stats_dest: "/var/www/html/tbstats/docs"
 
   tasks:
   - name: checkout stats
@@ -9,3 +11,14 @@
       repo: "https://github.com/thundernest/stats.git"
       dest: "{{ stats_files }}"
       version: "{{ branch | default('prod') }}"
+      force: true
+
+  - name: Copy all json data.
+    copy:
+      src: "{{ item }}"
+      dest: "{{ stats_dest }}"
+      owner: root
+      group: root
+      mode: 0755
+    with_fileglob:
+      - ~/stats/docs/*.json
