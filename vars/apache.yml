@@ -153,7 +153,7 @@ apache_vhosts:
       # https://github.com/thundernest/thunderbird.net-l10n/issues/1
       RewriteRule ^/bn-(?:BD|IN)/?(.*)$ /bn/$1 [R=302]
       RewriteRule ^/privacy/? https://www.mozilla.org/privacy/thunderbird/ [R=302]
-      RewriteRule ^/thunderbird/system-requirements/? /system-requirements/ [R=302]
+      RewriteRule ^/thunderbird/?(latest/)system-requirements/? /system-requirements/ [R=302]
       RewriteRule ^/thunderbird/notes/? /notes/ [R=302]
       RewriteRule ^/releases/? /thunderbird/releases/ [R=302]
       WSGIScriptAliasMatch ^/$ /var/www/html/start/wsgi.py
@@ -203,8 +203,16 @@ apache_vhosts:
     extra_parameters: |
       RedirectMatch 404 /\.git
 
+  - servername: "aus.thunderbird.net"
+    serveralias: "aus-stage.thunderbird.net"
+    extra_parameters: |
+      RewriteEngine On
+      Header set Cache-Control "max-age=0, no-cache, no-store, must-revalidate"
+      Header set Pragma "no-cache"
+      Header set Expires "Thu, 11 Jan 2001 05:00:00 GMT"
+      RewriteRule ^(.*)$ https://aus5.mozilla.org$1 [R=302]
+
   - servername: "addons.thunderbird.net"
     serveralias: "addons-stage.thunderbird.net"
     documentroot: "/var/www/html/start/site/en-US/maintenance"
-    extra_parameters: |
-
+    extra_parameters:
