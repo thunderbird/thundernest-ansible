@@ -18,6 +18,9 @@
           - firewalld
         state: latest
 
+    - name: Enable firewalld
+      service: name=firewalld state=started enabled=yes
+      
     - name: Make Document Root
       file: path="{{ live_doc_root }}" state=directory
 
