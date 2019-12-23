@@ -156,11 +156,11 @@ apache_vhosts:
       RewriteRule ^/thunderbird/?(latest/)system-requirements/? /system-requirements/ [R=302]
       RewriteRule ^/thunderbird/notes/? /notes/ [R=302]
       RewriteRule ^/releases/? /thunderbird/releases/ [R=302]
+      RewriteRule ^/channel/? #channel [R=302,NE]
       WSGIScriptAliasMatch ^/$ /var/www/html/start/wsgi.py
       WSGIScriptAliasMatch ^/about[/]?$ /var/www/html/start/wsgi.py
       WSGIScriptAliasMatch ^/download[/]?$ /var/www/html/start/wsgi.py
       WSGIScriptAliasMatch ^/features[/]?$ /var/www/html/start/wsgi.py
-      WSGIScriptAliasMatch ^/channel[/]?$ /var/www/html/start/wsgi.py
       WSGIScriptAliasMatch ^/organizations[/]?$ /var/www/html/start/wsgi.py
       WSGIScriptAliasMatch ^/thunderbird /var/www/html/start/wsgi.py
       ExpiresActive On
