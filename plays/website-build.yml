@@ -8,7 +8,7 @@
     tbsitebuild: "/tmp/tbsitebuild-{{ branch | default('master') }}"
     notes: "/thunderbird_notes"
     locale: "/locale"
-    productdetails: "/product-details-json"
+    productdetails: "/product-details"
     branch: "master"
     
   tasks:
@@ -48,9 +48,9 @@
 
     - name: checkout product-details
       git:
-        repo: "https://github.com/mozilla/product-details-json.git"
+        repo: "https://github.com/mozilla-releng/product-details.git"
         dest: "{{ tbsite }}{{ productdetails }}"
-        version: "master"
+        version: "production"
 
     - name: compile gettext files
       command: bash l10n_tools/compile.sh
