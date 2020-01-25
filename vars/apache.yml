@@ -142,21 +142,34 @@ apache_vhosts:
       </Location>
       Header always set Strict-Transport-Security "max-age=31536000"
 
+  - servername: "www-new.thunderbird.net"
+    extra_parameters: |
+      ExpiresActive On
+      ExpiresDefault "access plus 24 hours"
+      <Location />
+        RewriteEngine On
+        RewriteRule .* https://www-stage.thunderbird.net%{REQUEST_URI} [R=302]
+      </Location>
+      Header always set Strict-Transport-Security "max-age=31536000"  
+
   - servername: "www.thunderbird.net"
-    serveralias: "www-stage.thunderbird.net stage.thunderbird.net www-new.thunderbird.net"
+    serveralias: "www-stage.thunderbird.net stage.thunderbird.net"
     documentroot: "/var/www/html/start/thunderbird.net"
     extra_parameters: |
       RewriteEngine On
       WSGIDaemonProcess stage.thunderbird.net processes=2 threads=15 display-name=%{GROUP} python-home=/var/www/tbservices python-path=/var/www/html/start
       WSGIProcessGroup stage.thunderbird.net
 
+      # https://github.com/thundernest/thunderbird-website/issues/162
+      RewriteRule ^/ja-JP-mac/?(.*)$ /ja/$1 [R=302]
       # https://github.com/thundernest/thunderbird.net-l10n/issues/1
       RewriteRule ^/bn-(?:BD|IN)/?(.*)$ /bn/$1 [R=302]
       RewriteRule ^/privacy/? https://www.mozilla.org/privacy/thunderbird/ [R=302]
-      RewriteRule ^/thunderbird/?(latest/)system-requirements/? /system-requirements/ [R=302]
+      RewriteRule ^/thunderbird/(latest/)?system-requirements/? /system-requirements/ [R=302]
       RewriteRule ^/thunderbird/notes/? /notes/ [R=302]
       RewriteRule ^/releases/? /thunderbird/releases/ [R=302]
-      RewriteRule ^/channel/? #channel [R=302,NE]
+      # https://github.com/thundernest/thunderbird-website/issues/160
+      RewriteRule ^(.*)/channel/? #channel [R=302,NE]
       WSGIScriptAliasMatch ^/$ /var/www/html/start/wsgi.py
       WSGIScriptAliasMatch ^/about[/]?$ /var/www/html/start/wsgi.py
       WSGIScriptAliasMatch ^/download[/]?$ /var/www/html/start/wsgi.py
