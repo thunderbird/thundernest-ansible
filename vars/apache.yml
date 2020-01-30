@@ -179,6 +179,7 @@ apache_vhosts:
       ExpiresActive On
       ExpiresDefault "access plus 8 hours"
       RewriteRule ^/calendar/?(.*)$ /en-US/calendar/$1 [R=302]
+      RewriteRule ^/careers/? /en-US/careers/ [R=302]
       RewriteRule ^/email-providers/? /en-US/email-providers/ [R=302]
       RewriteRule ^/get-involved/? /en-US/get-involved/ [R=302]
       Header always set Strict-Transport-Security "max-age=31536000"
