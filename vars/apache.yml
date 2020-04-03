@@ -60,7 +60,7 @@ apache_vhosts:
       SecRuleEngine On
       <LocationMatch "^/.*">
         SecAction "initcol:ip=%{REMOTE_ADDR},pass,nolog,id:100"
-        SecRule IP:ACCESS_COUNT "@gt {{ 120 }}" "phase:2,pause:300,deny,status:429,setenv:RATELIMITED,skip:1,nolog,id:102"
+        SecRule IP:ACCESS_COUNT "@gt {{ 10 }}" "phase:2,pause:300,deny,status:429,setenv:RATELIMITED,skip:1,nolog,id:102"
         SecAction "phase:2,setvar:ip.access_count=+1,pass,nolog,id:103"
         SecAction "phase:5,deprecatevar:ip.access_count=1/1,pass,nolog,id:104"
         Header always set Retry-After "10" env=RATELIMITED
@@ -180,6 +180,7 @@ apache_vhosts:
       ExpiresDefault "access plus 8 hours"
       RewriteRule ^/calendar/?(.*)$ /en-US/calendar/$1 [R=302]
       RewriteRule ^/careers/? /en-US/careers/ [R=302]
+      RewriteRule ^/contact/? /en-US/contact/ [R=302]
       RewriteRule ^/email-providers/? /en-US/email-providers/ [R=302]
       RewriteRule ^/get-involved/? /en-US/get-involved/ [R=302]
       Header always set Strict-Transport-Security "max-age=31536000"
@@ -191,6 +192,10 @@ apache_vhosts:
       ExpiresActive On
       ExpiresDefault "access plus 8 hours"
       RewriteEngine On
+      # https://github.com/thundernest/thunderbird-website/issues/162
+      RewriteRule ^/ja-JP-mac/?(.*)$ /ja/$1 [R=302]
+      # https://github.com/thundernest/thunderbird.net-l10n/issues/1
+      RewriteRule ^/bn-(?:BD|IN)/?(.*)$ /bn/$1 [R=302]
       RewriteRule ^/$ /en-US/release/ [R=302]
       Header always set Strict-Transport-Security "max-age=31536000"
 
