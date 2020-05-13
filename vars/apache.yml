@@ -160,6 +160,7 @@ apache_vhosts:
       WSGIDaemonProcess stage.thunderbird.net processes=2 threads=15 display-name=%{GROUP} python-home=/var/www/tbservices python-path=/var/www/html/start
       WSGIProcessGroup stage.thunderbird.net
 
+      RewriteRule ^/(.*)/thunderbird/60\.0/whatsnew/$ https://support.mozilla.org/$1/kb/new-thunderbird-60 [R=302,L]
       # https://github.com/thundernest/thunderbird-website/issues/162
       RewriteRule ^/ja-JP-mac/?(.*)$ /ja/$1 [R=302]
       # https://github.com/thundernest/thunderbird.net-l10n/issues/1
