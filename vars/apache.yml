@@ -236,3 +236,12 @@ apache_vhosts:
     serveralias: "addons-stage.thunderbird.net"
     documentroot: "/var/www/html/start/site/en-US/maintenance"
     extra_parameters:
+
+  - servername: "discuss.thunderbird.net"
+    extra_parameters: |
+      ExpiresActive On
+      ExpiresDefault "access plus 24 hours"
+      <Location />
+        RewriteEngine On
+        RewriteRule .* https://thunderbird.topicbox.com/ [R=302]
+      </Location>
