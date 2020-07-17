@@ -87,6 +87,8 @@ apache_vhosts:
       WSGIDaemonProcess broker.thunderbird.net processes=2 threads=15 display-name=%{GROUP} python-home=/var/www/tbservices
       WSGIProcessGroup broker.thunderbird.net
       WSGIScriptAlias /provider /var/www/services/broker/broker.wsgi
+      CustomLog /dev/null common
+      ErrorLog /dev/null
 
   - servername: "mx.thunderbird.net"
     serveralias: "mx-live.mozillamessaging.com mx-stage.thunderbird.net"
