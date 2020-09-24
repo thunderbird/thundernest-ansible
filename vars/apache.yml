@@ -57,16 +57,6 @@ apache_vhosts:
     documentroot: "/var/www/html/autoconfig.momo/"
     options: "+Indexes +FollowSymLinks"
     extra_parameters: |
-      SecRuleEngine On
-      <LocationMatch "^/.*">
-        SecAction "initcol:ip=%{REMOTE_ADDR},pass,nolog,id:100"
-        SecRule IP:ACCESS_COUNT "@gt {{ 10 }}" "phase:2,pause:300,deny,status:429,setenv:RATELIMITED,skip:1,nolog,id:102"
-        SecAction "phase:2,setvar:ip.access_count=+1,pass,nolog,id:103"
-        SecAction "phase:5,deprecatevar:ip.access_count=1/1,pass,nolog,id:104"
-        Header always set Retry-After "10" env=RATELIMITED
-      </LocationMatch>
-      ErrorDocument 429 "Too Many Requests"
-
       <Location ~ "/v1(\.0|\.1)/">
         Header set Access-Control-Allow-Origin "*"
         ForceType text/xml
