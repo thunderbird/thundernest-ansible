@@ -170,7 +170,7 @@ apache_vhosts:
       WSGIScriptAliasMatch ^/organizations[/]?$ /var/www/html/start/wsgi.py
       WSGIScriptAliasMatch ^/thunderbird /var/www/html/start/wsgi.py
       ExpiresActive On
-      ExpiresDefault "access plus 8 hours"
+      ExpiresDefault "access plus 2 hours"
       RewriteRule ^/calendar/?(.*)$ /en-US/calendar/$1 [R=302]
       RewriteRule ^/careers/? /en-US/careers/ [R=302]
       RewriteRule ^/contact/? /en-US/contact/ [R=302]
@@ -233,7 +233,5 @@ apache_vhosts:
     extra_parameters: |
       ExpiresActive On
       ExpiresDefault "access plus 24 hours"
-      <Location />
-        RewriteEngine On
-        RewriteRule .* https://thunderbird.topicbox.com/ [R=302]
-      </Location>
+      RewriteEngine On
+      RewriteRule ^(.*)$ https://thunderbird.topicbox.com$1 [R=302]
