@@ -8,3 +8,6 @@ control.thunderbird.net
 
 [stage]
 webstage.thunderbird.net
+
+[kinto]
+thunderbird-settings.thunderbird.net

@@ -1,0 +1,80 @@
+- name: Configure firewall and install Apache2
+  hosts: "{{ var_hosts | default('kinto') }}"
+  remote_user: centos
+  become: yes
+  vars_files:
+  - ../vars/kinto-apache.yml
+
+  pre_tasks:
+
+    - name: firewalld
+      dnf:
+        name: 
+          - firewalld
+        state: latest
+
+    - name: Enable firewalld
+      service: name=firewalld state=started enabled=yes
+      
+    - name: Make Document Root
+      file: path="/var/www/html" state=directory
+
+    - name: Make httpd dir
+      file: path="/etc/httpd/conf/" state=directory
+
+    - name: Copy SSL certs.
+      copy:
+        src: "{{ item }}"
+        dest: /etc/httpd/conf
+        mode: 0600
+      with_items:
+        - "../files/privkey.pem"
+        - "../files/chain.pem"
+        - "../files/cert.pem"
+
+    - name: install mod_wsgi
+      dnf:
+        name: python3-mod_wsgi
+        state: latest
+
+    - name: Set MPM to event by copying config file,
+      copy:
+        src: "{{ item }}"
+        dest: /etc/httpd/conf.modules.d
+        mode: 0644
+      with_items:
+        - "../files/00-mpm.conf"
+
+  roles:
+    - { role: geerlingguy.apache }
+
+  post_tasks:
+    - name: Make sure http and https ports are open.
+      firewalld:
+        service: "{{ item }}"
+        zone:      public
+        permanent: yes
+        immediate: yes
+        state:     enabled
+      with_items:
+        - http
+        - https
+
+    - name: Comment out CustomLog.
+      replace:
+        path: /etc/httpd/conf/httpd.conf
+        regexp: '^[ ]+CustomLog \"logs\/access_log\" combined'
+        replace: ''
+        backup: no
+
+    - name: Comment out LogFormat.
+      replace:
+        path: /etc/httpd/conf/httpd.conf
+        regexp: '^[ ]+LogFormat.*$'
+        replace: ''
+        backup: no
+
+    - name: Reload service httpd, in all cases.
+      systemd:
+        name: httpd
+        state: reloaded
