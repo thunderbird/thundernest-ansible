@@ -33,7 +33,7 @@ apache_global_vhost_settings: |
     SSLRandomSeed startup file:/dev/urandom  256
     SSLRandomSeed connect builtin
     SSLCryptoDevice builtin
-apache_vhosts_template: "../vars/vhost_template.j2"
+apache_vhosts_template: "../../vars/vhost_template.j2"
 apache_certificate_key_file: "/etc/httpd/conf/privkey.pem"
 apache_certificate_file: "/etc/httpd/conf/cert.pem"
 apache_certificate_chain_file: "/etc/httpd/conf/chain.pem"
