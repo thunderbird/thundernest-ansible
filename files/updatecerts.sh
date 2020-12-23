@@ -7,7 +7,7 @@ exec 1>~/thundernest-ansible/ssl-refresh-log 2>&1
 source ~/letsencrypt/bin/activate
 source ~/thundernest-ansible/files/secrets.sh
 source ~/amo-ops/env/secrets.sh
-cd ~/dehydrated && ./dehydrated --force -c -t dns-01 -k 'hooks/cloudflare/hook.py'
+cd ~/dehydrated && ./dehydrated --algo rsa --preferred-chain "DST Root CA X3" --force -c -t dns-01 -k 'hooks/cloudflare/hook.py'
 cd ~/thundernest-ansible
 cp ~/dehydrated/certs/thunderbird.net/{cert,chain,fullchain,privkey}.pem files
 ansible-playbook plays/refresh-ssl-certs.yml
