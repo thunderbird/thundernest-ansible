@@ -94,6 +94,8 @@ apache_vhosts:
       RewriteEngine On
       RewriteCond %{HTTP:X-Forwarded-Proto} ^http$
       RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [L,R=301,NE]
+      RewriteCond %{REQUEST_URI} ^/([^/]+)/thunderbird/([^/]+)/extension-permissions$
+      RewriteRule (.*) https://support.mozilla.org/%1/kb/permission-request-messages-thunderbird-extensions [L]
       RewriteCond %{REQUEST_URI} ^/kb/ask$
       RewriteRule (.*) https://support.mozilla.org/en-US/questions/new/thunderbird [L]
       RewriteCond %{REQUEST_URI} ^/([^/]+)/kb/ask$
