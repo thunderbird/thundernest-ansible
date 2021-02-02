@@ -1,0 +1,11 @@
+- name: Deploy static files from static-test git repository
+  hosts: "{{ var_hosts | default('stage') }}"
+  vars_files:
+  - ../vars/conf.yml
+
+  tasks:
+    - name: checkout the static-test files
+      git:
+        repo: "https://github.com/thundernest/static-test.git"
+        dest: "{{ statictestdest }}"
+        version: "{{ branch | default('main') }}"

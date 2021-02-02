@@ -1,3 +1,4 @@
 thundernest-ansible.key
 *.retry
 *.pyc
+ssl-refresh-log

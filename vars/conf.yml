@@ -1,4 +1,5 @@
 brokerdest: /var/www/services/broker
+statictestdest: /var/www/html/statictest/
 mxdest: /var/www/services/mx
 services_virtualenv: /var/www/tbservices
 live_doc_root: /var/www/html/live.momo/

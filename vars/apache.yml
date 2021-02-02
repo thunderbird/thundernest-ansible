@@ -147,7 +147,7 @@ apache_vhosts:
       Header always set Strict-Transport-Security "max-age=31536000"  
 
   - servername: "www.thunderbird.net"
-    serveralias: "www-stage.thunderbird.net stage.thunderbird.net"
+    serveralias: "www-stage.thunderbird.net stage.thunderbird.net www-test.thunderbird.net"
     documentroot: "/var/www/html/start/thunderbird.net"
     extra_parameters: |
       RewriteEngine On
@@ -237,3 +237,9 @@ apache_vhosts:
       ExpiresDefault "access plus 24 hours"
       RewriteEngine On
       RewriteRule ^(.*)$ https://thunderbird.topicbox.com$1 [R=302]
+
+  - servername: "static-test.thunderbird.net"
+    documentroot: "/var/www/html/statictest/www/"
+    options: "+Indexes +FollowSymLinks"
+    extra_parameters: |
+      RedirectMatch 404 /\.git
