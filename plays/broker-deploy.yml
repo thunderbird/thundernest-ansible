@@ -9,3 +9,21 @@
       repo: "https://github.com/thundernest/broker.git"
       dest: "{{ brokerdest }}"
       version: "{{ branch | default('prod') }}"
+      force: yes
+
+  - name: Copy settings file.
+    copy:
+      src: "{{ brokerdest }}/settings.py.dist"
+      dest: "{{ brokerdest }}/settings.py"
+      remote_src: yes
+
+  - name: Add api key to settings file.
+    lineinfile:
+      path: "{{ brokerdest }}/settings.py"
+      regexp: "^apikey"
+      line: "apikey = '&api-key={{ lookup('env', 'MAILFENCE_APIKEY') }}'"
+  
+  - name: Reload service httpd, in all cases.
+    systemd:
+      name: httpd
+      state: reloaded
