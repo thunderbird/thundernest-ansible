@@ -94,6 +94,8 @@ apache_vhosts:
       RewriteEngine On
       RewriteCond %{HTTP:X-Forwarded-Proto} ^http$
       RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [L,R=301,NE]
+      RewriteCond %{REQUEST_URI} ^/thunderbird/([^/]+)/([^/]+)/([^/]+)/cant-remove-addon$
+      RewriteRule (.*) https://support.mozilla.org/kb/policies-extensions-locked [L]
       RewriteCond %{REQUEST_URI} ^/thunderbird/([^/]+)/([^/]+)/([^/]+)/addons-help$
       RewriteRule (.*) https://support.mozilla.org/kb/thunderbird-add-ons-frequently-asked-questions [L]
       RewriteCond %{REQUEST_URI} ^/thunderbird/([^/]+)/([^/]+)/([^/]+)/extension-permissions$
