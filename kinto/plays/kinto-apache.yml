@@ -1,5 +1,5 @@
 - name: Configure firewall and install Apache2
-  hosts: "{{ var_hosts | default('kinto') }}"
+  hosts: kinto_web_test
   remote_user: centos
   become: yes
   vars_files:
@@ -9,13 +9,13 @@
 
     - name: firewalld
       dnf:
-        name: 
+        name:
           - firewalld
         state: latest
 
     - name: Enable firewalld
       service: name=firewalld state=started enabled=yes
-      
+
     - name: Make Document Root
       file: path="/var/www/html" state=directory
 

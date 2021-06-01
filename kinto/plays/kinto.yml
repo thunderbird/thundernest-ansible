@@ -1,0 +1,21 @@
+- name: Configure and install Kinto
+  hosts: kinto_web_test
+  remote_user: centos
+  become: yes
+
+  tasks:
+
+    - name: Install Prerequisites
+      dnf:
+        name:
+          - libffi-devel
+          - openssl-devel
+          - python3-devel
+          - python3-virtualenv
+        state: latest
+
+    - name: Install Kinto
+      pip:
+        name:
+          - kinto
+        state: latest

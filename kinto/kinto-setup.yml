@@ -1,0 +1,129 @@
+- name: Build EC2 instances.
+  hosts: localhost
+  connection: local
+  gather_facts: False
+  become: False
+  vars:
+    state: present
+
+  tasks:
+    - name: Create EC2 instances.
+      ec2:
+        key_name: justdave
+        region: us-west-2
+        groups:
+          - add-ssh
+        instance_type: c5.xlarge
+        image: ami-0157b1e4eefd91fd7
+        exact_count: 2
+        count_tag:
+            Name: kinto-web-test
+        instance_tags:
+            Name: kinto-web-test
+        wait: yes
+        vpc_subnet_id: subnet-35f0477d
+        assign_public_ip: yes
+        volumes:
+          - device_name: /dev/sda1
+            volume_type: gp2
+            volume_size: 200
+            delete_on_termination: true
+      register: ec2
+
+    - name: Add all instance hostnames to host group
+      add_host: hostname={{ item.public_dns_name }} groups=kinto_web_test
+      loop: "{{ ec2.tagged_instances }}"
+
+    - name: Show ec2 data
+      debug:
+        msg: "{{ ec2 }}"
+
+    - name: Pause for public IP assignment.
+      pause:
+        seconds: 5
+
+    - name: Wait for ssh to become active.
+      wait_for: host={{ item.public_ip }} port=22 delay=10 timeout=600 state=started
+      with_items: "{{ ec2.tagged_instances }}"
+      when: item.public_ip is defined
+
+- name: configure kinto backend webservers
+  import_playbook: plays/kinto-apache.yml
+
+- name: configure kinto on the webservers
+  import_playbook: plays/kinto.yml
+
+- name: Build and configure ELB Load Balancer
+  hosts: localhost
+  connection: local
+  gather_facts: False
+  become: False
+  vars:
+    state: present
+
+  tasks:
+    - name: Make sure target group exists
+      elb_target_group:
+        name: kinto-test
+        vpc_id: vpc-441e5e22
+        protocol: http
+        port: 80
+        health_check_protocol: http
+        health_check_port: 80
+        health_check_path: /
+        successful_response_codes: 200
+        health_check_interval: 15
+        health_check_timeout: 3
+        healthy_threshold_count: 4
+        unhealthy_threshold_count: 3
+        state: present
+
+    - name: Add hosts to the target group
+      elb_target:
+        target_group_name: kinto-test
+        target_id: "{{ item.id }}"
+        target_port: 80
+        state: present
+      with_items: "{{ ec2.tagged_instances }}"
+
+    - name: Create an ELB application server
+      elb_application_lb:
+        # these have to go in s3 if we do them, need to set up an s3 bucket if so
+        #access_logs_enabled: yes
+        #access_logs_s3_bucket: thebucket
+        #access_logs_s3_prefix: filename_prefix_
+        name: kinto-test
+        security_groups:
+          - amo-outside-web-access-prod-tb
+        subnets:
+          - subnet-11d28e4a
+          - subnet-35f0477d
+        listeners:
+          - Protocol: HTTP
+            Port: 80
+            DefaultActions:
+             - Type: forward
+               TargetGroupName: kinto-test
+          - Protocol: HTTPS
+            Port: 443
+            SslPolicy: ELBSecurityPolicy-2016-08
+            Certificates:
+             - CertificateArn: arn:aws:acm:us-west-2:768512802988:certificate/2cff184f-31a3-4e9e-b478-eff82076f06f
+            DefaultActions:
+             - Type: forward
+               TargetGroupName: kinto-test
+        state: present
+      register: elb
+
+    - name: display ELB info
+      debug:
+        msg: "ELB is listening on: {{ elb.dns_name }}"
+
+    # this needs CLOUDFLARE_TOKEN set in your environment
+    #- name: point DNS at the ELB
+    #  cloudflare_dns:
+    #    solo: yes
+    #    domain: thunderbird.net
+    #    record: thunderbird-settings-stage
+    #    type: CNAME
+    #    value: "{{ elb.dns_name }}"
