@@ -53,6 +53,8 @@
 - name: configure kinto on the webservers
   import_playbook: plays/kinto.yml
 
+# this has to happen after the webheads are set up or there won't be anything
+# to add to the ELB.
 - name: Build and configure ELB Load Balancer
   hosts: localhost
   connection: local

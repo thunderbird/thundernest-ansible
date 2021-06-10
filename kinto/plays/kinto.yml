@@ -16,6 +16,8 @@
 
     - name: Install Kinto
       pip:
+        virtualenv: /opt/kinto
+        virtualenv_python: python3
         name:
           - kinto
         state: latest
