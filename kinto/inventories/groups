@@ -1,0 +1,11 @@
+#
+# shortcuts for aws groups names
+#
+
+# this file must be named alphabetically later than the aws plugin config files
+
+[kinto_web_test:children]
+aws_ec2_kinto_web_test
+
+[kinto_db_test:children]
+aws_rds_kinto_db_test

@@ -14,5 +14,7 @@ Prereqs:
 
 To run:
 * `source py3/bin/activate` if you aren't already in the virtualenv
-* `ansible-playbook -i aws_ec2.yml kinto-setup.yml`
+* `ansible-playbook -i inventories kinto-setup.yml`
 
+To see a list of our AWS inventory, run the following:
+* `ansible-inventory -i inventories --graph`

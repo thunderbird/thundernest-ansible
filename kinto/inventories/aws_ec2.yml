@@ -4,6 +4,4 @@ regions:
   - us-west-2
 keyed_groups:
   - key: tags.Name
-    separator: ""
-groups:
-  kinto_web_test: "'kinto-web-test' in (tags|list)"
+    prefix: aws_ec2
