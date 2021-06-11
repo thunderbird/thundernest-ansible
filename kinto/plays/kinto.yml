@@ -1,9 +1,14 @@
 - name: Configure and install Kinto
-  hosts: kinto_web_test
+  hosts: "kinto_web_{{ prodenv }}"
   remote_user: centos
   become: yes
 
   tasks:
+
+    - name: Verify production environment is stage or prod
+      fail:
+        msg: "prodenv is not defined, or is set to something other than stage or prod"
+      when: (prodenv is not defined) or ((prodenv != "stage") and (prodenv != "prod"))
 
     - name: Install Prerequisites
       dnf:

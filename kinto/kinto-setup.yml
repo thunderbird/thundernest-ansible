@@ -5,8 +5,19 @@
   become: False
   vars:
     state: present
+    prodenv: stage
 
   tasks:
+    - name: Show defined production environment
+      debug:
+        msg: "prodenv={{ prodenv }}"
+      when: prodenv is defined
+
+    - name: Verify production environment is stage or prod
+      fail:
+        msg: "prodenv is not defined, or is set to something other than stage or prod"
+      when: (prodenv is not defined) or ((prodenv != "stage") and (prodenv != "prod"))
+
     - name: Create EC2 instances.
       ec2:
         key_name: justdave
@@ -17,9 +28,9 @@
         image: ami-0157b1e4eefd91fd7
         exact_count: 2
         count_tag:
-            Name: kinto-web-test
+            Name: "kinto-web-{{ prodenv }}"
         instance_tags:
-            Name: kinto-web-test
+            Name: "kinto-web-{{ prodenv }}"
         wait: yes
         vpc_subnet_id: subnet-35f0477d
         assign_public_ip: yes
@@ -31,7 +42,7 @@
       register: ec2
 
     - name: Add all instance hostnames to host group
-      add_host: hostname={{ item.public_dns_name }} groups=kinto_web_test
+      add_host: hostname={{ item.public_dns_name }} groups=kinto_web_{{ prodenv }}
       loop: "{{ ec2.tagged_instances }}"
 
     - name: Show ec2 data
@@ -62,11 +73,22 @@
   become: False
   vars:
     state: present
+    prodenv: foo
 
   tasks:
+    - name: Show defined production environment
+      debug:
+        msg: "prodenv={{ prodenv }}"
+      when: prodenv is defined
+
+    - name: Verify production environment is stage or prod
+      fail:
+        msg: "prodenv is not defined, or is set to something other than stage or prod"
+      when: (prodenv is not defined) or ((prodenv != "stage") and (prodenv != "prod"))
+
     - name: Make sure target group exists
       elb_target_group:
-        name: kinto-test
+        name: "kinto-{{ prodenv }}"
         vpc_id: vpc-441e5e22
         protocol: http
         port: 80
@@ -82,7 +104,7 @@
 
     - name: Add hosts to the target group
       elb_target:
-        target_group_name: kinto-test
+        target_group_name: "kinto-{{ prodenv }}"
         target_id: "{{ item.id }}"
         target_port: 80
         state: present
@@ -94,7 +116,7 @@
         #access_logs_enabled: yes
         #access_logs_s3_bucket: thebucket
         #access_logs_s3_prefix: filename_prefix_
-        name: kinto-test
+        name: "kinto-{{ prodenv }}"
         security_groups:
           - amo-outside-web-access-prod-tb
         subnets:
@@ -105,7 +127,7 @@
             Port: 80
             DefaultActions:
              - Type: forward
-               TargetGroupName: kinto-test
+               TargetGroupName: "kinto-{{ prodenv }}"
           - Protocol: HTTPS
             Port: 443
             SslPolicy: ELBSecurityPolicy-2016-08
@@ -113,7 +135,7 @@
              - CertificateArn: arn:aws:acm:us-west-2:768512802988:certificate/2cff184f-31a3-4e9e-b478-eff82076f06f
             DefaultActions:
              - Type: forward
-               TargetGroupName: kinto-test
+               TargetGroupName: "kinto-{{ prodenv }}"
         state: present
       register: elb
 

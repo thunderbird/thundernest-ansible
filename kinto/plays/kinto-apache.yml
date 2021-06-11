@@ -1,11 +1,24 @@
 - name: Configure firewall and install Apache2
-  hosts: kinto_web_test
+  hosts: "kinto_web_{{ prodenv }}"
   remote_user: centos
   become: yes
-  vars_files:
-  - ../vars/kinto-apache.yml
 
   pre_tasks:
+
+    - name: Show defined production environment
+      debug:
+        msg: "prodenv={{ prodenv }}"
+      when: prodenv is defined
+
+    - name: Verify production environment is stage or prod
+      fail:
+        msg: "prodenv is not defined, or is set to something other than stage or prod"
+      when: (prodenv is not defined) or ((prodenv != "stage") and (prodenv != "prod"))
+
+    - name: Verify apache vars loaded
+      fail:
+        msg: "apache_vhosts_filename not defined."
+      when: apache_vhosts_filename is not defined
 
     - name: firewalld
       dnf:
