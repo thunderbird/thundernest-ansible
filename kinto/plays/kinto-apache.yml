@@ -1,5 +1,5 @@
 - name: Configure firewall and install Apache2
-  hosts: "kinto_web_{{ prodenv }}"
+  hosts: "aws_ec2_kinto_web_{{ prodenv }}"
   remote_user: centos
   become: yes
 
@@ -15,10 +15,19 @@
         msg: "prodenv is not defined, or is set to something other than stage or prod"
       when: (prodenv is not defined) or ((prodenv != "stage") and (prodenv != "prod"))
 
+    - name: Show which groups this host is in
+      debug:
+        msg: "{{ group_names }}"
+
     - name: Verify apache vars loaded
+      debug:
+        msg: "apache_vhosts={{ apache_vhosts }}"
+      when: apache_vhosts is defined 
+
+    - name: Sanitycheck apache vars
       fail:
-        msg: "apache_vhosts_filename not defined."
-      when: apache_vhosts_filename is not defined
+        msg: "apache_vhosts not defined."
+      when: apache_vhosts is not defined or apache_vhosts == "" or apache_vhosts[0]['servername'] == "local.dev"
 
     - name: firewalld
       dnf:
@@ -30,20 +39,13 @@
       service: name=firewalld state=started enabled=yes
 
     - name: Make Document Root
-      file: path="/var/www/html" state=directory
+      file: path="/var/www/kinto" state=directory
 
     - name: Make httpd dir
       file: path="/etc/httpd/conf/" state=directory
 
-    - name: Copy SSL certs.
-      copy:
-        src: "{{ item }}"
-        dest: /etc/httpd/conf
-        mode: 0600
-      with_items:
-        - "../../files/privkey.pem"
-        - "../../files/chain.pem"
-        - "../../files/cert.pem"
+    - name: Remove any SSL config
+      file: path="/etc/httpd/conf.d/ssl.conf" state=absent
 
     - name: install mod_wsgi
       dnf:
@@ -62,7 +64,7 @@
     - { role: geerlingguy.apache }
 
   post_tasks:
-    - name: Make sure http and https ports are open.
+    - name: Make sure http port is open.
       firewalld:
         service: "{{ item }}"
         zone:      public
@@ -71,7 +73,6 @@
         state:     enabled
       with_items:
         - http
-        - https
 
     - name: Comment out CustomLog.
       replace:

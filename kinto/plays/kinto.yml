@@ -1,7 +1,10 @@
 - name: Configure and install Kinto
-  hosts: "kinto_web_{{ prodenv }}"
+  hosts: "aws_ec2_kinto_web_{{ prodenv }}"
   remote_user: centos
   become: yes
+  vars:
+    - kinto_db_url: "{{ lookup('env','KINTO_DB_URL') }}"
+    - kinto_hmac_secret: "{{ lookup('env','KINTO_HMAC_SECRET') }}"
 
   tasks:
 
@@ -9,6 +12,16 @@
       fail:
         msg: "prodenv is not defined, or is set to something other than stage or prod"
       when: (prodenv is not defined) or ((prodenv != "stage") and (prodenv != "prod"))
+
+    - name: Verify template vars loaded (kinto_db_url)
+      fail:
+        msg: "kinto_db_url is not defined. You probably need to `source ../files/secrets.sh`"
+      when: kinto_db_url is not defined or kinto_db_url == ""
+
+    - name: Verify template vars loaded (kinto_hmac_secret)
+      fail:
+        msg: "kinto_hmac_secret is not defined. You probably need to `source ../files/secrets.sh`"
+      when: kinto_hmac_secret is not defined or kinto_hmac_secret == ""
 
     - name: Install Prerequisites
       dnf:
@@ -21,8 +34,26 @@
 
     - name: Install Kinto
       pip:
-        virtualenv: /opt/kinto
+        virtualenv: /var/www/kinto/.venv
         virtualenv_python: python3
         name:
           - kinto
+          - kinto-changes
         state: latest
+
+    - name: Setup WSGI file
+      copy:
+        src: "{{ item }}"
+        dest: /var/www/kinto
+        mode: 0644
+      with_items:
+        - "../files/app.wsgi"
+
+    - name: Make Config dir
+      file: path="/var/www/kinto/config" state=directory
+
+    - name: Setup Kinto config
+      template:
+        src: ../templates/kinto_config.j2
+        dest: /var/www/kinto/config/kinto.ini
+

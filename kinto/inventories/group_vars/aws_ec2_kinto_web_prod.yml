@@ -24,7 +24,7 @@ apache_global_vhost_settings: |
     AddOutputFilterByType DEFLATE application/javascript
     AddOutputFilterByType DEFLATE application/x-javascript
 
-apache_vhosts_template: "../vars/vhost_template.j2"
+apache_vhosts_template: "../templates/vhost_template.j2"
 
 apache_vhosts:
   - servername: "thunderbird-settings.thunderbird.net"
