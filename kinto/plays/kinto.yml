@@ -37,7 +37,10 @@
         virtualenv: /var/www/kinto/.venv
         virtualenv_python: python3
         name:
-          - kinto
+          # kinto[postgreql] will try to pull psychopg2 which doesn't work
+          # anymore, but will pass if psychopg2-binary is already installed
+          - psycopg2-binary
+          - kinto[postgresql]
           - kinto-changes
         state: latest
 
