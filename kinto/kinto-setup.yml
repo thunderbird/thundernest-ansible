@@ -101,6 +101,7 @@
         health_check_timeout: 3
         healthy_threshold_count: 4
         unhealthy_threshold_count: 3
+        modify_targets: no
         state: present
 
     - name: Add hosts to the target group
