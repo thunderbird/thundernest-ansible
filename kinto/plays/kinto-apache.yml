@@ -39,7 +39,10 @@
       service: name=firewalld state=started enabled=yes
 
     - name: Make Document Root
-      file: path="/var/www/kinto" state=directory
+      file:
+        path: "/var/www/kinto"
+        state: directory
+        setype: httpd_sys_content_t
 
     - name: Make httpd dir
       file: path="/etc/httpd/conf/" state=directory
