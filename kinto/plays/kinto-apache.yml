@@ -15,15 +15,6 @@
         msg: "prodenv is not defined, or is set to something other than stage or prod"
       when: (prodenv is not defined) or ((prodenv != "stage") and (prodenv != "prod"))
 
-    - name: Show which groups this host is in
-      debug:
-        msg: "{{ group_names }}"
-
-    - name: Verify apache vars loaded
-      debug:
-        msg: "apache_vhosts={{ apache_vhosts }}"
-      when: apache_vhosts is defined 
-
     - name: Sanitycheck apache vars
       fail:
         msg: "apache_vhosts not defined."
