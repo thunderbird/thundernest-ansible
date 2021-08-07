@@ -38,6 +38,12 @@
     - name: Enable firewalld
       service: name=firewalld state=started enabled=yes
 
+    - name: Allow httpd to connect to postgres in selinux
+      seboolean:
+        name: httpd_can_network_connect_db
+        persistent: yes
+        state: yes
+
     - name: Make Document Root
       file:
         path: "/var/www/kinto"

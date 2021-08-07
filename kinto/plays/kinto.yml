@@ -32,6 +32,12 @@
           - python3-virtualenv
         state: latest
 
+    - name: Make virtualenv dir with correct setype
+      file:
+        path: "/var/www/kinto/.venv"
+        state: directory
+        setype: httpd_sys_script_exec_t
+
     - name: Install Kinto
       pip:
         virtualenv: /var/www/kinto/.venv
@@ -53,7 +59,10 @@
         - "../files/app.wsgi"
 
     - name: Make Config dir
-      file: path="/var/www/kinto/config" state=directory
+      file:
+        path: "/var/www/kinto/config"
+        state: directory
+        setype: httpd_sys_content_t
 
     - name: Setup Kinto config
       template:
