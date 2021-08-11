@@ -1,12 +1,13 @@
+---
 apache_remove_default_vhost: true
-apache_vhosts_filename: "ssl.conf"
+apache_vhosts_filename: "vhosts.conf"
 
 apache_global_vhost_settings: |
     LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
     LogFormat "%h %l %u %t \"%r\" %>s %b" common
     LogFormat "%v: %h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" vcombined
     CustomLog "logs/access_log" vcombined
-    
+
     ServerLimit 32
     StartServers 8
     MaxRequestWorkers 1024
@@ -24,37 +25,19 @@ apache_global_vhost_settings: |
     AddOutputFilterByType DEFLATE application/javascript
     AddOutputFilterByType DEFLATE application/x-javascript
 
-    LoadModule ssl_module modules/mod_ssl.so
-    Listen 443
-    SSLPassPhraseDialog  builtin
-    SSLSessionCache         shmcb:/var/cache/mod_ssl/scache(512000)
-    SSLSessionCacheTimeout  300
-    Mutex default
-    SSLRandomSeed startup file:/dev/urandom  256
-    SSLRandomSeed connect builtin
-    SSLCryptoDevice builtin
-apache_vhosts_template: "../../vars/vhost_template.j2"
-apache_certificate_key_file: "/etc/httpd/conf/privkey.pem"
-apache_certificate_file: "/etc/httpd/conf/cert.pem"
-apache_certificate_chain_file: "/etc/httpd/conf/chain.pem"
-non_ssl_parameters: |
-    ExpiresActive On
-    ExpiresDefault "access plus 6 hours"
-    RewriteEngine On
-    RewriteCond %{HTTPS} off
-    RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [L,R=301,NE]
+apache_vhosts_template: "../templates/vhost_template.j2"
 
 apache_vhosts:
-  - servername: "thunderbird-settings.thunderbird.net"
+  - servername: "thunderbird-settings-stage.thunderbird.net"
     documentroot: "/var/www/html/"
     extra_parameters: |
       ExpiresActive On
       ExpiresDefault "access plus 6 hours"
-      WSGIDaemonProcess thunderbird-settings.thunderbird.net processes=2 threads=15 display-name=%{GROUP} python-path=/var/www/kinto
-      WSGIProcessGroup thunderbird-settings.thunderbird.net
+      WSGIDaemonProcess thunderbird-settings-stage.thunderbird.net processes=2 threads=15 display-name=%{GROUP} python-path=/var/www/kinto python-home=/var/www/kinto/.venv
+      WSGIProcessGroup thunderbird-settings-stage.thunderbird.net
       WSGIScriptAlias    /     /var/www/kinto/app.wsgi
-      SetEnv         KINTO_INI /var/www/config/kinto.ini
-      <Directory /home/centos/kinto>
+      SetEnv         KINTO_INI /var/www/kinto/config/kinto.ini
+      <Directory /var/www/kinto>
           <Files app.wsgi>
               Require all granted
           </Files>

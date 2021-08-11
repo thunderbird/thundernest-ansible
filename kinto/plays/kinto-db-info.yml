@@ -1,0 +1,20 @@
+# run this directly from the parent dir as
+# ansible-playbook plays/kinto-db-info.yml
+# This is just for development, it's not invoked by the setup scripts
+- name: Dump Config info for known RDS instances
+  hosts: localhost
+  connection: local
+  gather_facts: False
+  become: False
+
+  tasks:
+
+    - name: Get RDS Info
+      rds_instance_info:
+        region: us-west-2
+        db_instance_identifier: kintodb1
+      register: rds
+
+    - name: Show RDS Info
+      debug:
+        msg: "{{ rds }}"

@@ -1,36 +1,51 @@
 - name: Configure firewall and install Apache2
-  hosts: "{{ var_hosts | default('kinto') }}"
+  hosts: "aws_ec2_kinto_web_{{ prodenv }}"
   remote_user: centos
   become: yes
-  vars_files:
-  - ../vars/kinto-apache.yml
 
   pre_tasks:
 
+    - name: Show defined production environment
+      debug:
+        msg: "prodenv={{ prodenv }}"
+      when: prodenv is defined
+
+    - name: Verify production environment is stage or prod
+      fail:
+        msg: "prodenv is not defined, or is set to something other than stage or prod"
+      when: (prodenv is not defined) or ((prodenv != "stage") and (prodenv != "prod"))
+
+    - name: Sanitycheck apache vars
+      fail:
+        msg: "apache_vhosts not defined."
+      when: apache_vhosts is not defined or apache_vhosts == "" or apache_vhosts[0]['servername'] == "local.dev"
+
     - name: firewalld
       dnf:
-        name: 
+        name:
           - firewalld
         state: latest
 
     - name: Enable firewalld
       service: name=firewalld state=started enabled=yes
-      
+
+    - name: Allow httpd to connect to postgres in selinux
+      seboolean:
+        name: httpd_can_network_connect_db
+        persistent: yes
+        state: yes
+
     - name: Make Document Root
-      file: path="/var/www/html" state=directory
+      file:
+        path: "/var/www/kinto"
+        state: directory
+        setype: httpd_sys_content_t
 
     - name: Make httpd dir
       file: path="/etc/httpd/conf/" state=directory
 
-    - name: Copy SSL certs.
-      copy:
-        src: "{{ item }}"
-        dest: /etc/httpd/conf
-        mode: 0600
-      with_items:
-        - "../../files/privkey.pem"
-        - "../../files/chain.pem"
-        - "../../files/cert.pem"
+    - name: Remove any SSL config
+      file: path="/etc/httpd/conf.d/ssl.conf" state=absent
 
     - name: install mod_wsgi
       dnf:
@@ -49,7 +64,7 @@
     - { role: geerlingguy.apache }
 
   post_tasks:
-    - name: Make sure http and https ports are open.
+    - name: Make sure http port is open.
       firewalld:
         service: "{{ item }}"
         zone:      public
@@ -58,7 +73,6 @@
         state:     enabled
       with_items:
         - http
-        - https
 
     - name: Comment out CustomLog.
       replace:

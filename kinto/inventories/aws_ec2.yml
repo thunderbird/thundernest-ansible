@@ -1,0 +1,7 @@
+# AWS Inventory Plugin config
+plugin: amazon.aws.aws_ec2
+regions:
+  - us-west-2
+keyed_groups:
+  - key: tags.Name
+    prefix: aws_ec2
