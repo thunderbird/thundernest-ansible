@@ -20,7 +20,7 @@
 
     - name: Create EC2 instances.
       ec2:
-        key_name: justdave
+        key_name: tb-amo-ops-key
         region: us-west-2
         groups:
           - add-ssh

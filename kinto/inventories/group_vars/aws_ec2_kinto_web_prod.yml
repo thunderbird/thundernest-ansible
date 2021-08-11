@@ -28,11 +28,12 @@ apache_vhosts_template: "../templates/vhost_template.j2"
 
 apache_vhosts:
   - servername: "thunderbird-settings.thunderbird.net"
+    serveralias: "thunderbird-settings-stage.thunderbird.net"
     documentroot: "/var/www/html/"
     extra_parameters: |
       ExpiresActive On
       ExpiresDefault "access plus 6 hours"
-      WSGIDaemonProcess thunderbird-settings-stage.thunderbird.net processes=2 threads=15 display-name=%{GROUP} python-path=/var/www/kinto python-home=/var/www/kinto/.venv
+      WSGIDaemonProcess thunderbird-settings.thunderbird.net processes=2 threads=15 display-name=%{GROUP} python-path=/var/www/kinto python-home=/var/www/kinto/.venv
       WSGIProcessGroup thunderbird-settings.thunderbird.net
       WSGIScriptAlias    /     /var/www/kinto/app.wsgi
       SetEnv         KINTO_INI /var/www/kinto/config/kinto.ini
