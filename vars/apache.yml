@@ -169,19 +169,20 @@ apache_vhosts:
       RewriteRule ^/releases/? /thunderbird/releases/ [R=302]
       # https://github.com/thundernest/thunderbird-website/issues/160
       RewriteRule ^(.*)/channel/? #channel [R=302,NE]
+      # URLs with no language code need to be assigned one by wsgi.py
       WSGIScriptAliasMatch ^/$ /var/www/html/start/wsgi.py
       WSGIScriptAliasMatch ^/about[/]?$ /var/www/html/start/wsgi.py
-      WSGIScriptAliasMatch ^/download[/]?$ /var/www/html/start/wsgi.py
+      WSGIScriptAliasMatch ^/download /var/www/html/start/wsgi.py
       WSGIScriptAliasMatch ^/features[/]?$ /var/www/html/start/wsgi.py
       WSGIScriptAliasMatch ^/organizations[/]?$ /var/www/html/start/wsgi.py
       WSGIScriptAliasMatch ^/thunderbird /var/www/html/start/wsgi.py
-      ExpiresActive On
-      ExpiresDefault "access plus 2 hours"
       RewriteRule ^/calendar/?(.*)$ /en-US/calendar/$1 [R=302]
       RewriteRule ^/careers/? /en-US/careers/ [R=302]
       RewriteRule ^/contact/? /en-US/contact/ [R=302]
       RewriteRule ^/email-providers/? /en-US/email-providers/ [R=302]
       RewriteRule ^/get-involved/? /en-US/get-involved/ [R=302]
+      ExpiresActive On
+      ExpiresDefault "access plus 2 hours"
       Header always set Strict-Transport-Security "max-age=31536000"
 
   - servername: "start.thunderbird.net"
@@ -247,3 +248,11 @@ apache_vhosts:
     options: "+Indexes +FollowSymLinks"
     extra_parameters: |
       RedirectMatch 404 /\.git
+
+  - servername: "crash-stats.thunderbird.net"
+    serveralias: "crash-reports.thunderbird.net"
+    extra_parameters: |
+      ExpiresActive On
+      ExpiresDefault "access plus 24 hours"
+      RewriteEngine On
+      RewriteRule ^(.*)$ https://crash-stats.mozilla.org/home/product/Thunderbird [R=302]
