@@ -16,7 +16,6 @@ cd $DATA
 cp -R ../webroot/* $TEMP
 source /var/www/tbservices/bin/activate
 python ../tools/convert.py -a -d $TEMP/v1.1 *
-rm -rf $DATA/cloudnine-net.jp
 python ../tools/convert.py -a -d $TEMP/v1.0 -v 1.0 *
 
 mv $DEST $PURGEDIR
