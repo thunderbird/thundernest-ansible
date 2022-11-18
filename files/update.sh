@@ -10,13 +10,11 @@ DATA=/var/www/autoconfig.momo/ispdb
 # Make sure we regenerate all the files so deleted files don't stay.
 mkdir -p $TEMP
 mkdir -p $TEMP/v1.1
-mkdir -p $TEMP/v1.0
 
 cd $DATA
 cp -R ../webroot/* $TEMP
 source /var/www/tbservices/bin/activate
 python ../tools/convert.py -a -d $TEMP/v1.1 *
-python ../tools/convert.py -a -d $TEMP/v1.0 -v 1.0 *
 
 mv $DEST $PURGEDIR
 mv $TEMP $DEST
