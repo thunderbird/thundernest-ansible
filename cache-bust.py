@@ -2,7 +2,7 @@ import sys
 
 sys.path.append('/home/ansibler/thunderbird-website/')
 
-import CloudFlare
+from CloudFlare import CloudFlare
 import os
 
 from git import Repo
@@ -42,12 +42,19 @@ def main():
 
 def bust_cache(url_list):
     """ Talks with cloudflare to bust the requested urls """
-    cf = CloudFlare.CloudFlare(email=email, token=apikey)
+    cf = CloudFlare(email=email, token=apikey)
 
     for urls in chunks(url_list, 30):
         api_req = {'files': urls}
-        response = cf.zones.purge_cache.post(zone, data=api_req)
-        print(response)
+        # See: https://developers.cloudflare.com/api/operations/zone-purge-files-by-cache-tags,-host,-or-prefix
+
+        try:
+            response = cf.zones.purge_cache.post(zone, data=api_req)
+            print("Cloudflare Response: {}".format(response))
+        except CloudFlare.exceptions.CloudFlareAPIError as err:
+            # If there's any errors with busting the cache, then just stop doing it. Don't want to prevent the deployment.
+            print("Error busting cache: {}".format(err))
+            break
 
 def gather_urls(repo_path):
     """ Gathers list of urls from the git diff. """
