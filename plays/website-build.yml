@@ -108,6 +108,11 @@
       become: yes
       become_user: ansibler
 
+    - name: bust website cache
+      command: "python cache-bust.py {{ tbsitebuild }} --bust-cache"
+      become: yes
+      become_user: ansibler
+
     - name: clean up temporary site files
       file:
         path: "{{ item }}"
