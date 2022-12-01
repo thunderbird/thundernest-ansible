@@ -46,9 +46,8 @@ def bust_cache(url_list):
 
     for urls in chunks(url_list, 30):
         api_req = {'files': urls}
-        # See: https://developers.cloudflare.com/api/operations/zone-purge-files-by-cache-tags,-host,-or-prefix
-
         try:
+            # See: https://developers.cloudflare.com/api/operations/zone-purge-files-by-cache-tags,-host,-or-prefix
             response = cf.zones.purge_cache.post(zone, data=api_req)
             print("Cloudflare Response: {}".format(response))
         except CloudFlare.exceptions.CloudFlareAPIError as err:
