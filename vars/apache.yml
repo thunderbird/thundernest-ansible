@@ -250,11 +250,3 @@ apache_vhosts:
     options: "+Indexes +FollowSymLinks"
     extra_parameters: |
       RedirectMatch 404 /\.git
-
-  - servername: "crash-stats.thunderbird.net"
-    serveralias: "crash-reports.thunderbird.net"
-    extra_parameters: |
-      ExpiresActive On
-      ExpiresDefault "access plus 24 hours"
-      RewriteEngine On
-      RewriteRule ^(.*)$ https://crash-stats.mozilla.org/home/product/Thunderbird [R=302]
