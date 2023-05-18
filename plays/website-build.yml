@@ -2,6 +2,8 @@
   hosts: localhost
   connection: local
   gather_facts: false
+  become: yes
+  become_user: ansibler
 
   vars: 
     tbsite: "/tmp/tbsite-{{ branch | default('master') }}"
@@ -56,22 +58,21 @@
       command: bash l10n_tools/compile.sh
       args:
         chdir: "{{ tbsite }}"
-      become: yes
-      become_user: ansibler
+
+    - name: Install packages from requirements-dev.txt
+      pip:
+        requirements: "{{ tbsite }}/requirements-dev.txt"
+        virtualenv: "{{ tbsite }}/siteenv"
 
     - name: run website build
-      command: python build-site.py --debug
+      shell: "source {{ tbsite }}/siteenv/bin/activate && python build-site.py --debug"
       args:
         chdir: "{{ tbsite }}"
-      become: yes
-      become_user: ansibler
 
     - name: run start page build
-      command: python build-site.py --startpage --debug
+      shell: "source {{ tbsite }}/siteenv/bin/activate && python build-site.py --startpage --debug"
       args:
         chdir: "{{ tbsite }}"
-      become: yes
-      become_user: ansibler
 
     - name: make sure temp dir is empty in case of previous failed build
       file:
@@ -88,15 +89,11 @@
         - { src: "{{ tbsite }}/site", dest: "{{ tbsitebuild }}/site" }
         - { src: "{{ tbsite }}/wsgi.py", dest: "{{ tbsitebuild }}/wsgi.py" }
         - { src: "{{ tbsite }}/settings.py", dest: "{{ tbsitebuild }}/settings.py" }
-      become: yes
-      become_user: ansibler
 
     - name: commit website changes
       command: "{{ item }}"
       args:
         chdir: "{{ tbsitebuild }}"
-      become: yes
-      become_user: ansibler
       with_items:
         - "git add -A"
         - "git -c 'user.name=Thundernest Bot' -c 'user.email={{ lookup('env', 'GIT_EMAIL') }}' commit -m 'Website rebuild triggered by {{ message | default('manual execution of the script.') }}'"
@@ -105,8 +102,6 @@
       command: "git push https://{{ lookup('env', 'GIT_USER') | urlencode }}:{{ lookup('env', 'GIT_API_KEY') }}@github.com/thundernest/tb-website-builds.git --all"
       args:
         chdir: "{{ tbsitebuild }}"
-      become: yes
-      become_user: ansibler
 
     - name: clean up temporary site files
       file:

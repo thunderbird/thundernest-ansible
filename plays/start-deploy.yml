@@ -1,4 +1,4 @@
-- name: Configure python virtualenv and install services
+- name: Deploy tb-website-builds files to web servers
   hosts: "{{ var_hosts | default('webheads') }}"
   vars_files:
   - ../vars/conf.yml
