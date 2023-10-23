@@ -8,7 +8,7 @@
   tasks:
   - name: checkout stats
     git:
-      repo: "https://github.com/thundernest/stats.git"
+      repo: "https://github.com/thunderbird/stats.git"
       dest: "{{ stats_files }}"
       version: "{{ branch | default('prod') }}"
       force: true

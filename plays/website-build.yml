@@ -24,27 +24,27 @@
 
     - name: checkout tb-website-builds history repo
       git:
-        repo: "https://github.com/thundernest/tb-website-builds.git"
+        repo: "https://github.com/thunderbird/tb-website-builds.git"
         dest: "{{ tbsitebuild }}"
         version: "{{ branch | default('master') }}"
         depth: 1
 
     - name: checkout thunderbird-website
       git:
-        repo: "https://github.com/thundernest/thunderbird-website.git"
+        repo: "https://github.com/thunderbird/thunderbird-website.git"
         dest: "{{ tbsite }}"
         version: "{{ branch | default('master') }}"
 
     - name: checkout Mozilla localization files
       git:
-        repo: "https://github.com/thundernest/thunderbird.net-l10n.git"
+        repo: "https://github.com/thunderbird/thunderbird.net-l10n.git"
         dest: "{{ tbsite }}{{ locale }}"
         version: "master"
         depth: 1
 
     - name: checkout release notes
       git:
-        repo: "https://github.com/thundernest/thunderbird-notes.git"
+        repo: "https://github.com/thunderbird/thunderbird-notes.git"
         dest: "{{ tbsite }}{{ notes }}"
         version: "{{ branch | default('master') }}"
 
@@ -99,7 +99,7 @@
         - "git -c 'user.name=Thundernest Bot' -c 'user.email={{ lookup('env', 'GIT_EMAIL') }}' commit -m 'Website rebuild triggered by {{ message | default('manual execution of the script.') }}'"
 
     - name: push website update
-      command: "git push https://{{ lookup('env', 'GIT_USER') | urlencode }}:{{ lookup('env', 'GIT_API_KEY') }}@github.com/thundernest/tb-website-builds.git --all"
+      command: "git push https://{{ lookup('env', 'GIT_USER') | urlencode }}:{{ lookup('env', 'GIT_API_KEY') }}@github.com/thunderbird/tb-website-builds.git --all"
       args:
         chdir: "{{ tbsitebuild }}"
 

@@ -18,7 +18,7 @@
     - name: checkout webhook
       become: yes
       git:
-        repo: "https://github.com/thundernest/python-github-webhooks"
+        repo: "https://github.com/thunderbird/python-github-webhooks"
         dest: "/var/www/deployhook"
         force: True
 

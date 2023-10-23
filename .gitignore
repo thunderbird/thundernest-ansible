@@ -1,3 +1,4 @@
+thunderbird-ansible.key
 thundernest-ansible.key
 *.retry
 *.pyc

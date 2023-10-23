@@ -6,6 +6,6 @@
   tasks:
     - name: checkout the static-test files
       git:
-        repo: "https://github.com/thundernest/static-test.git"
+        repo: "https://github.com/thunderbird/static-test.git"
         dest: "{{ statictestdest }}"
         version: "{{ branch | default('main') }}"

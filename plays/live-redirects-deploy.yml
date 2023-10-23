@@ -11,7 +11,7 @@
 
     - name: checkout the live redirects
       git:
-        repo: "https://github.com/thundernest/live-redirects.git"
+        repo: "https://github.com/thunderbird/live-redirects.git"
         dest: "{{ live_doc_root }}"
         version: "{{ branch | default('prod') }}"
         force: True
