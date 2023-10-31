@@ -160,15 +160,15 @@ apache_vhosts:
       WSGIProcessGroup stage.thunderbird.net
 
       RewriteRule ^/(.*)/thunderbird/60\.0/whatsnew/$ https://support.mozilla.org/$1/kb/new-thunderbird-60 [R=302,L]
-      # https://github.com/thundernest/thunderbird-website/issues/162
+      # https://github.com/thunderbird/thunderbird-website/issues/162
       RewriteRule ^/ja-JP-mac/?(.*)$ /ja/$1 [R=302]
-      # https://github.com/thundernest/thunderbird.net-l10n/issues/1
+      # https://github.com/thunderbird/thunderbird.net-l10n/issues/1
       RewriteRule ^/bn-(?:BD|IN)/?(.*)$ /bn/$1 [R=302]
       RewriteRule ^/privacy/? https://www.mozilla.org/privacy/thunderbird/ [R=302]
       RewriteRule ^/thunderbird/(latest/)?system-requirements/? /system-requirements/ [R=302]
       RewriteRule ^/thunderbird/notes/? /notes/ [R=302]
       RewriteRule ^/releases/? /thunderbird/releases/ [R=302]
-      # https://github.com/thundernest/thunderbird-website/issues/160
+      # https://github.com/thunderbird/thunderbird-website/issues/160
       RewriteRule ^(.*)/channel/? #channel [R=302,NE]
       # URLs with no language code need to be assigned one by wsgi.py
       WSGIScriptAliasMatch ^/$ /var/www/html/start/wsgi.py
@@ -195,9 +195,9 @@ apache_vhosts:
       ExpiresActive On
       ExpiresDefault "access plus 8 hours"
       RewriteEngine On
-      # https://github.com/thundernest/thunderbird-website/issues/162
+      # https://github.com/thunderbird/thunderbird-website/issues/162
       RewriteRule ^/ja-JP-mac/?(.*)$ /ja/$1 [R=302]
-      # https://github.com/thundernest/thunderbird.net-l10n/issues/1
+      # https://github.com/thunderbird/thunderbird.net-l10n/issues/1
       RewriteRule ^/bn-(?:BD|IN)/?(.*)$ /bn/$1 [R=302]
       RewriteRule ^/$ /en-US/release/ [R=302]
       Header always set Strict-Transport-Security "max-age=31536000"

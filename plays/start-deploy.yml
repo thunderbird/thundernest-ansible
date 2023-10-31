@@ -6,7 +6,7 @@
   tasks:
     - name: checkout tb-website-builds to get the start page files
       git:
-        repo: "https://github.com/thundernest/tb-website-builds.git"
+        repo: "https://github.com/thunderbird/tb-website-builds.git"
         dest: "{{ start_page_files }}"
         version: "{{ branch | default('prod') }}"
         force: True

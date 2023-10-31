@@ -6,7 +6,7 @@
 2. Open the terminal and enter the following commands:
 3. `sudo apt-get install ansible git-crypt`
 4. `pip install linode-python`.
-5. `git clone https://github.com/thundernest/thundernest-ansible.git`
+5. `git clone https://github.com/thunderbird/thundernest-ansible.git`
 6. `ansible-galaxy install geerlingguy.apache`
 7. Get the `thundernest-ansible.key` from 1password, labeled `git-crypt key for thundernest-ansible`.
 8. Get the `thundernest-infra` RSA key labeled `Linode ssh private key` from 1password. Copy it to ~/.ssh, `chmod 600 thundernest-infra` and `mv thundernest-infra id_rsa`.
@@ -51,7 +51,7 @@ Once you have confirmed all of this, you can follow the steps below to set your 
 
 # What if the SSL certs are expired?
 
-1. The SSL certs are stored in [thundernest-ansible/files](https://github.com/thundernest/thundernest-ansible/tree/master/files).
+1. The SSL certs are stored in [thundernest-ansible/files](https://github.com/thunderbird/thundernest-ansible/tree/master/files).
 2. They are normally renewed automatically on the 21st of each month, and committed to the repository.
 3. To renew them manually:
 ```bash

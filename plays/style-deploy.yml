@@ -6,6 +6,6 @@
   tasks:
   - name: checkout style-guide repo
     git:
-      repo: "https://github.com/thundernest/style-guide.git"
+      repo: "https://github.com/thunderbird/style-guide.git"
       dest: "{{ style_files }}"
       version: "{{ branch | default('prod') }}"

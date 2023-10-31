@@ -6,7 +6,7 @@
   tasks:
     - name: checkout the mx service
       git:
-        repo: "https://github.com/thundernest/http-mx.git"
+        repo: "https://github.com/thunderbird/http-mx.git"
         dest: "{{ mxdest }}"
         version: "{{ branch | default('prod') }}"
 

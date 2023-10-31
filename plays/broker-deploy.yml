@@ -6,7 +6,7 @@
   tasks:
   - name: checkout broker
     git:
-      repo: "https://github.com/thundernest/broker.git"
+      repo: "https://github.com/thunderbird/broker.git"
       dest: "{{ brokerdest }}"
       version: "{{ branch | default('prod') }}"
       force: yes
