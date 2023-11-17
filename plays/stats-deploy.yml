@@ -13,6 +13,16 @@
       version: "{{ branch | default('prod') }}"
       force: true
 
+  - name: update json files from git
+    git:
+      repo: "https://github.com/thunderbird/stats.git"
+      dest: ~/stats
+    delegate_to: localhost
+    register: repo_clone
+    failed_when:
+      - repo_clone.failed
+      - not 'Local modifications exist in repository' in repo_clone.msg
+  
   - name: Copy all json data.
     copy:
       src: "{{ item }}"
