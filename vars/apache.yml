@@ -220,10 +220,13 @@ apache_vhosts:
       ExpiresDefault "access plus 1 hour"
 
   - servername: "style.thunderbird.net"
-    serveralias: "style-stage.thunderbird.net"
-    documentroot: "/var/www/html/style_guide/_site"
     extra_parameters: |
-      RedirectMatch 404 /\.git
+      ExpiresActive On
+      ExpiresDefault "access plus 24 hours"
+      <Location />
+        RewriteEngine On
+        RewriteRule .* https://design.thunderbird.net [R=302]
+      </Location>
 
   - servername: "aus.thunderbird.net"
     serveralias: "aus-stage.thunderbird.net"
