@@ -187,6 +187,8 @@ apache_vhosts:
       ExpiresActive On
       ExpiresDefault "access plus 2 hours"
       Header always set Strict-Transport-Security "max-age=31536000"
+      # Bug 1862171
+      Header always set X-Frame-Options "DENY"
 
   - servername: "start.thunderbird.net"
     serveralias: "start-stage.thunderbird.net"
