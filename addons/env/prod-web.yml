@@ -1,0 +1,20 @@
+region: us-west-2
+key_pair: tb-amo-ops-key
+vpc_id: vpc-441e5e22
+
+subnet_id: subnet-35f0477d
+
+# main web servers
+sec_group_names: ["amo-uwsgi-prod-tb", "add-ssh"]
+target_group: 'amo-prod'
+ami: 'ami-08c191625cfb7ee61'
+instance_type: 'c6a.large'
+node_count: '2'
+volume_size: '200'
+count_tag:
+  uwsgi: 'webservers'
+filter_tag:
+  'tag:uwsgi': 'webservers'
+settings_path: '../settings_local.py'
+ini_file: '../olympia.ini'
+docker_command: /bin/bash -c "./manage.py update_product_details && pip install uwsgi && uwsgi --uid root --gid root /etc/uwsgi.d/olympia.ini"

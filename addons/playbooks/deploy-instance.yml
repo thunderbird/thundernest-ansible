@@ -1,0 +1,143 @@
+- name: Build ec2 instances
+  hosts: localhost
+  connection: local
+  gather_facts: False
+  become: False
+
+  tasks:
+    - name: Create an EC2 instance
+      amazon.aws.ec2_instance:
+        key_name: "{{ key_pair }}"
+        region: "{{ region }}"
+        security_groups: "{{ sec_group_names }}"
+        instance_type: "{{ instance_type }}"
+        image_id: "{{ ami }}"
+        wait: true
+        state: started
+        filters:
+          "{{ filter_tag }}"
+        tags:
+          "{{ count_tag }}"
+        exact_count: "{{ node_count }}"
+        subnet_id: "{{ subnet_id }}"
+        network:
+          assign_public_ip: true
+        volumes:
+          - device_name: /dev/sda1
+            ebs:
+              volume_type: gp2
+              volume_size: "{{ volume_size }}"
+              delete_on_termination: true
+      register: ec2
+
+    - name: Get all instances with the uwsgi server tag, even if previously created
+      amazon.aws.ec2_instance_info:
+        region: "{{ region }}"
+        filters:
+          "{{ filter_tag }}"
+      register: uwsgi
+
+    - name: Wait for ssh to become active
+      ansible.builtin.wait_for:
+        host: "{{ item.public_ip_address }}"
+        port: 22
+        delay: 10
+        timeout: 600
+        state: started
+      loop: "{{ uwsgi.instances }}"
+      when: item.public_ip_address is defined 
+
+    - name: Register targets with ELB
+      community.aws.elb_target_group:
+        name: "{{ target_group }}"
+        region: "{{ region }}"
+        state: present
+        protocol: http
+        port: 80
+        vpc_id: "{{ vpc_id }}"
+        targets:
+          - Id: "{{ item.instance_id }}"
+      with_items: "{{ uwsgi.instances }}"
+      when: item.public_ip_address is defined
+
+    - name: Add all launched uwsgi instances to a group, even ones launched before this script was run
+      ansible.builtin.add_host:
+        hostname: "{{ item.public_ip_address }}"
+        groups: launched
+      loop: "{{ uwsgi.instances }}"
+      when: item.public_ip_address is defined
+
+- name: Install requirements and docker container
+  hosts: launched
+  user: centos
+  become: true
+  become_method: sudo
+
+  tasks:
+    - name: Install all packages
+      ansible.builtin.yum:
+        name:
+          - "nfs-utils"
+          - "docker"
+          - "docker-registry"
+          - "git"
+          - "mysql"
+          - "telnet"
+          - "python-docker-py"
+
+    - name: Create /data/olympia dir for settings files
+      ansible.builtin.file:
+        path: /data/olympia
+        state: directory
+
+    - name: Copy settings files over
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: /data/olympia
+        owner: root
+        group: root
+        mode: 0755
+      loop:
+        - "{{ settings_file }}"
+        - "{{ ini_file }}"
+        - ../api_key_secret.key
+        - ../versioncheck.ini
+
+    - name: Create nfs share dir
+      ansible.builtin.file:
+        path: /var/addons
+        state: directory
+        mode: 777
+        owner: root
+        group: root
+
+    - name: Mount EFS share
+      ansible.posix.mount:
+        path: /var/addons
+        src: "fs-55e85afc.efs.us-west-2.amazonaws.com:/"
+        fstype: nfs4
+        state: mounted
+
+    - name: Make sure docker is running
+      ansible.builtin.systemd:
+        name: docker
+        state: started
+
+    - name: run docker container
+      community.docker.docker_container:
+        name: addons-server
+        image: thunderbirdops/addons-server
+        command: "{{ docker_command }}"
+        state: started
+        privileged: true
+        restart: true
+        pull: true
+        network_mode: host
+        volumes:
+          - /data/olympia/settings_local.py:/data/olympia/settings_local.py:Z
+          - /data/olympia/api_key_secret.key:/data/aeskeys/api_key_secret.key:Z
+          - /data/olympia/olympia.ini:/etc/uwsgi.d/olympia.ini:Z
+          - /var/addons:/var/addons
+        env:
+          DJANGO_SETTINGS_MODULE: settings_local
+          NETAPP_STORAGE_ROOT: /var/addons/addons.mozilla.org
