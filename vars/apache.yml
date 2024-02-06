@@ -184,6 +184,8 @@ apache_vhosts:
       RewriteRule ^/contact/? /en-US/contact/ [R=302]
       RewriteRule ^/email-providers/? /en-US/email-providers/ [R=302]
       RewriteRule ^/get-involved/? /en-US/get-involved/ [R=302]
+      # Calendar redirects
+      RewriteRule ^/media/caldata/(.*)? /media/caldata/autogen/$1 [R=302]
       ExpiresActive On
       ExpiresDefault "access plus 2 hours"
       Header always set Strict-Transport-Security "max-age=31536000"
