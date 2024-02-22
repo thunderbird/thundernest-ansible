@@ -8,9 +8,9 @@
   vars: 
     tbsite: "/tmp/tbsite-{{ branch | default('master') }}"
     tbsitebuild: "/tmp/tbsitebuild-{{ branch | default('master') }}"
-    notes: "/thunderbird_notes"
-    locale: "/locale"
-    productdetails: "/product-details"
+    notes: "/libs/thunderbird_notes"
+    locale: "/libs/locale"
+    productdetails: "/libs/product-details"
     branch: "master"
     
   tasks:
@@ -79,14 +79,14 @@
         path: "{{ item }}"
         state: absent
       with_items:
-        - "{{ tbsitebuild }}/site"
-        - "{{ tbsitebuild }}/thunderbird.net"
+        - "{{ tbsitebuild }}/dist/www.thunderbird.net"
+        - "{{ tbsitebuild }}/dist/start.thunderbird.net"
 
     - name: copy built files to tb-website-builds directory
       command: "cp -R {{ item.src }} {{ item.dest }}"
       with_items:
-        - { src: "{{ tbsite }}/thunderbird.net", dest: "{{ tbsitebuild }}/thunderbird.net" }
-        - { src: "{{ tbsite }}/site", dest: "{{ tbsitebuild }}/site" }
+        - { src: "{{ tbsite }}/dist/www.thunderbird.net", dest: "{{ tbsitebuild }}/thunderbird.net" }
+        - { src: "{{ tbsite }}/dist/start.thunderbird.net", dest: "{{ tbsitebuild }}/site" }
         - { src: "{{ tbsite }}/wsgi.py", dest: "{{ tbsitebuild }}/wsgi.py" }
         - { src: "{{ tbsite }}/settings.py", dest: "{{ tbsitebuild }}/settings.py" }
 
