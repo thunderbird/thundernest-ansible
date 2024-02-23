@@ -141,7 +141,7 @@ apache_vhosts:
       </Location>
       Header always set Strict-Transport-Security "max-age=31536000"
 
-  - servername: "www-new.thunderbird.net"
+  - servername: "none.thunderbird.net"
     extra_parameters: |
       ExpiresActive On
       ExpiresDefault "access plus 24 hours"
@@ -152,7 +152,7 @@ apache_vhosts:
       Header always set Strict-Transport-Security "max-age=31536000"  
 
   - servername: "www.thunderbird.net"
-    serveralias: "www-stage.thunderbird.net stage.thunderbird.net www-test.thunderbird.net"
+    serveralias: "www-stage.thunderbird.net stage.thunderbird.net www-test.thunderbird.net new.thunderbird.net www-new.thunderbird.net"
     documentroot: "/var/www/html/start/thunderbird.net"
     extra_parameters: |
       RewriteEngine On
