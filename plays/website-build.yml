@@ -85,8 +85,8 @@
     - name: copy built files to tb-website-builds directory
       command: "cp -R {{ item.src }} {{ item.dest }}"
       with_items:
-        - { src: "{{ tbsite }}/dist/www.thunderbird.net/", dest: "{{ tbsitebuild }}/thunderbird.net" }
-        - { src: "{{ tbsite }}/dist/start.thunderbird.net/", dest: "{{ tbsitebuild }}/site" }
+        - { src: "{{ tbsite }}/dist/www.thunderbird.net/.", dest: "{{ tbsitebuild }}/thunderbird.net" }
+        - { src: "{{ tbsite }}/dist/start.thunderbird.net/.", dest: "{{ tbsitebuild }}/site" }
         - { src: "{{ tbsite }}/wsgi.py", dest: "{{ tbsitebuild }}/wsgi.py" }
         - { src: "{{ tbsite }}/settings.py", dest: "{{ tbsitebuild }}/settings.py" }
 
