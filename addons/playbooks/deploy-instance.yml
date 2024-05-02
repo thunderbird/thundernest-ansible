@@ -126,7 +126,7 @@
     - name: run docker container
       community.docker.docker_container:
         name: addons-server
-        image: thunderbirdops/addons-server
+        image: "{{ image | default('thunderbirdops/addons-server') }}"
         command: "{{ docker_command }}"
         state: started
         privileged: true

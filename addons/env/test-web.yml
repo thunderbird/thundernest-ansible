@@ -5,6 +5,7 @@ vpc_id: vpc-441e5e22
 subnet_id: subnet-35f0477d
 
 # main web servers
+image: 'thunderbirdops/addons-server:stage'
 sec_group_names: ["amo-uwsgi-prod-tb", "amo-uwsgi-test-tb", "add-ssh"]
 target_group: 'amo-test'
 ami: 'ami-08c191625cfb7ee61'
