@@ -19,22 +19,22 @@
       when: (prodenv is not defined) or ((prodenv != "stage") and (prodenv != "prod"))
 
     - name: Create EC2 instances.
-      ec2:
+      ec2_instance:
         key_name: tb-amo-ops-key
         region: us-west-2
-        groups:
+        security_groups:
           - add-ssh
           - kinto-web-backend
         instance_type: c5.xlarge
-        image: ami-0157b1e4eefd91fd7
+        image_id: ami-0157b1e4eefd91fd7
         exact_count: 2
-        count_tag:
-            Name: "kinto-web-{{ prodenv }}"
-        instance_tags:
-            Name: "kinto-web-{{ prodenv }}"
+        filters:
+            "tag:Name": "kinto-web-{{ prodenv }}"
+        name: "kinto-web-{{ prodenv }}"
         wait: yes
         vpc_subnet_id: subnet-35f0477d
-        assign_public_ip: yes
+        network:
+          assign_public_ip: yes
         volumes:
           - device_name: /dev/sda1
             volume_type: gp2
@@ -42,9 +42,13 @@
             delete_on_termination: true
       register: ec2
 
-    - name: Add all instance hostnames to host group
+    # If we created any new instances, add them to the hosts group so later
+    # tasks against the hosts group will find it. Existing hosts will
+    # already be in the group from inventory.
+    - name: Add new instance hostnames to host group
       add_host: hostname={{ item.public_dns_name }} groups=aws_ec2_kinto_web_{{ prodenv }}
-      loop: "{{ ec2.tagged_instances }}"
+      loop: "{{ ec2.instances }}"
+      when: ec2.instances is defined
 
     - name: Show ec2 data
       debug:
