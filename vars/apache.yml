@@ -181,6 +181,9 @@ apache_vhosts:
       WSGIScriptAliasMatch ^/thunderbird /var/www/html/start/wsgi.py
       # This is the link that thunderbird.net currently uses for the careers page
       RewriteRule ^/careers/? https://www.mozilla.org/careers/listings/?team=MZLA%2FThunderbird [R=302,L]
+      # Link still exists in Thunderbird, so lets just redirect them to participate and homepage
+      RewriteRule ^/get-involved/? /participate/ [R=302]
+      RewriteRule ^/features/? / [R=302]
       ExpiresActive On
       ExpiresDefault "access plus 2 hours"
       Header always set Strict-Transport-Security "max-age=31536000"
