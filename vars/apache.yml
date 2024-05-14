@@ -178,6 +178,7 @@ apache_vhosts:
       WSGIScriptAliasMatch ^/download /var/www/html/start/wsgi.py
       WSGIScriptAliasMatch ^/newsletter /var/www/html/start/wsgi.py
       WSGIScriptAliasMatch ^/participate /var/www/html/start/wsgi.py
+      WSGIScriptAliasMatch ^/survey /var/www/html/start/wsgi.py
       WSGIScriptAliasMatch ^/thunderbird /var/www/html/start/wsgi.py
       # This is the link that thunderbird.net currently uses for the careers page
       RewriteRule ^/careers/? https://www.mozilla.org/careers/listings/?team=MZLA%2FThunderbird [R=302,L]
