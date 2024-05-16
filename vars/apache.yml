@@ -182,6 +182,8 @@ apache_vhosts:
       WSGIScriptAliasMatch ^/thunderbird /var/www/html/start/wsgi.py
       # This is the link that thunderbird.net currently uses for the careers page
       RewriteRule ^/careers/? https://www.mozilla.org/careers/listings/?team=MZLA%2FThunderbird [R=302,L]
+      # Temp redirect, pending a new page on thunderbird.netß
+      RewriteRule ^/organizations/? https://wiki.mozilla.org/Thunderbird/Enterprise [r=302,L]  
       # Link still exists in Thunderbird, so lets just redirect them to participate and homepage
       RewriteRule ^/get-involved/? /participate/ [R=302]
       RewriteRule ^/features/? / [R=302]
