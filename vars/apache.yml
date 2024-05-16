@@ -141,7 +141,7 @@ apache_vhosts:
       </Location>
       Header always set Strict-Transport-Security "max-age=31536000"
 
-  - servername: "www-new.thunderbird.net"
+  - servername: "none.thunderbird.net"
     extra_parameters: |
       ExpiresActive On
       ExpiresDefault "access plus 24 hours"
@@ -152,7 +152,7 @@ apache_vhosts:
       Header always set Strict-Transport-Security "max-age=31536000"  
 
   - servername: "www.thunderbird.net"
-    serveralias: "www-stage.thunderbird.net stage.thunderbird.net www-test.thunderbird.net"
+    serveralias: "www-stage.thunderbird.net stage.thunderbird.net www-test.thunderbird.net new.thunderbird.net www-new.thunderbird.net"
     documentroot: "/var/www/html/start/thunderbird.net"
     extra_parameters: |
       RewriteEngine On
@@ -173,17 +173,20 @@ apache_vhosts:
       # URLs with no language code need to be assigned one by wsgi.py
       WSGIScriptAliasMatch ^/$ /var/www/html/start/wsgi.py
       WSGIScriptAliasMatch ^/about[/]?$ /var/www/html/start/wsgi.py
+      WSGIScriptAliasMatch ^/contact /var/www/html/start/wsgi.py
       WSGIScriptAliasMatch ^/donate /var/www/html/start/wsgi.py
       WSGIScriptAliasMatch ^/download /var/www/html/start/wsgi.py
-      WSGIScriptAliasMatch ^/features[/]?$ /var/www/html/start/wsgi.py
       WSGIScriptAliasMatch ^/newsletter /var/www/html/start/wsgi.py
-      WSGIScriptAliasMatch ^/organizations[/]?$ /var/www/html/start/wsgi.py
+      WSGIScriptAliasMatch ^/participate /var/www/html/start/wsgi.py
+      WSGIScriptAliasMatch ^/survey /var/www/html/start/wsgi.py
       WSGIScriptAliasMatch ^/thunderbird /var/www/html/start/wsgi.py
-      RewriteRule ^/calendar/?(.*)$ /en-US/calendar/$1 [R=302]
-      RewriteRule ^/careers/? /en-US/careers/ [R=302]
-      RewriteRule ^/contact/? /en-US/contact/ [R=302]
-      RewriteRule ^/email-providers/? /en-US/email-providers/ [R=302]
-      RewriteRule ^/get-involved/? /en-US/get-involved/ [R=302]
+      # This is the link that thunderbird.net currently uses for the careers page
+      RewriteRule ^/careers/? https://www.mozilla.org/careers/listings/?team=MZLA%2FThunderbird [R=302,L]
+      # Temp redirect, pending a new page on thunderbird.netß
+      RewriteRule ^/organizations/? https://wiki.mozilla.org/Thunderbird/Enterprise [r=302,L]  
+      # Link still exists in Thunderbird, so lets just redirect them to participate and homepage
+      RewriteRule ^/get-involved/? /participate/ [R=302]
+      RewriteRule ^/features/? / [R=302]
       # Calendar redirects
       RewriteRule ^/media/caldata/(.*)? /media/caldata/autogen/$1 [R=302]
       ExpiresActive On

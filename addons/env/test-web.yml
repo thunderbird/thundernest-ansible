@@ -5,6 +5,7 @@ vpc_id: vpc-441e5e22
 subnet_id: subnet-35f0477d
 
 # main web servers
+image: 'thunderbirdops/addons-server:stage'
 sec_group_names: ["amo-uwsgi-prod-tb", "amo-uwsgi-test-tb", "add-ssh"]
 target_group: 'amo-test'
 ami: 'ami-08c191625cfb7ee61'
@@ -16,5 +17,6 @@ count_tag:
 filter_tag:
   'tag:uwsgi': 'amotest'
 settings_file: '../test/settings_local.py'
-ini_file: '../test/olympia.ini'
+# TODO: Create a stage-specific ini file with https redirect for addons-stage domain to work.
+ini_file: '../olympia.ini'
 docker_command: /bin/bash -c "./manage.py update_product_details && pip install uwsgi && uwsgi --uid root --gid root /etc/uwsgi.d/olympia.ini"
