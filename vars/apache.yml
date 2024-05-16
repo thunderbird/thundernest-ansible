@@ -187,6 +187,8 @@ apache_vhosts:
       # Link still exists in Thunderbird, so lets just redirect them to participate and homepage
       RewriteRule ^/get-involved/? /participate/ [R=302]
       RewriteRule ^/features/? / [R=302]
+      # Calendar redirects
+      RewriteRule ^/media/caldata/(.*)? /media/caldata/autogen/$1 [R=302]
       ExpiresActive On
       ExpiresDefault "access plus 2 hours"
       Header always set Strict-Transport-Security "max-age=31536000"
