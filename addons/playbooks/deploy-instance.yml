@@ -48,15 +48,12 @@
       when: item.public_ip_address is defined 
 
     - name: Register targets with ELB
-      community.aws.elb_target_group:
-        name: "{{ target_group }}"
+      community.aws.elb_target:
+        target_group_name: "{{ target_group }}"
         region: "{{ region }}"
         state: present
-        protocol: http
-        port: 80
-        vpc_id: "{{ vpc_id }}"
-        targets:
-          - Id: "{{ item.instance_id }}"
+        target_port: 80
+        target_id: "{{ item.instance_id }}"
       with_items: "{{ uwsgi.instances }}"
       when: item.public_ip_address is defined
 
