@@ -8,13 +8,14 @@ subnet_id: subnet-35f0477d
 sec_group_names: ["amo-uwsgi-prod-tb", "add-ssh"]
 target_group: 'amo-prod'
 ami: 'ami-08c191625cfb7ee61'
-instance_type: 'c6a.xlarge'
+instance_type: 'c7a.xlarge'
 node_count: '3'
 volume_size: '200'
 count_tag:
   uwsgi: 'webservers'
 filter_tag:
   'tag:uwsgi': 'webservers'
+  'instance-state-name': 'running'
 settings_file: '../settings_local.py'
 ini_file: '../olympia.ini'
 docker_command: /bin/bash -c "./manage.py update_product_details && pip install uwsgi && uwsgi --uid root --gid root /etc/uwsgi.d/olympia.ini"

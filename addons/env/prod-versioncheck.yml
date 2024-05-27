@@ -1,0 +1,21 @@
+region: us-west-2
+key_pair: tb-amo-ops-key
+vpc_id: vpc-441e5e22
+
+subnet_id: subnet-35f0477d
+
+# versioncheck servers
+sec_group_names: ["amo-versioncheck-prod-tb", "add-ssh"]
+target_group: 'amo-prod-versioncheck'
+ami: 'ami-08c191625cfb7ee61'
+instance_type: 't3.medium'
+node_count: '2'
+volume_size: '200'
+count_tag:
+  uwsgi: 'versioncheck'
+filter_tag:
+  'tag:uwsgi': 'versioncheck'
+settings_file: '../settings_local.py'
+ini_file: '../versioncheck.ini'
+ini_volume: '/data/olympia/versioncheck.ini:/etc/uwsgi.d/versioncheck.ini:Z'
+docker_command: /bin/bash -c "/usr/sbin/uwsgi --uid root --gid root /etc/uwsgi.d/versioncheck.ini"

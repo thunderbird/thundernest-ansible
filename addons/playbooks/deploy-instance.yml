@@ -66,6 +66,7 @@
 
 - name: Install requirements and docker container
   hosts: launched
+  serial: 1
   user: centos
   become: true
   become_method: sudo
@@ -75,12 +76,21 @@
       ansible.builtin.yum:
         name:
           - "nfs-utils"
+          - "chrony"
           - "docker"
           - "docker-registry"
           - "git"
           - "mysql"
           - "telnet"
           - "python-docker-py"
+          - "*"
+        state: latest
+
+    - name: Set somaxconn
+      ansible.posix.sysctl:
+        name: net.core.somaxconn
+        value: 1024
+        state: present
 
     - name: Create /data/olympia dir for settings files
       ansible.builtin.file:
@@ -133,7 +143,7 @@
         volumes:
           - /data/olympia/settings_local.py:/data/olympia/settings_local.py:Z
           - /data/olympia/api_key_secret.key:/data/aeskeys/api_key_secret.key:Z
-          - /data/olympia/olympia.ini:/etc/uwsgi.d/olympia.ini:Z
+          - "{{ ini_volume | default('/data/olympia/olympia.ini:/etc/uwsgi.d/olympia.ini:Z') }}"
           - /var/addons:/var/addons
         env:
           DJANGO_SETTINGS_MODULE: settings_local

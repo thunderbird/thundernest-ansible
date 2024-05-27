@@ -9,3 +9,6 @@ collections:
 
   - name: community.aws
     version: "7.2.0"
+
+  - name: ansible.posix
+    version: "1.5.4"

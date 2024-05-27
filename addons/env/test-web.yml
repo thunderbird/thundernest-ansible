@@ -16,6 +16,7 @@ count_tag:
   'uwsgi': 'amotest'
 filter_tag:
   'tag:uwsgi': 'amotest'
+  'instance-state-name': 'running'
 settings_file: '../test/settings_local.py'
 # TODO: Create a stage-specific ini file with https redirect for addons-stage domain to work.
 ini_file: '../olympia.ini'
