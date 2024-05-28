@@ -83,7 +83,10 @@
           - "mysql"
           - "telnet"
           - "python-docker-py"
-          - "*"
+ 
+    - name: Install available updates
+      ansible.builtin.yum:
+        name: '*'
         state: latest
 
     - name: Set somaxconn
