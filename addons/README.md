@@ -25,7 +25,8 @@ To deploy or restart the production web servers:
 
 `ansible-playbook --extra-vars "@../env/prod-web.yml" deploy-instance.yml`
 
-Below is a diagram of
+## Diagram of ATN Resources
+
 ```mermaid
 %% { init : { "theme" : "dark", "flowchart" : { "curve" : "linear" }}}%%
 
