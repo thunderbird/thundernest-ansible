@@ -1,0 +1,26 @@
+# Common 
+region: us-west-2
+key_pair: tb-amo-ops-key
+vpc_id: vpc-441e5e22
+subnet_id: subnet-35f0477d
+ami: 'ami-08c191625cfb7ee61'
+settings_file: '../settings_local.py'
+
+# Celery worker settings
+# target_group: not used for celery
+sec_group_names: ["amo-uwsgi-prod-tb", "add-ssh"]
+instance_type: 'c7a.medium'
+node_count: '2'
+volume_size: '100'
+count_tag:
+  uwsgi: 'celeryworkers'
+filter_tag:
+  'tag:uwsgi': 'celeryworkers'
+  'instance-state-name': 'running'
+ini_file: '../olympia.ini'
+docker_command: >
+  /bin/bash -c "celery -A olympia.amo.celery worker -l info -c 2 -n worker1@%h -Q priority,amo,addons,bandwagon,users,
+  &celery -A olympia.amo.celery worker -l info -c 2 -n worker2@%h -Q celery,default,api,files,search,tags,cron,ratings 
+  &celery -A olympia.amo.celery worker -l info -c 2 -n worker3@%h -Q devhub,images --maxtasksperchild 10
+  &celery -A olympia.amo.celery worker -l info -c 1 -n worker4@%h -Q reviewers,zadmin
+  &celery -A olympia.amo.celery worker -l info -c 2 -n worker5@%h -Q limited,stats,crypto"

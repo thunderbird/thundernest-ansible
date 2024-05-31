@@ -12,6 +12,7 @@
         security_groups: "{{ sec_group_names }}"
         instance_type: "{{ instance_type }}"
         image_id: "{{ ami }}"
+        detailed_monitoring: true
         wait: true
         state: started
         filters:
@@ -25,7 +26,7 @@
         volumes:
           - device_name: /dev/sda1
             ebs:
-              volume_type: gp2
+              volume_type: gp3
               volume_size: "{{ volume_size }}"
               delete_on_termination: true
       register: ec2
@@ -55,7 +56,7 @@
         target_port: 80
         target_id: "{{ item.instance_id }}"
       with_items: "{{ uwsgi.instances }}"
-      when: item.public_ip_address is defined
+      when: target_group is defined and item.public_ip_address is defined
 
     - name: Add all launched uwsgi instances to a group, even ones launched before this script was run
       ansible.builtin.add_host:
@@ -70,6 +71,12 @@
   user: centos
   become: true
   become_method: sudo
+  vars:
+    default_volumes:
+      - /data/olympia/settings_local.py:/data/olympia/settings_local.py:Z
+      - /data/olympia/api_key_secret.key:/data/aeskeys/api_key_secret.key:Z
+      - /data/olympia/olympia.ini:/etc/uwsgi.d/olympia.ini:Z
+      - /var/addons:/var/addons
 
   tasks:
     - name: Install all packages
@@ -110,9 +117,8 @@
       loop:
         - "{{ settings_file }}"
         - "{{ ini_file }}"
-        - ../api_key_secret.key
-        - ../versioncheck.ini
-
+        - "{{ key_file | default('../api_key_secret.key') }}"
+        
     - name: Create nfs share dir
       ansible.builtin.file:
         path: /var/addons
@@ -120,6 +126,7 @@
         mode: 777
         owner: root
         group: root
+      when: '"versioncheck" not in target_group'
 
     - name: Mount EFS share
       ansible.posix.mount:
@@ -127,6 +134,7 @@
         src: "fs-55e85afc.efs.us-west-2.amazonaws.com:/"
         fstype: nfs4
         state: mounted
+      when: '"versioncheck" not in target_group'
 
     - name: Make sure docker is running
       ansible.builtin.systemd:
@@ -143,11 +151,7 @@
         restart: true
         pull: true
         network_mode: host
-        volumes:
-          - /data/olympia/settings_local.py:/data/olympia/settings_local.py:Z
-          - /data/olympia/api_key_secret.key:/data/aeskeys/api_key_secret.key:Z
-          - "{{ ini_volume | default('/data/olympia/olympia.ini:/etc/uwsgi.d/olympia.ini:Z') }}"
-          - /var/addons:/var/addons
+        volumes: "{{ docker_volumes | default(default_volumes) }}"
         env:
           DJANGO_SETTINGS_MODULE: settings_local
           NETAPP_STORAGE_ROOT: /var/addons/addons.mozilla.org
