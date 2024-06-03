@@ -9,7 +9,8 @@ settings_file: '../settings_local.py'
 # Celery worker settings
 # target_group: not used for celery
 sec_group_names: ["amo-uwsgi-prod-tb", "add-ssh"]
-instance_type: 'c7a.medium'
+# This instance type needs 8GB of RAM for addons-linter to run properly.
+instance_type: 't3a.large'
 node_count: '2'
 volume_size: '100'
 count_tag:
@@ -19,8 +20,8 @@ filter_tag:
   'instance-state-name': 'running'
 ini_file: '../olympia.ini'
 docker_command: >
-  /bin/bash -c "celery -A olympia.amo.celery worker -l info -c 2 -n worker1@%h -Q priority,amo,addons,bandwagon,users,
-  &celery -A olympia.amo.celery worker -l info -c 2 -n worker2@%h -Q celery,default,api,files,search,tags,cron,ratings 
-  &celery -A olympia.amo.celery worker -l info -c 2 -n worker3@%h -Q devhub,images --maxtasksperchild 10
-  &celery -A olympia.amo.celery worker -l info -c 1 -n worker4@%h -Q reviewers,zadmin
-  &celery -A olympia.amo.celery worker -l info -c 2 -n worker5@%h -Q limited,stats,crypto"
+  /bin/bash -c "celery -A olympia.amo.celery worker -l info -f /var/log/worker1 -c 2 -n worker1@%h -Q priority,amo,addons,bandwagon,users,
+  &celery -A olympia.amo.celery worker -l info -f /var/log/worker2 -c 2 -n worker2@%h -Q celery,default,api,files,search,tags,cron,ratings 
+  &celery -A olympia.amo.celery worker -l info -f /var/log/worker3 -c 2 -n worker3@%h -Q devhub,images --maxtasksperchild 10
+  &celery -A olympia.amo.celery worker -l info -f /var/log/worker4 -c 1 -n worker4@%h -Q reviewers,zadmin
+  &celery -A olympia.amo.celery worker -l info -f /var/log/worker5 -c 2 -n worker5@%h -Q limited,stats,crypto"
