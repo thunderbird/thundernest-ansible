@@ -1,3 +1,4 @@
+# Common 
 region: us-west-2
 key_pair: tb-amo-ops-key
 vpc_id: vpc-441e5e22
@@ -8,6 +9,8 @@ settings_file: '../settings_local.py'
 # versioncheck servers
 sec_group_names: ["amo-versioncheck-prod-tb", "add-ssh"]
 target_group: 'amo-prod-versioncheck'
+# EFS not needed for versioncheck
+efs: false
 instance_type: 'c7a.medium'
 node_count: '2'
 volume_size: '100'

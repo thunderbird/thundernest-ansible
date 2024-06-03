@@ -1,0 +1,21 @@
+# Common 
+region: us-west-2
+key_pair: tb-amo-ops-key
+vpc_id: vpc-441e5e22
+subnet_id: subnet-35f0477d
+ami: 'ami-08c191625cfb7ee61'
+settings_file: '../settings_local.py'
+
+# main web servers
+# target_group: admin node doesn't need an ELB
+sec_group_names: ["amo-uwsgi-prod-tb", "add-ssh"]
+instance_type: 't3.medium'
+node_count: '1'
+volume_size: '200'
+count_tag:
+  uwsgi: 'admin'
+filter_tag:
+  'tag:uwsgi': 'admin'
+  'instance-state-name': 'running'
+ini_file: '../olympia.ini'
+docker_command: /bin/bash -c "./manage.py update_product_details && pip install uwsgi && uwsgi --uid root --gid root /etc/uwsgi.d/olympia.ini"

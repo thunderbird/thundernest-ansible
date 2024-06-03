@@ -42,7 +42,7 @@
       ansible.builtin.wait_for:
         host: "{{ item.public_ip_address }}"
         port: 22
-        delay: 10
+        delay: 5
         timeout: 600
         state: started
       loop: "{{ uwsgi.instances }}"
@@ -77,6 +77,8 @@
       - /data/olympia/api_key_secret.key:/data/aeskeys/api_key_secret.key:Z
       - /data/olympia/olympia.ini:/etc/uwsgi.d/olympia.ini:Z
       - /var/addons:/var/addons
+    # EFS is overriden to false for versioncheck nodes.
+    efs: true
 
   tasks:
     - name: Install all packages
@@ -126,7 +128,7 @@
         mode: 777
         owner: root
         group: root
-      when: '"versioncheck" not in target_group'
+      when: efs
 
     - name: Mount EFS share
       ansible.posix.mount:
@@ -134,7 +136,7 @@
         src: "fs-55e85afc.efs.us-west-2.amazonaws.com:/"
         fstype: nfs4
         state: mounted
-      when: '"versioncheck" not in target_group'
+      when: efs
 
     - name: Make sure docker is running
       ansible.builtin.systemd:

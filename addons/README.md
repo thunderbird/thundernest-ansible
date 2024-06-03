@@ -27,8 +27,10 @@ To deploy or restart the production web servers:
 
 ## Diagram of ATN Resources
 
+There is also an atn-admincron node setup by `prod-admin.yml` that needs the IAM-S3-Read role.
+
 ```mermaid
-%% { init : { "theme" : "dark", "flowchart" : { "curve" : "linear" }}}%%
+%%{ init : { "theme" : "dark", "flowchart" : { "curve" : "linear" }}}%%
 
 flowchart TB
 
@@ -40,12 +42,12 @@ flowchart TB
 
     RDS[(RDS amo-prod)]:::managed
     ES(OpenSearch amo-tb):::managed
-    RED(redis amr1):::managed
-    Z(memcached amo-ca):::managed
+    RED(Redis amr1):::managed
+    Z(Memcached amo-ca):::managed
 
     VURL[versioncheck.addons.thunderbird.net]
     VELB([ELB amo-prod-versioncheck]):::elb
-    VWEB[EC2 versioncheck]:::ec2
+    VWEB[EC2 atn-versioncheckN]:::ec2
 
     AURL -->AELB
     AELB <--> AWEB
