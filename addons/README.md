@@ -11,6 +11,8 @@ Different node types use different environment variable files, like `prod-web.ym
 
 Long-lived managed AWS resources like RDS, ELBs, etc are not managed with these scripts.
 
+You can find a [dashboard of ATN status and health metrics](https://us-west-2.console.aws.amazon.com/cloudwatch/home?region=us-west-2#dashboards/dashboard/ATN) in Cloudwatch.
+
 ## Deployment
 
 Playbooks use the ansible ec2 module, which tracks the number of instances running by a tag. When you run a script, it will attempt to ensure that the correct number of instances is created(including shutting some down if there's too many!!!) and then will set them up, restart docker, etc.
@@ -25,9 +27,13 @@ To deploy or restart the production web servers:
 
 `ansible-playbook --extra-vars "@../env/prod-web.yml" deploy-instance.yml`
 
+## Testing
+
+Sometimes it might be necessary to relaunch the instances to test different configurations. If you remove the tags from the instances, `deploy-instance.yml` will ignore those instances. Thus you can create new ones, and, once you've verified they're working as expected, terminate the old ones.
+
 ## Diagram of ATN Resources
 
-There is also an atn-admincron node setup by `prod-admin.yml` that needs the IAM-S3-Read role.
+There is also an atn-admincron node setup by `prod-admin.yml` that needs the `IAM-S3-Read` role.
 
 ```mermaid
 %%{ init : { "theme" : "dark", "flowchart" : { "curve" : "linear" }}}%%

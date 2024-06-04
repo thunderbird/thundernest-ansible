@@ -3,6 +3,9 @@
   connection: local
   gather_facts: False
   become: False
+  vars:
+    # Used for aws tagging.
+    env: "prod"
 
   tasks:
     - name: Create an EC2 instance
@@ -65,6 +68,16 @@
       loop: "{{ uwsgi.instances }}"
       when: item.public_ip_address is defined
 
+    - name: Ensure tags are present on a resource
+      amazon.aws.ec2_tag:
+        region: "{{ region }}"
+        resource: "{{ item.instance_id }}"
+        state: present
+        tags:
+          environment: "{{ env }}"
+          project: "atn"
+      with_items: "{{ uwsgi.instances }}"
+
 - name: Install requirements and docker container
   hosts: launched
   serial: 1
@@ -77,7 +90,7 @@
       - /data/olympia/api_key_secret.key:/data/aeskeys/api_key_secret.key:Z
       - /data/olympia/olympia.ini:/etc/uwsgi.d/olympia.ini:Z
       - /var/addons:/var/addons
-    # EFS is overriden to false for versioncheck nodes.
+    # EFS is overridden to false for versioncheck nodes.
     efs: true
 
   tasks:
