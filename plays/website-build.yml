@@ -12,6 +12,7 @@
     locale: "/libs/locale"
     productdetails: "/libs/product-details"
     branch: "master"
+    pyver: "python3.11"
     
   tasks:
     - name: make sure temp dir is empty in case of previous failed build
@@ -63,6 +64,7 @@
       pip:
         requirements: "{{ tbsite }}/requirements-dev.txt"
         virtualenv: "{{ tbsite }}/siteenv"
+        virtualenv_python: "{{ pyver }}"
 
     - name: run website build
       shell: "source {{ tbsite }}/siteenv/bin/activate && python build-site.py --debug"
