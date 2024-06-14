@@ -11,7 +11,7 @@ settings_file: '../settings_local.py'
 sec_group_names: ["amo-uwsgi-prod-tb", "add-ssh"]
 # This instance type needs 8GB of RAM for addons-linter to run properly.
 instance_type: 't3a.large'
-node_count: '2'
+node_count: '6'
 volume_size: '100'
 count_tag:
   uwsgi: 'celeryworkers'

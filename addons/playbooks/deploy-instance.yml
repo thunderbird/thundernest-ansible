@@ -163,7 +163,7 @@
         command: "{{ docker_command }}"
         state: started
         privileged: true
-        restart: true
+        restart: false
         pull: true
         network_mode: host
         volumes: "{{ docker_volumes | default(default_volumes) }}"
