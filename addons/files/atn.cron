@@ -1,0 +1,27 @@
+# These crons must run on an admin node which has access to the addons-server docker container.
+# Every 5 minutes
+*/5 * * * * sudo docker exec addons-server /bin/bash -c "./manage.py auto_approve"
+
+#once per hour
+15 * * * * sudo docker exec addons-server /bin/bash -c "./manage.py send_info_request_last_warning_notifications"
+20 * * * * sudo docker exec addons-server /bin/bash -c "./manage.py cron addon_last_updated"
+45 * * * * sudo docker exec addons-server /bin/bash -c "./manage.py cron update_addon_appsupport"
+50 * * * * sudo docker exec addons-server /bin/bash -c "./manage.py cron cleanup_extracted_file"
+55 * * * * sudo docker exec addons-server /bin/bash -c "./manage.py cron unhide_disabled_files"
+
+#twice per day
+25 17,5 * * * sudo docker exec addons-server /bin/bash -c "./manage.py cron hide_disabled_files"
+25 18,6 * * * sudo docker exec addons-server /bin/bash -c "./manage.py cron cleanup_image_files"
+
+#once per day
+0 1 * * * sudo docker exec addons-server /bin/bash -c "./manage.py cron update_user_ratings"
+30 14 * * * sudo docker exec addons-server /bin/bash -c "./manage.py cron category_totals"
+0 22 * * * sudo docker exec addons-server /bin/bash -c "./manage.py cron gc"
+15 1 * * * sudo docker exec addons-server /bin/bash -c "./manage.py cron deliver_hotness"
+30 1 * * * sudo docker exec addons-server /bin/bash -c "./manage.py dump_apps"
+45 1 * * * sudo docker exec addons-server /bin/bash -c "./manage.py update_product_details"
+0 2 * * * sudo docker exec addons-server /bin/bash -c "./manage.py cron add_latest_appversion"
+
+# Once per day after metrics import is done
+40 0 * * * sudo docker exec addons-server /bin/bash -c "./manage.py cron update_global_totals"
+20 0 * * * sudo docker exec addons-server /bin/bash -c "./manage.py cron update_addon_average_daily_users"

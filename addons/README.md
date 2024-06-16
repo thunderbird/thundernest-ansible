@@ -33,7 +33,7 @@ Sometimes it might be necessary to relaunch the instances to test different conf
 
 ## Diagram of ATN Resources
 
-There is also an atn-admincron node setup by `prod-admin.yml` that needs the `IAM-S3-Read` role.
+There is also an atn-admincron node setup by `prod-admin.yml` that needs the `IAM-S3-Read` role. It runs the crons in [files/atn.cron](https://github.com/thunderbird/thundernest-ansible/tree/master/addons/files/atn.cron).
 
 ```mermaid
 %%{ init : { "theme" : "dark", "flowchart" : { "curve" : "linear" }}}%%
