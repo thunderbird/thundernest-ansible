@@ -8,9 +8,9 @@ subnet_id: subnet-35f0477d
 sec_group_names: ["amo-uwsgi-prod-tb", "add-ssh"]
 target_group: 'amo-prod'
 ami: 'ami-08c191625cfb7ee61'
-instance_type: 'c7a.xlarge'
-node_count: '3'
-volume_size: '200'
+instance_type: 'm7a.large'
+node_count: '4'
+volume_size: '100'
 count_tag:
   uwsgi: 'webservers'
 filter_tag:
