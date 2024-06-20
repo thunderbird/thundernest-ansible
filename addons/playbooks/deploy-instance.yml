@@ -170,4 +170,4 @@
         env:
           DJANGO_SETTINGS_MODULE: settings_local
           NETAPP_STORAGE_ROOT: /var/addons/addons.mozilla.org
-          SENTRY_DSN: 'https://83bac18fefef73783ff9f59c5152b6f3@o4505428107853824.ingest.us.sentry.io/4507466500014080'
+          SENTRY_DSN: https://83bac18fefef73783ff9f59c5152b6f3@o4505428107853824.ingest.us.sentry.io/4507466500014080
