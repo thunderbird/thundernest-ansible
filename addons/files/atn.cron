@@ -17,7 +17,8 @@
 0 1 * * * sudo docker exec addons-server /bin/bash -c "./manage.py cron update_user_ratings"
 30 14 * * * sudo docker exec addons-server /bin/bash -c "./manage.py cron category_totals"
 0 22 * * * sudo docker exec addons-server /bin/bash -c "./manage.py cron gc"
-15 1 * * * sudo docker exec addons-server /bin/bash -c "./manage.py cron deliver_hotness"
+# Disabled until this is fixed: https://github.com/thunderbird/addons-server/issues/299
+# 15 1 * * * sudo docker exec addons-server /bin/bash -c "./manage.py cron deliver_hotness"
 30 1 * * * sudo docker exec addons-server /bin/bash -c "./manage.py dump_apps"
 45 1 * * * sudo docker exec addons-server /bin/bash -c "./manage.py update_product_details"
 0 2 * * * sudo docker exec addons-server /bin/bash -c "./manage.py cron add_latest_appversion"
