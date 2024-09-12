@@ -164,7 +164,6 @@ apache_vhosts:
       RewriteRule ^/ja-JP-mac/?(.*)$ /ja/$1 [R=302]
       # https://github.com/thunderbird/thunderbird.net-l10n/issues/1
       RewriteRule ^/bn-(?:BD|IN)/?(.*)$ /bn/$1 [R=302]
-      RewriteRule ^/privacy/? https://www.mozilla.org/privacy/thunderbird/ [R=302]
       RewriteRule ^/thunderbird/(latest/)?system-requirements/? /system-requirements/ [R=302]
       RewriteRule ^/thunderbird/notes/? /notes/ [R=302]
       RewriteRule ^/releases/? /thunderbird/releases/ [R=302]
@@ -180,6 +179,7 @@ apache_vhosts:
       WSGIScriptAliasMatch ^/participate /var/www/html/start/wsgi.py
       WSGIScriptAliasMatch ^/survey /var/www/html/start/wsgi.py
       WSGIScriptAliasMatch ^/thunderbird /var/www/html/start/wsgi.py
+      WSGIScriptAliasMatch ^/privacy /var/www/html/start/wsgi.py
       # This is the link that thunderbird.net currently uses for the careers page
       RewriteRule ^/careers/? https://www.mozilla.org/careers/listings/?team=MZLA%2FThunderbird [R=302,L]
       # Temp redirect, pending a new page on thunderbird.netß
