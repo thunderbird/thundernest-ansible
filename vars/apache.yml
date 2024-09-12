@@ -267,6 +267,10 @@ apache_vhosts:
     extra_parameters: |
       ExpiresActive On
       ExpiresDefault "access plus 24 hours"
+      <Location "/help">
+        RewriteEngine On
+        RewriteRule .* https://www.thunderbird.net/donate/#faq [R=302]
+      </Location>
       <Location />
         RewriteEngine On
         RewriteRule .* https://www.thunderbird.net/donate/ [R=302]
