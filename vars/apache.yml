@@ -188,7 +188,8 @@ apache_vhosts:
       RewriteRule ^/get-involved/? /participate/ [R=302]
       RewriteRule ^/features/? / [R=302]
       # Calendar redirects
-      RewriteRule ^/media/caldata/(.*)? /media/caldata/autogen/$1 [R=302]
+      RewriteCond %{REQUEST_URI} !^/media/caldata/autogen/
+      RewriteRule ^/media/caldata/(.*)? /media/caldata/autogen/$1 [R=302,L]
       ExpiresActive On
       ExpiresDefault "access plus 2 hours"
       Header always set Strict-Transport-Security "max-age=31536000"
