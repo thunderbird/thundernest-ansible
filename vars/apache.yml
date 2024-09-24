@@ -172,6 +172,7 @@ apache_vhosts:
       # URLs with no language code need to be assigned one by wsgi.py
       WSGIScriptAliasMatch ^/$ /var/www/html/start/wsgi.py
       WSGIScriptAliasMatch ^/about[/]?$ /var/www/html/start/wsgi.py
+      WSGIScriptAliasMatch ^/calendar /var/www/html/start/wsgi.py
       WSGIScriptAliasMatch ^/contact /var/www/html/start/wsgi.py
       WSGIScriptAliasMatch ^/donate /var/www/html/start/wsgi.py
       WSGIScriptAliasMatch ^/download /var/www/html/start/wsgi.py
