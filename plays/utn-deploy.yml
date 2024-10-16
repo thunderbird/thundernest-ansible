@@ -1,0 +1,15 @@
+- name: Deploy tb-website-builds files to web servers
+  hosts: "{{ var_hosts | default('webheads') }}"
+  vars_files:
+  - ../vars/conf.yml
+
+  tasks:
+    - name: checkout tb-website-builds to get the start page files
+      git:
+        repo: "https://github.com/thunderbird/tb-website-builds.git"
+        dest: "{{ utn_files }}"
+        version: "{{ branch | default('prod') }}"
+        force: True
+
+    - name: write the commit hash to version.txt
+      shell: 'cd "{{ utn_files }}" && git rev-parse HEAD > site/version.txt'
