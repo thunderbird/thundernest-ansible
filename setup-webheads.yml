@@ -4,4 +4,5 @@
 - include: plays/autoconfig-deploy.yml
 - include: plays/http-mx-deploy.yml
 - include: plays/start-deploy.yml
+- include: plays/utn-deploy.yml
 - include: setup-apache.yml

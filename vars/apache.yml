@@ -211,6 +211,19 @@ apache_vhosts:
       RewriteRule ^/$ /en-US/release/ [R=302]
       Header always set Strict-Transport-Security "max-age=31536000"
 
+  - servername: "updates.thunderbird.net"
+    serveralias: "updates-stage.thunderbird.net"
+    documentroot: "/var/www/html/start/updates.thunderbird.net"
+    extra_parameters: |
+      ExpiresActive On
+      ExpiresDefault "access plus 8 hours"
+      RewriteEngine On
+      # https://github.com/thunderbird/thunderbird-website/issues/162
+      RewriteRule ^/ja-JP-mac/?(.*)$ /ja/$1 [R=302]
+      # https://github.com/thunderbird/thunderbird.net-l10n/issues/1
+      RewriteRule ^/bn-(?:BD|IN)/?(.*)$ /bn/$1 [R=302]
+      Header always set Strict-Transport-Security "max-age=31536000"
+
   - servername: "mail.thunderbird.net"
     extra_parameters: |
       ExpiresActive On
