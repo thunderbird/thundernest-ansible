@@ -6,7 +6,6 @@ live_doc_root: /var/www/html/live.momo/
 autoconfig_trunk: /var/www/autoconfig.momo/
 lets_encrypt_docroot: /var/www/dehydrated/
 start_page_files: /var/www/html/start/
-utn_files: /var/www/html/start/updates.thunderbird.net/
 stats_files: /var/www/html/tbstats/
 style_files: /var/www/html/style_guide/
 server_domain: thunderbird.net

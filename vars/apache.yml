@@ -223,6 +223,9 @@ apache_vhosts:
       # https://github.com/thunderbird/thunderbird.net-l10n/issues/1
       RewriteRule ^/bn-(?:BD|IN)/?(.*)$ /bn/$1 [R=302]
       Header always set Strict-Transport-Security "max-age=31536000"
+      WSGIScriptAliasMatch ^/thunderbird /var/www/html/start/wsgi.py
+      WSGIScriptAliasMatch ^/thunderbird-mobile /var/www/html/start/wsgi.py
+
 
   - servername: "mail.thunderbird.net"
     extra_parameters: |
