@@ -215,8 +215,8 @@ apache_vhosts:
     serveralias: "updates-stage.thunderbird.net"
     documentroot: "/var/www/html/start/updates.thunderbird.net"
     extra_parameters: |
-      # UTN _MUST_ run on the same server as www.thunderbird.net -or- stage.thunderbird.net !
-      WSGIProcessGroup stage.thunderbird.net
+      WSGIDaemonProcess updates.thunderbird.net processes=2 threads=10 display-name=%{GROUP} python-home=/var/www/tbservices python-path=/var/www/html/start
+      WSGIProcessGroup updates.thunderbird.net
       ExpiresActive On
       ExpiresDefault "access plus 8 hours"
       RewriteEngine On
