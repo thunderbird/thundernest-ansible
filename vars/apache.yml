@@ -215,6 +215,8 @@ apache_vhosts:
     serveralias: "updates-stage.thunderbird.net"
     documentroot: "/var/www/html/start/updates.thunderbird.net"
     extra_parameters: |
+      # UTN _MUST_ run on the same server as www.thunderbird.net -or- stage.thunderbird.net !
+      WSGIProcessGroup stage.thunderbird.net
       ExpiresActive On
       ExpiresDefault "access plus 8 hours"
       RewriteEngine On
@@ -223,6 +225,7 @@ apache_vhosts:
       # https://github.com/thunderbird/thunderbird.net-l10n/issues/1
       RewriteRule ^/bn-(?:BD|IN)/?(.*)$ /bn/$1 [R=302]
       Header always set Strict-Transport-Security "max-age=31536000"
+      WSGIScriptAliasMatch ^/$ /var/www/html/start/wsgi.py
       WSGIScriptAliasMatch ^/thunderbird /var/www/html/start/wsgi.py
       WSGIScriptAliasMatch ^/thunderbird-mobile /var/www/html/start/wsgi.py
       # Bug 1862171
