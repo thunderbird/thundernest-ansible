@@ -225,7 +225,8 @@ apache_vhosts:
       Header always set Strict-Transport-Security "max-age=31536000"
       WSGIScriptAliasMatch ^/thunderbird /var/www/html/start/wsgi.py
       WSGIScriptAliasMatch ^/thunderbird-mobile /var/www/html/start/wsgi.py
-
+      # Bug 1862171
+      Header always set X-Frame-Options "DENY"
 
   - servername: "mail.thunderbird.net"
     extra_parameters: |
