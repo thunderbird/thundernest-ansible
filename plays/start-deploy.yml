@@ -9,6 +9,7 @@
         repo: "https://github.com/thunderbird/tb-website-builds.git"
         dest: "{{ start_page_files }}"
         version: "{{ branch | default('prod') }}"
+        depth: 1
         force: True
 
     - name: write the commit hash to version.txt
