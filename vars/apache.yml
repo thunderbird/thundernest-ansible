@@ -101,6 +101,10 @@ apache_vhosts:
       RewriteRule (.*) https://support.mozilla.org/kb/thunderbird-add-ons-frequently-asked-questions [L]
       RewriteCond %{REQUEST_URI} ^/thunderbird/([^/]+)/([^/]+)/([^/]+)/extension-permissions$
       RewriteRule (.*) https://support.mozilla.org/kb/permission-request-messages-thunderbird-extensions [L]
+      RewriteCond %{REQUEST_URI} ^/thunderbird/([^/]+)/([^/]+)/([^/]+)/global-privacy-control$
+      RewriteRule (.*) https://support.mozilla.org/kb/global-privacy-control [L]
+      RewriteCond %{REQUEST_URI} ^/thunderbird/([^/]+)/([^/]+)/([^/]+)/how-do-i-turn-do-not-track-feature$
+      RewriteRule (.*) https://support.mozilla.org/kb/how-do-i-turn-do-not-track-feature [L]
       RewriteCond %{REQUEST_URI} ^/kb/ask$
       RewriteRule (.*) https://support.mozilla.org/en-US/questions/new/thunderbird [L]
       RewriteCond %{REQUEST_URI} ^/([^/]+)/kb/ask$
