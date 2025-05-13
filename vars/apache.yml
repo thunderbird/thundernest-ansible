@@ -303,3 +303,13 @@ apache_vhosts:
         RewriteRule .* https://www.thunderbird.net/donate/ [R=302]
       </Location>
       Header always set Strict-Transport-Security "max-age=31536000"
+
+  - servername: "ehlo.thunderbird.net"
+    extra_parameters: |
+      ExpiresActive On
+      ExpiresDefault "access plus 24 hours"
+      # https://github.com/thunderbird/thundernest-ansible/issues/57
+      <Location />
+        RewriteEngine On
+        RewriteRule .* https://support.mozilla.org/kb/thunderbird-smtp-ehlo [R=302]
+      </Location>
