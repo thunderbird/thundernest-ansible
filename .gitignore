@@ -4,3 +4,5 @@ thundernest-ansible.key
 *.pyc
 ssl-refresh-log
 /kinto/py3
+# Disallow pem files
+*.pem
