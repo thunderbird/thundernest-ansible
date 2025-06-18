@@ -255,12 +255,13 @@ apache_vhosts:
       ExpiresDefault "access plus 1 hour"
 
   - servername: "style.thunderbird.net"
+    serveralias: "design.thunderbird.net"
     extra_parameters: |
       ExpiresActive On
       ExpiresDefault "access plus 24 hours"
       <Location />
         RewriteEngine On
-        RewriteRule .* https://design.thunderbird.net [R=302]
+        RewriteRule .* https://bolt.thunderbird.net [R=302]
       </Location>
 
   - servername: "aus.thunderbird.net"
