@@ -237,6 +237,24 @@ apache_vhosts:
       # Bug 1862171
       Header always set X-Frame-Options "DENY"
 
+  - servername: "tb.pro"
+    serveralias: "www-stage.tb.pro stage.tb.pro"
+    documentroot: "/var/www/html/start/tb.pro"
+    extra_parameters: |
+      WSGIDaemonProcess tb.pro processes=2 threads=10 display-name=%{GROUP} python-home=/var/www/tbservices python-path=/var/www/html/start
+      WSGIProcessGroup tb.pro
+      ExpiresActive On
+      ExpiresDefault "access plus 8 hours"
+      RewriteEngine On
+      # https://github.com/thunderbird/thunderbird-website/issues/162
+      RewriteRule ^/ja-JP-mac/?(.*)$ /ja/$1 [R=302]
+      # https://github.com/thunderbird/thunderbird.net-l10n/issues/1
+      RewriteRule ^/bn-(?:BD|IN)/?(.*)$ /bn/$1 [R=302]
+      Header always set Strict-Transport-Security "max-age=31536000"
+      WSGIScriptAliasMatch ^/$ /var/www/html/start/wsgi.py
+      # Bug 1862171
+      Header always set X-Frame-Options "DENY"
+
   - servername: "mail.thunderbird.net"
     extra_parameters: |
       ExpiresActive On
