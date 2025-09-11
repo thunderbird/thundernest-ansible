@@ -238,7 +238,7 @@ apache_vhosts:
       Header always set X-Frame-Options "DENY"
 
   - servername: "tb.pro"
-    serveralias: "www-stage.tb.pro"
+    serveralias: "www-stage.tb.pro stage.tb.pro"
     documentroot: "/var/www/html/start/tb.pro"
     extra_parameters: |
       WSGIDaemonProcess tb.pro processes=2 threads=10 display-name=%{GROUP} python-home=/var/www/tbservices python-path=/var/www/html/start
