@@ -81,6 +81,11 @@
       args:
         chdir: "{{ tbsite }}"
 
+    - name: run tb.pro build
+      shell: "source {{ tbsite }}/siteenv/bin/activate && python build-site.py --tbpro --debug"
+      args:
+        chdir: "{{ tbsite }}"
+
     - name: make sure temp dir is empty in case of previous failed build
       file:
         path: "{{ item }}"
@@ -89,6 +94,7 @@
         - "{{ tbsitebuild }}/thunderbird.net"
         - "{{ tbsitebuild }}/site"
         - "{{ tbsitebuild }}/updates.thunderbird.net"
+        - "{{ tbsitebuild }}/tb.pro"
 
     - name: copy built files to tb-website-builds directory
       command: "cp -R {{ item.src }} {{ item.dest }}"
@@ -96,6 +102,7 @@
         - { src: "{{ tbsite }}/dist/www.thunderbird.net/.", dest: "{{ tbsitebuild }}/thunderbird.net" }
         - { src: "{{ tbsite }}/dist/start.thunderbird.net/.", dest: "{{ tbsitebuild }}/site" }
         - { src: "{{ tbsite }}/dist/updates.thunderbird.net/.", dest: "{{ tbsitebuild }}/updates.thunderbird.net" }
+        - { src: "{{ tbsite }}/dist/tb.pro/.", dest: "{{ tbsitebuild }}/tb.pro" }
         - { src: "{{ tbsite }}/wsgi.py", dest: "{{ tbsitebuild }}/wsgi.py" }
         - { src: "{{ tbsite }}/settings.py", dest: "{{ tbsitebuild }}/settings.py" }
 
