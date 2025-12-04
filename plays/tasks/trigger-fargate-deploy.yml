@@ -1,0 +1,30 @@
+# Reusable task to trigger Fargate deployment via GitHub Actions
+# Include this in playbooks with:
+#   - include_tasks: tasks/trigger-fargate-deploy.yml
+#
+# Variables:
+#   - branch: If set, 'master' = stage, anything else = prod
+#   - var_hosts: If branch not set, 'stage' = stage, 'webheads' = prod
+#
+# Environment:
+#   - GIT_API_KEY: GitHub API token (same one used for git push operations)
+
+- name: Trigger Fargate deployment
+  vars:
+    deploy_env: "{{ 'stage' if (branch is defined and branch == 'master') or (branch is undefined and var_hosts | default('webheads') == 'stage') else 'prod' }}"
+  uri:
+    url: "https://api.github.com/repos/thunderbird/thunderbird-website/dispatches"
+    method: POST
+    headers:
+      Accept: "application/vnd.github.v3+json"
+      Authorization: "token {{ lookup('env', 'GIT_API_KEY') }}"
+    body_format: json
+    body:
+      event_type: "{{ deploy_env }}"
+      client_payload:
+        environment: "{{ deploy_env }}"
+    status_code: 204
+  delegate_to: localhost
+  run_once: true
+  when: deploy_env == 'stage'  # TODO: enable prod deploys when ready
+

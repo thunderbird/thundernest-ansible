@@ -14,3 +14,5 @@
 
     - name: write the commit hash to version.txt
       shell: 'cd "{{ start_page_files }}" && git rev-parse HEAD > site/version.txt'
+
+    - include_tasks: tasks/trigger-fargate-deploy.yml
