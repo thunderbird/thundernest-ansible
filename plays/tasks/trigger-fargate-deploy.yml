@@ -26,5 +26,4 @@
     status_code: 204
   delegate_to: localhost
   run_once: true
-  when: deploy_env == 'stage'  # TODO: enable prod deploys when ready
 
