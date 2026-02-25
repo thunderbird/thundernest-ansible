@@ -86,6 +86,11 @@
       args:
         chdir: "{{ tbsite }}"
 
+    - name: run roadmaps build
+      shell: "source {{ tbsite }}/siteenv/bin/activate && python build-site.py --roadmaps --debug"
+      args:
+        chdir: "{{ tbsite }}"
+
     - name: make sure temp dir is empty in case of previous failed build
       file:
         path: "{{ item }}"
@@ -95,6 +100,7 @@
         - "{{ tbsitebuild }}/site"
         - "{{ tbsitebuild }}/updates.thunderbird.net"
         - "{{ tbsitebuild }}/tb.pro"
+        - "{{ tbsitebuild }}/roadmaps.thunderbird.net"
 
     - name: copy built files to tb-website-builds directory
       command: "cp -R {{ item.src }} {{ item.dest }}"
@@ -103,6 +109,7 @@
         - { src: "{{ tbsite }}/dist/start.thunderbird.net/.", dest: "{{ tbsitebuild }}/site" }
         - { src: "{{ tbsite }}/dist/updates.thunderbird.net/.", dest: "{{ tbsitebuild }}/updates.thunderbird.net" }
         - { src: "{{ tbsite }}/dist/tb.pro/.", dest: "{{ tbsitebuild }}/tb.pro" }
+        - { src: "{{ tbsite }}/dist/roadmaps.thunderbird.net/.", dest: "{{ tbsitebuild }}/roadmaps.thunderbird.net" }
         - { src: "{{ tbsite }}/wsgi.py", dest: "{{ tbsitebuild }}/wsgi.py" }
         - { src: "{{ tbsite }}/settings.py", dest: "{{ tbsitebuild }}/settings.py" }
 
