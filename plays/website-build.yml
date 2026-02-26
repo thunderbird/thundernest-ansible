@@ -11,6 +11,7 @@
     notes: "/libs/thunderbird_notes"
     locale: "/libs/locale"
     productdetails: "/libs/product-details"
+    roadmaps: "/libs/thunderbird_roadmaps"
     branch: "master"
     pyver: "python3.11"
     
@@ -48,12 +49,21 @@
         repo: "https://github.com/thunderbird/thunderbird-notes.git"
         dest: "{{ tbsite }}{{ notes }}"
         version: "{{ branch | default('master') }}"
+        depth: 1
 
     - name: checkout product-details
       git:
         repo: "https://github.com/mozilla-releng/product-details.git"
         dest: "{{ tbsite }}{{ productdetails }}"
         version: "production"
+        depth: 1
+
+    - name: checkout roadmap docs
+      git:
+        repo: "https://github.com/thunderbird/roadmaps-overview.git"
+        dest: "{{ tbsite }}{{ roadmaps }}"
+        version: "main"
+        depth: 1
 
     - name: compile gettext files
       command: bash l10n_tools/compile.sh
