@@ -5,7 +5,7 @@
   become: yes
   become_user: ansibler
 
-  vars: 
+  vars:
     tbsite: "/tmp/tbsite-{{ branch | default('master') }}"
     tbsitebuild: "/tmp/tbsitebuild-{{ branch | default('master') }}"
     notes: "/libs/thunderbird_notes"
@@ -13,8 +13,7 @@
     productdetails: "/libs/product-details"
     roadmaps: "/libs/thunderbird_roadmaps"
     branch: "master"
-    pyver: "python3.11"
-    
+
   tasks:
     - name: make sure temp dir is empty in case of previous failed build
       file:
@@ -36,6 +35,8 @@
         repo: "https://github.com/thunderbird/thunderbird-website.git"
         dest: "{{ tbsite }}"
         version: "{{ branch | default('master') }}"
+        depth: 1
+        depth: 1
 
     - name: checkout Mozilla localization files
       git:
@@ -70,34 +71,38 @@
       args:
         chdir: "{{ tbsite }}"
 
-    - name: Install packages from requirements-dev.txt
+    - name: install uv package manager
       pip:
-        requirements: "{{ tbsite }}/requirements-dev.txt"
-        virtualenv: "{{ tbsite }}/siteenv"
-        virtualenv_python: "{{ pyver }}"
+        name: uv
+      become_user: root
+
+    - name: install Python dependencies with uv
+      command: uv sync --frozen
+      args:
+        chdir: "{{ tbsite }}"
 
     - name: run website build
-      shell: "source {{ tbsite }}/siteenv/bin/activate && python build-site.py --debug"
+      command: uv run build-site.py --debug
       args:
         chdir: "{{ tbsite }}"
 
     - name: run start page build
-      shell: "source {{ tbsite }}/siteenv/bin/activate && python build-site.py --startpage --debug"
+      command: uv run build-site.py --startpage --debug
       args:
         chdir: "{{ tbsite }}"
 
     - name: run utn build
-      shell: "source {{ tbsite }}/siteenv/bin/activate && python build-site.py --updates --debug"
+      command: uv run build-site.py --updates --debug
       args:
         chdir: "{{ tbsite }}"
 
     - name: run tb.pro build
-      shell: "source {{ tbsite }}/siteenv/bin/activate && python build-site.py --tbpro --debug"
+      command: uv run build-site.py --tbpro --debug
       args:
         chdir: "{{ tbsite }}"
 
     - name: run roadmaps build
-      shell: "source {{ tbsite }}/siteenv/bin/activate && python build-site.py --roadmaps --debug"
+      command: uv run build-site.py --roadmaps --debug
       args:
         chdir: "{{ tbsite }}"
 
