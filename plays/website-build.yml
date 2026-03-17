@@ -13,6 +13,7 @@
     productdetails: "/libs/product-details"
     roadmaps: "/libs/thunderbird_roadmaps"
     branch: "master"
+    git_auth: "https://{{ lookup('env', 'GIT_USER') | urlencode }}:{{ lookup('env', 'GIT_API_KEY') }}@github.com"
 
   tasks:
     - name: make sure temp dir is empty in case of previous failed build
@@ -25,43 +26,42 @@
 
     - name: checkout tb-website-builds history repo
       git:
-        repo: "https://github.com/thunderbird/tb-website-builds.git"
+        repo: "{{ git_auth }}/thunderbird/tb-website-builds.git"
         dest: "{{ tbsitebuild }}"
         version: "{{ branch | default('master') }}"
         depth: 1
 
     - name: checkout thunderbird-website
       git:
-        repo: "https://github.com/thunderbird/thunderbird-website.git"
+        repo: "{{ git_auth }}/thunderbird/thunderbird-website.git"
         dest: "{{ tbsite }}"
         version: "{{ branch | default('master') }}"
-        depth: 1
         depth: 1
 
     - name: checkout Mozilla localization files
       git:
-        repo: "https://github.com/thunderbird/thunderbird.net-l10n.git"
+        repo: "{{ git_auth }}/thunderbird/thunderbird.net-l10n.git"
         dest: "{{ tbsite }}{{ locale }}"
         version: "master"
         depth: 1
 
     - name: checkout release notes
       git:
-        repo: "https://github.com/thunderbird/thunderbird-notes.git"
+        repo: "{{ git_auth }}/thunderbird/thunderbird-notes.git"
         dest: "{{ tbsite }}{{ notes }}"
         version: "{{ branch | default('master') }}"
         depth: 1
 
     - name: checkout product-details
       git:
-        repo: "https://github.com/mozilla-releng/product-details.git"
+        repo: "{{ git_auth }}/mozilla-releng/product-details.git"
         dest: "{{ tbsite }}{{ productdetails }}"
         version: "production"
         depth: 1
 
     - name: checkout roadmap docs
       git:
-        repo: "https://github.com/thunderbird/roadmaps-overview.git"
+        repo: "{{ git_auth }}/thunderbird/roadmaps-overview.git"
         dest: "{{ tbsite }}{{ roadmaps }}"
         version: "main"
         depth: 1
@@ -137,7 +137,7 @@
         - "git -c 'user.name=Thundernest Bot' -c 'user.email={{ lookup('env', 'GIT_EMAIL') }}' commit -m 'Website rebuild triggered by {{ message | default('manual execution of the script.') }}'"
 
     - name: push website update
-      command: "git push https://{{ lookup('env', 'GIT_USER') | urlencode }}:{{ lookup('env', 'GIT_API_KEY') }}@github.com/thunderbird/tb-website-builds.git --all"
+      command: "git push {{ git_auth }}/thunderbird/tb-website-builds.git --all"
       args:
         chdir: "{{ tbsitebuild }}"
 
